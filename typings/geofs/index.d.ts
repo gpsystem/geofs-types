@@ -1,5 +1,6 @@
 import { FrameCallback } from '../index';
 import apiNamespace from './api';
+import runwaysNamespace from './runways';
 
 
 /**
@@ -8,5 +9,6 @@ import apiNamespace from './api';
 declare namespace geofs {
     const frameCallbackStack: {[key: string]: FrameCallback};
     const api: typeof apiNamespace;
+    const runways: typeof runwaysNamespace;
 }
 export default geofs;
