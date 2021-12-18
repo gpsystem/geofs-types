@@ -1,5 +1,3 @@
-/// <reference path="./index.d.ts" />
-
 import { FrameCallback } from '../index';
 import type * as Cesium from 'cesium';
 import type * as L from 'leaflet';
