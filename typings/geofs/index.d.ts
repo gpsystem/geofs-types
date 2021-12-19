@@ -70,5 +70,44 @@ declare namespace geofs {
         dotGridGradient(a: number, b: number, c: number, d: number): number;
         get(a: number, b: number, c: number): number;
     };
+
+    const includes: {};
+    let PRODUCTION: boolean;
+    let killCache: string;
+    let isApp: boolean;
+    let autoStart: boolean;
+    let manualStart: boolean;
+    let viewport: HTMLElement;
+    let canvas: JQuery<HTMLElement>;
+    let resizeHandlers: {};
+    let resizeHandlersIndex: number;
+    let lastTime: number;
+    const initialRunways: number[][];
+    let lastFlight: {
+        coordinates: number[];
+        aircraftId: number;
+        liveryId: string;
+    };
+    let lastFlightDefault: Partial<typeof lastFlight>;
+    let world: undefined;
+    let initialCoordinates: number[];
+    function init(): void;
+    function start(a?: number, b?: number[]): void;
+    function unload(): void;
+    function initLoggedInUser(): void;
+    function terrainProbbingDone(): void;
+    const terrainProbingDuration: number;
+    function probeTerrain(): void;
+    let pause: boolean;
+    let pauseLevel: number;
+    let absolutePause: boolean;
+    function togglePause(): void;
+    function isPaused(): true | void;
+    function doPause(a?: number, b?: boolean): void;
+    function undoPause(a?: number): void;
+    function frameCallback(a: number): void;
+    function flyTo(a?: number[], b?: boolean): void;
+    function flyToCamera(): void;
+    function resetFlight(): void;
 }
 export default geofs;

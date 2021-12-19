@@ -13,4 +13,5 @@ export interface FrameCallback {
 
 declare global {
   const geofs: typeof geofsNamespace;
+  const PAGE_PATH: string;
 }
