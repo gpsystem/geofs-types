@@ -1,4 +1,5 @@
 import geofsNamespace from './geofs';
+export as namespace GeoFS;
 
 export interface FrameCallback {
     callbacks: {
