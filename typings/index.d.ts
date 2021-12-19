@@ -11,4 +11,6 @@ export interface FrameCallback {
     [key: string]: any;
 }
 
-export declare var geofs: typeof geofsNamespace;
+declare global {
+  const geofs: typeof geofsNamespace;
+}
