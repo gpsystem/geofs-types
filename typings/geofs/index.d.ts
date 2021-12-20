@@ -297,7 +297,7 @@ declare namespace geofs {
   ): any;
   function removeResizeHandler(a: number): void;
   function getViewportDimentions(): void;
-  
+
   // fx
   class runwayLights extends fxRunwaysLights {}
   const light: fxNamespace.light;

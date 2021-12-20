@@ -3,7 +3,8 @@
     "noEmit": true,
     "strict": true,
     "moduleResolution": "node",
-    "lib": ["DOM", "es2015"]
+    "lib": ["DOM", "es2015"],
+    "noImplicitAny": true
   },
   "include": ["typings/**/*.ts"]
 }
