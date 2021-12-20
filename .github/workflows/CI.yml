@@ -26,8 +26,6 @@ jobs:
   job_2:
     name: Lint code
     runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
 
     steps:
       - name: Checkout
@@ -45,4 +43,5 @@ jobs:
         run: sudo npx eslint .
 
       - name: TSC
+        if: always()
         run: sudo npx tsc
