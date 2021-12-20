@@ -7,7 +7,7 @@ declare namespace ui {
   let playerMarkers: {
     [key: string]: typeof geofs.api.map.planeMarker | null;
   };
-  let playerSymbols: {};
+  let playerSymbols: Record<string, never>;
   let mouseUpHandlers: ((a: JQuery.Event) => void)[];
   let svgPlanePath: string;
   let isFullscreen: boolean;
@@ -26,7 +26,9 @@ declare namespace ui {
   };
 
   function init(): void;
-  function mouseUpHandler(a: JQuery.TypeEventHandler): void;
+  function mouseUpHandler(
+    a: JQuery.TypeEventHandler<any, any, any, any, any>
+  ): void;
   function showCrashNotification(): void;
   function hideCrashNotification(): void;
   function toggleFullscreen(): void;
@@ -68,7 +70,7 @@ declare namespace ui {
 
   class Text {
     readonly defaultOptions: {
-      rescale: !1;
+      rescale: false;
       anchor: {
         x: 0;
         y: 0;
@@ -78,7 +80,14 @@ declare namespace ui {
 
     constructor(
       a: string,
-      b: Partial<defaultOptions> & {
+      // Partial of the type of defaultOptions
+      b: Partial<{
+        rescale: boolean;
+        anchor: {
+          x: number;
+          y: number;
+        };
+      }> & {
         text: string;
       }
     );
@@ -103,7 +112,7 @@ declare namespace ui {
   const hud: typeof hudNamespace;
 
   const notification: {
-    show(a: stirng): void;
+    show(a: string): void;
   };
 }
 

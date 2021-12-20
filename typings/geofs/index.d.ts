@@ -35,7 +35,7 @@ declare namespace geofs {
   };
 
   // some random variables that are under geofs:
-  function selectDropdown(a: Object, b: any): void;
+  function selectDropdown(a: HTMLElement, b: number): void;
   function getLink(): void;
   function isArray(a: any): boolean;
   function loadModel(
@@ -131,7 +131,9 @@ declare namespace geofs {
     get(a: number, b: number, c: number): number;
   };
 
-  const includes: {};
+  const includes: {
+    [key: string]: any;
+  };
   let PRODUCTION: boolean;
   let killCache: string;
   let isApp: boolean;
@@ -139,7 +141,7 @@ declare namespace geofs {
   let manualStart: boolean;
   let viewport: HTMLElement;
   let canvas: JQuery<HTMLElement>;
-  let resizeHandlers: { [key: number]: Function };
+  let resizeHandlers: { [key: number]: () => void };
   let resizeHandlersIndex: number;
   let lastTime: number;
   const initialRunways: number[][];
@@ -170,9 +172,44 @@ declare namespace geofs {
   function flyToCamera(): void;
   function resetFlight(): void;
 
-  // prefernces
+  // preferences
   let preferences: { version: string } & preferencesDefault;
-  let userRecord: {};
+  let userRecord: {
+    id: string;
+    email: string;
+    googleid: string | null;
+    facebookid: string | null;
+    deviceid: string | null;
+    schoolid: string | null;
+    externalid: string | null;
+    firstname: string;
+    lastname: string;
+    callsign: string;
+    sessionId: string;
+    created: Date;
+    active: string;
+    ip: string;
+    role: string;
+    muted: string;
+    banned: string;
+    lastlogin: Date | null;
+    mailing: string;
+    password: string;
+    flighttime: string;
+    preferences: any;
+    mutelist: string;
+    premium: any;
+    transactionDate: Date | null;
+    transactionReference: string | null;
+    transactionStatus: string | null;
+    transactionMessage: string | null;
+    subscribed: boolean;
+    subscriptionStart: Date | null;
+    subscriptionEnd: Date | null;
+    trial: string;
+    subscriptionDaysLeft: string;
+    muteList: any[];
+  };
   let preferencesDefault: preferencesDefault;
   let preferencesKeycodeLookup: { [key: number]: string };
   function initPreferences(): void;
@@ -202,10 +239,11 @@ declare namespace geofs {
 
   // ui
   class map {
-    dontMoveTimeoutValue: number;
-    mapUpdateInterval: number;
     minimumPanDistance: number;
-    _options: {};
+    _options: {
+      location: [number, number, number];
+      [key: string]: any;
+    };
     apiMap: apiNamespace.map;
     planeMarker: apiNamespace.map.planeMarker;
     mapActive: boolean;
@@ -248,7 +286,13 @@ declare namespace geofs {
     setTooltipVisibility(a: boolean): void;
   }
   function handleResize(): void;
-  function addResizeHandler(a: number, b?: Object): void;
+  function addResizeHandler(
+    a: number,
+    b?: {
+      resizeHandlerId: any;
+      [key: string]: any;
+    }
+  ): any;
   function removeResizeHandler(a: number): void;
   function getViewportDimentions(): void;
 }

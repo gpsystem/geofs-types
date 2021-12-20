@@ -62,7 +62,10 @@ declare global {
   function lla2xyz(a: number[], b: number[]): number[];
   function ll2xy(a: number[], b: number[]): number[];
   function clamp(a: number, b: number, c: number): number;
-  function geoDecodeLocation(a: string, b: Function): void;
+  function geoDecodeLocation(
+    a: string,
+    b: (a: number, b: number) => void
+  ): void;
 
   class Overlay {
     definition: {

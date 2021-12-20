@@ -15,7 +15,7 @@ declare namespace runways {
   let imageryOpacity: number;
   let env: {
     [key: string]: {
-      promise: Promise<typeof env[key]>;
+      promise: Promise<typeof env[string]>;
       image: HTMLImageElement;
       canvas: HTMLCanvasElement;
       context: CanvasRenderingContext2D;
@@ -41,7 +41,7 @@ declare namespace runways {
     })[]
   ): void;
   function setRunwayModelVisibility(a: boolean): void;
-  function getRotationCanvas(a: string): Promise<typeof env[key]>;
+  function getRotationCanvas(a: string): Promise<typeof env[string]>;
   function asyncSetImageLayerRotationPosition(
     a: string,
     b: number,

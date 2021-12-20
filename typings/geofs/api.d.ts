@@ -330,12 +330,16 @@ declare namespace api {
     c: number[]
   ): void;
   function getCameraLla(a: Cesium.Camera): number[];
-  function setCameraLookAt(a: Cesium.Camera, b: number[]);
+  function setCameraLookAt(a: Cesium.Camera, b: number[]): void;
   function getHeading(a: Cesium.Camera): number;
 
   function debug(a: boolean): void;
 
-  function getLlaFromScreencoordDepth(a: number, b: number, c: number);
+  function getLlaFromScreencoordDepth(
+    a: number,
+    b: number,
+    c: number
+  ): number[];
   function getScreenCoordFromLla(a: number[]): Cesium.Cartesian2;
   function xyz2lla(a: number[], b: number[]): number[];
 
@@ -494,8 +498,10 @@ declare namespace api {
       }>
     );
     baseProvider: Cesium.TerrainProvider;
-    regions: {};
-    tiles: {};
+    regions: {
+      [name: string]: number[];
+    };
+    tiles: Record<string, unknown>;
     minFlatteningLevel: number;
     defaultMinFlatteningLevel: number;
     maximumLevel: number;
@@ -593,7 +599,7 @@ declare namespace api {
       minZoom: number;
       maxZoom: number;
       tileSize: number;
-      tiles: {};
+      tiles: Record<string, unknown>;
     };
     let instance: map;
     let runwayLayers: {
@@ -656,7 +662,7 @@ declare namespace api {
     function setPathPoints(a: L.LatLngExpression[]): void;
   }
 
-  function reverserGeocode(a: string, b: Function): void;
+  function reverserGeocode(a: string, b: (a: number, b: number) => void): void;
   function checkIfMobile(): void;
   function isMobile(): boolean;
   function hasOrientation(): boolean;
