@@ -3,9 +3,8 @@ import apiNamespace from './api';
 import runwaysNamespace from './runways';
 import animationNamespace from './animation';
 import utilsNamespace from './utils';
+import { preferencesDefault } from './preferences';
 import type * as Cesium from 'cesium';
-
-
 /**
  * Types living in the geofs global variable
  */
@@ -109,5 +108,32 @@ declare namespace geofs {
     function flyTo(a?: number[], b?: boolean): void;
     function flyToCamera(): void;
     function resetFlight(): void;
+
+    // prefernces
+    let preferences: {version: string} & preferencesDefault;
+    let userRecord: {};
+    let preferencesDefault: preferencesDefault;
+    let preferencesKeycodeLookup: {[key: number]: string};
+    function initPreferences(): void;
+    function isPreferencePanelOpen(): boolean;
+    function saveFlight(): void;
+    function savePreferences(): void;
+    function resetPreferences(): void;
+    function readPreferences(a?: () => any): void;
+    function populateButtonAssignments(): void;
+    function populateAxesAssignments(): void;
+    function populateKeyAssignments(): void;
+    function preferencesDebugInfo(): void;
+    function preferencesTestJoystick(): boolean;
+    function preferencesTestOrientation(): boolean;
+    function preferencesStartFeedback(): void;
+    function preferencesStopFeedback(): void;
+    function initializePreferencesPanel(): void;
+    function setPreferenceValues(a: JQuery | HTMLElement | string, b?: boolean): void;
+    function setInputHandlers(a: JQuery | HTMLElement | string): void;
+    function destroyPreferencePanel(): void;
+    function cancelPreferencesPanel(): void;
+    function setPreferenceFromInput(a: JQuery): void;
+    function savePreferencesPanel(): void;
 }
 export default geofs;
