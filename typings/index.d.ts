@@ -1,4 +1,5 @@
 import geofsNamespace from './geofs';
+import uiNamespace from './ui';
 export as namespace GeoFS;
 
 export interface FrameCallback {
@@ -12,6 +13,7 @@ export interface FrameCallback {
 }
 
 declare global {
-  const geofs: typeof geofsNamespace;
   const PAGE_PATH: string;
+  const geofs: typeof geofsNamespace;
+  const ui: typeof uiNamespace;
 }

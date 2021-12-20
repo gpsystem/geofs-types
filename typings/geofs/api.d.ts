@@ -247,8 +247,8 @@ declare namespace api {
             x: number;
             y: number;
         };
-        rotationThreshold: number;
-        translationThreshold: number;
+        static rotationThreshold: number;
+        static translationThreshold: number;
         image?: HTMLImageElement;
         naturalSize?: {
             x: number;

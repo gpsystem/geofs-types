@@ -18,6 +18,7 @@ declare namespace geofs {
 
     const frameCallbackStack: {[key: string]: FrameCallback};
     const api: typeof apiNamespace;
+
     const runways: typeof runwaysNamespace;
     const animation: typeof animationNamespace;
     const utils: typeof utilsNamespace;
@@ -78,7 +79,7 @@ declare namespace geofs {
     let manualStart: boolean;
     let viewport: HTMLElement;
     let canvas: JQuery<HTMLElement>;
-    let resizeHandlers: {};
+    let resizeHandlers: {[key: number]: Function};
     let resizeHandlersIndex: number;
     let lastTime: number;
     const initialRunways: number[][];
@@ -135,5 +136,43 @@ declare namespace geofs {
     function cancelPreferencesPanel(): void;
     function setPreferenceFromInput(a: JQuery): void;
     function savePreferencesPanel(): void;
+
+    // ui
+    class map {
+        dontMoveTimeoutValue: number;
+        mapUpdateInterval: number;
+        minimumPanDistance: number;
+        _options: {};
+        apiMap: apiNamespace.map;
+        planeMarker: apiNamespace.map.planeMarker;
+        mapActive: boolean;
+        ATCMode: boolean;
+        dontMove?: boolean;
+        dontMoveTimeout?: number;
+        dontMoveTimeoutValue?: number;
+        lastMapUpdate: number;
+        mapUpdateInterval: number;
+        tooltipVisibility: boolean;
+        constructor(a?: Partial<{zoom: number; holder: JQuery; standalone: boolean; norunways: boolean}>,
+                    b?: number,
+                    c?: number);
+
+        resize(): void;
+        addRunways(): void;
+        setMapInfoWindow(): void;
+        stopMap(): void;
+        startMap(): void;
+        stopMovingMap(a: boolean): void;
+        updateMap(a: number, b: number): void;
+        addPlayerMarker(a: string, b: string, c: string): void;
+        updatePlayerMarker(a: string, b: number[], c: string, d: string, e: string, f: number | string): void;
+        deletePlayerMarker(a: string): void;
+        toggleATCMode(): void;
+        setTooltipVisibility(a: boolean): void;
+    };
+    function handleResize(): void;
+    function addResizeHandler(a: number, b?: Object): void;
+    function removeResizeHandler(a: number): void;
+    function getViewportDimentions(): void;
 }
 export default geofs;

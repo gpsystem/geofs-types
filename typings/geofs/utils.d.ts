@@ -6,7 +6,7 @@ declare namespace utils {
     function fastNow(): number;
     function now(): number;
 
-    function llaDistanceInMeters(a: number[], b: number[], c: number[]): number;
+    function llaDistanceInMeters(a: number[], b: number[], c?: number[]): number;
     function pivotArray<T>(a: T[]): {[key: string]: 1};
     function htrFromHeadingNormal(a: number, b: number[]): number[];
     function hashCode(a: string): 0 | string;
