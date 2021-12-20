@@ -3,8 +3,10 @@ import apiNamespace from './api';
 import runwaysNamespace from './runways';
 import animationNamespace from './animation';
 import utilsNamespace from './utils';
+import fxNamespace, { runwaysLights as fxRunwaysLights } from './fx';
 import { preferencesDefault } from './preferences';
 import type * as Cesium from 'cesium';
+
 /**
  * Types living in the geofs global variable
  */
@@ -18,13 +20,13 @@ declare namespace geofs {
 
     const frameCallbackStack: {[key: string]: FrameCallback};
     const api: typeof apiNamespace;
-
     const runways: typeof runwaysNamespace;
     const animation: typeof animationNamespace;
     const utils: typeof utilsNamespace;
     const ajax: {
         post(a: string, b: any, c: JQuery.TypeOrArray<JQuery.Ajax.SuccessCallback<any>>, d: (arg0: JQuery.jqXHR, arg1: JQuery.Ajax.ErrorTextStatus, arg2: string) => void): JQuery.jqXHR;
     };
+    const fx: typeof fxNamespace;
 
     // some random variables that are under geofs:
     function selectDropdown(a: Object, b: any): void;
@@ -174,5 +176,9 @@ declare namespace geofs {
     function addResizeHandler(a: number, b?: Object): void;
     function removeResizeHandler(a: number): void;
     function getViewportDimentions(): void;
+
+    // fx
+    class runwayLights extends fxRunwaysLights {}
+    const light: fxNamespace.light;
 }
 export default geofs;

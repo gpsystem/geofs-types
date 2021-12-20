@@ -290,14 +290,7 @@ declare namespace api {
                     }>);
         _billboard: Cesium.BillboardCollection;
         _lla: number[];
-        _options: Partial<{
-            collection: string;
-            image: string;
-            opacity: number;
-            scale: number;
-            rotation: number;
-            geofsFixCameraRotation: boolean;
-        }>;
+        _options: ConstructorParameters<typeof billboard>;
         rotationFixCallback?: number;
 
         setUrl(a: string): void;
