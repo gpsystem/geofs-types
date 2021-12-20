@@ -1,8 +1,45 @@
 {
-  "devDependencies": {
-    "@types/cesium": "^1.70.0",
+  "name": "geofs-types",
+  "version": "0.1.0-dev",
+  "description": "Types for the GeoFS API.",
+  "main": "",
+  "types": "typings/index.d.ts",
+  "scripts": {
+    "prettier": "prettier --write .",
+    "test": "tsc && eslint ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gpsystem/geofs-types.git"
+  },
+  "keywords": [],
+  "author": "GeoFS Plugin System",
+  "contributors": [
+    {
+      "name": "Guy Adler",
+      "url": "https://github.com/Guy-Adler"
+    },
+    {
+      "name": "Nicolas Rodriguez",
+      "url": "https://github.com/nicolas377"
+    }
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/gpsystem/geofs-types/issues"
+  },
+  "homepage": "https://github.com/gpsystem/geofs-types#readme",
+  "dependencies": {
     "@types/jquery": "^3.5.10",
-    "cesium": "^1.88.0",
-    "@types/leaflet": "^1.7.6"
+    "@types/leaflet": "^1.7.6",
+    "cesium": "^1.88.0"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^5.7.0",
+    "@typescript-eslint/parser": "^5.7.0",
+    "eslint": "^8.5.0",
+    "eslint-config-prettier": "^8.3.0",
+    "prettier": "^2.5.1",
+    "typescript": "^4.5.4"
   }
 }

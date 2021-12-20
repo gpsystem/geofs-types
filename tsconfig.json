@@ -1,0 +1,9 @@
+{
+  "compilerOptions": {
+    "noEmit": true,
+    "strict": true,
+    "moduleResolution": "node",
+    "lib": ["DOM", "es2015"]
+  },
+  "include": ["typings/**/*.ts"]
+}
