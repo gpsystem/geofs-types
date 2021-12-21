@@ -49,6 +49,7 @@ jobs:
 
   job_3:
     name: Publish to @next
+    if: startsWith(github.ref, 'refs/heads/main')
     needs: [job_1, job_2]
     runs-on: ubuntu-latest
 
