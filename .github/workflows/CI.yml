@@ -76,6 +76,16 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
+      - name: Get new package version
+        id: package-version
+        uses: martinbeentjes/npm-get-version-action@master
+
+      - name: Commit package.json
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: ${{ steps.package-version.outputs.current-version}}
+          tagging_message: ${{ steps.package-version.outputs.current-version}}
+
   job_4:
     name: CodeQL
     runs-on: ubuntu-latest
