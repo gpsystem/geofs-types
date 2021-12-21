@@ -1,3 +1,3 @@
 # GeoFS Types
 
-This is a WIP repo that will become a npm package with types for the GeoFS API.
+These are the types for the GeoFS API. They are still a work in progress.
