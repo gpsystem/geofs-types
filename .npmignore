@@ -3,4 +3,4 @@
 
 # Except for the packaging and types
 !package*.json
-!typings/
+!typings/**
