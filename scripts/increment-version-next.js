@@ -7,7 +7,7 @@ function getNewVersion() {
   if (/^[0-9].[0-9].[0-9]$/g.test(version)) {
     // the version number is three digits, ex. 1.2.3
     version += "-next.1"; // 1.2.3 => 1.2.3-next.1
-  } else if (/^[0-9].[0-9].[0-9]-next.[0-9]$/g.test(version)) {
+  } else if (/^[0-9].[0-9].[0-9]-next.([1-9][0-9]?|^100)$/g.test(version)) {
     // the version number is already a next version, ex. 1.2.3-next.4
     let versionArray = version.split(".");
     let nextNumber = Number(versionArray[3]);

@@ -48,46 +48,6 @@ jobs:
         run: sudo npx tsc
 
   job_3:
-    name: Publish to @next
-    if: startsWith(github.ref, 'refs/heads/main')
-    needs: [job_1, job_2]
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-
-      - name: Setup node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: "17.x"
-          registry-url: "https://registry.npmjs.org"
-
-      - name: Install packages
-        run: npm i
-
-      - name: Increment version
-        run: node scripts/increment-version-next.js
-
-      - name: Prettify
-        run: sudo npm run prettier
-
-      - name: Publish to npm registry
-        run: npm publish --tag next --access public
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-
-      - name: Get new package version
-        id: package-version
-        uses: martinbeentjes/npm-get-version-action@master
-
-      - name: Commit package.json
-        uses: stefanzweifel/git-auto-commit-action@v4
-        with:
-          commit_message: ${{ steps.package-version.outputs.current-version}}
-          tagging_message: ${{ steps.package-version.outputs.current-version}}
-
-  job_4:
     name: CodeQL
     runs-on: ubuntu-latest
 
