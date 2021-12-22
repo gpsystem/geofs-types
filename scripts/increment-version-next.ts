@@ -23,7 +23,8 @@ function getNewVersion() {
 
   if (threeDigitsRegex.test(version)) {
     // the version number is three digits, ex. 1.2.3
-    version += "-next.1"; // 1.2.3 => 1.2.4-next.1
+    versionArray[2] = String(Number(versionArray[2]) + 1);
+    version = versionArray.join(".") + "-next.1"; // 1.2.3 => 1.2.4-next.1
   } else if (nextVersionRegex.test(version)) {
     // the version number is already a next version, ex. 1.2.3-next.4
     const nextNumber = Number(versionArray[3]);
