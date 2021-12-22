@@ -65,5 +65,4 @@ jobs:
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
           commit_message: ${{ steps.package-version.outputs.current-version}}
-          tagging_message: ${{ steps.package-version.outputs.current-version}}
           commit_author: "github-actions <actions@github.com>"
