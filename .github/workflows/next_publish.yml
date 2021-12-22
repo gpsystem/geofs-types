@@ -44,10 +44,10 @@ jobs:
           registry-url: "https://registry.npmjs.org"
 
       - name: Increment version
-        run: node scripts/increment-version-next.js
+        run: npx ts-node scripts/increment-version-next.ts
 
       - name: Update lockfile
-        run: npm i
+        run: npm i --packageLockOnly
 
       - name: Prettify
         run: sudo npm run prettier
