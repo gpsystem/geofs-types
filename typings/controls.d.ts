@@ -355,7 +355,7 @@ declare namespace controls {
       aileronsRoll: PID;
       throttle: PID;
     };
-    definition: typeof autopilot.defaults; // also aircraft autpilot definitions.
+    definition: typeof autopilot.defaults;
     $autopilotPad?: JQuery<HTMLElement>;
     heading: number;
     altitude: number;
