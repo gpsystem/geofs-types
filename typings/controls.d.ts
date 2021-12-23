@@ -356,7 +356,7 @@ declare namespace controls {
       throttle: PID;
     };
     definition: typeof autopilot.defaults;
-    $autopilotPad?: JQuery<HTMLElement>;
+    $autopilotPad?: JQuery;
     heading: number;
     altitude: number;
     kias: number;

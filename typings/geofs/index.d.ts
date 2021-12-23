@@ -142,7 +142,7 @@ declare namespace geofs {
   let autoStart: boolean;
   let manualStart: boolean;
   let viewport: HTMLElement;
-  let canvas: JQuery<HTMLElement>;
+  let canvas: JQuery;
   let resizeHandlers: { [key: number]: () => void };
   let resizeHandlersIndex: number;
   let lastTime: number;
