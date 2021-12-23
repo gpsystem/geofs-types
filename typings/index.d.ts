@@ -2,6 +2,7 @@ import geofsNamespace from "./geofs";
 import uiNamespace from "./ui";
 import flightNamespace from "./flight";
 import rigidBodyDefinition from "./rigidBody";
+import objectsNamespace from "./objects";
 export as namespace GeoFS;
 
 export interface FrameCallback {
@@ -20,4 +21,5 @@ declare global {
   const ui: typeof uiNamespace;
   const flight: typeof flightNamespace;
   class rigidBody extends rigidBodyDefinition {}
+  const objects: typeof objectsNamespace;
 }
