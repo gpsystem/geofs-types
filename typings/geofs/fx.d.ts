@@ -229,7 +229,7 @@ declare namespace fx {
     init(a: number[]): void;
     spawnClouds(): void;
     triggerUpdate(): void;
-    update(a: number[], b?: any): void;
+    update(a: number[], b?: number[]): void;
     setCloudsBrightness(a: number): void;
     setCloudColors(
       a: number | null,
