@@ -4,6 +4,7 @@ import runwaysNamespace from "./runways";
 import animationNamespace from "./animation";
 import utilsNamespace from "./utils";
 import fxNamespace, { runwaysLights as fxRunwaysLights } from "./fx";
+import debugNamespace from "./debug";
 import { preferencesDefault } from "./preferences";
 import type * as Cesium from "cesium";
 /**
@@ -35,6 +36,8 @@ declare namespace geofs {
     ): JQuery.jqXHR;
   };
   const fx: typeof fxNamespace;
+  const debug: typeof debugNamespace;
+  let debugOn: boolean;
 
   // some random variables that are under geofs:
   function selectDropdown(a: HTMLElement, b: number): void;
