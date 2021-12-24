@@ -5,6 +5,7 @@ import rigidBodyDefinition from "./rigidBody";
 import objectsNamespace from "./objects";
 import controlsNamespace from "./controls";
 import weatherNamespace from "./weather";
+import audioNamespace from "./audio";
 export as namespace GeoFS;
 
 export interface FrameCallback {
@@ -26,4 +27,5 @@ declare global {
   const objects: typeof objectsNamespace;
   const controls: typeof controlsNamespace;
   const weather: typeof weatherNamespace;
+  const audio: typeof audioNamespace;
 }
