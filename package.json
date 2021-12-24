@@ -1,6 +1,6 @@
 {
   "name": "@geps/geofs-types",
-  "version": "0.1.0",
+  "version": "0.1.1-next.1",
   "description": "Types for the GeoFS API.",
   "main": "",
   "types": "typings/index.d.ts",
