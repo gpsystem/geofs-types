@@ -6,6 +6,7 @@ import objectsNamespace from "./objects";
 import controlsNamespace from "./controls";
 import weatherNamespace from "./weather";
 import audioNamespace from "./audio";
+import multiplayerNamespace from "./multiplayer";
 export as namespace GeoFS;
 
 export interface FrameCallback {
@@ -28,4 +29,5 @@ declare global {
   const controls: typeof controlsNamespace;
   const weather: typeof weatherNamespace;
   const audio: typeof audioNamespace;
+  const multiplayer: typeof multiplayerNamespace;
 }
