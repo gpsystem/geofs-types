@@ -19,6 +19,18 @@ declare namespace geofs {
 
   const frameCallbackStack: { [key: string]: FrameCallback };
   const api: typeof apiNamespace;
+  function fromHeadingPitchRoll(
+    a: number,
+    b: number,
+    c: number,
+    d?: Cesium.Quaternion
+  ): Cesium.Quaternion;
+  function fromHeadingPitchRoll(
+    a: number,
+    b: number,
+    c: number,
+    d?: Cesium.Quaternion
+  ): Cesium.Quaternion;
 
   const runways: typeof runwaysNamespace;
   const animation: typeof animationNamespace;

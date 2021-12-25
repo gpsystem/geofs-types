@@ -274,12 +274,6 @@ declare namespace api {
   function setModelOpacity(a: Cesium.Model, b: number): void;
   function destroyModel(a?: Cesium.Model): void;
   function getModelFromScreenCoords(a: number, b: number): Cesium.Model;
-  function fromHeadingPitchRoll(
-    a: number,
-    b: number,
-    c: number,
-    d?: Cesium.Quaternion
-  ): Cesium.Quaternion;
   function headingPitchRollScaleToFixedFrame(
     a: Cesium.Cartesian3,
     b: number,
