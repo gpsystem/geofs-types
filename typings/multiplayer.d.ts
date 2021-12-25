@@ -10,7 +10,6 @@ declare namespace multiplayer {
   let captainIconUrl: string;
   let premiumIconUrl: string;
   let minUpdateDelay: number;
-  let hearbeatTimeout: undefined;
   let mapInterval: number;
   let hearbeatLife: number;
   let userLife: number;
@@ -189,7 +188,7 @@ declare namespace multiplayer {
   function stop(): void;
   function start(): void;
   function startUpdates(): void;
-  function stopUpdates(a?: any /*not unsed*/): void;
+  function stopUpdates(a?: any /*not unused*/): void;
   function getServerTime(): number;
   function getUser(a: string): typeof users[string];
 

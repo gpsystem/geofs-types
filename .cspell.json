@@ -3,7 +3,6 @@
   "language": "en",
   "ignorePaths": [
     ".cspell.json",
-    "jest.config.js",
     "package*.json",
     ".github/workflows/**",
     ".vscode/*.json",
@@ -33,10 +32,10 @@
     "wireframe",
     "particule",
     "lods",
-    "Matrixcoord",
+    "matrixcoord",
     "perlin",
     "lerp",
-    "Probbing",
+    "probbing",
     "googleid",
     "facebookid",
     "deviceid",
@@ -62,7 +61,12 @@
     "minspeed",
     "maxspeed",
     "invertion",
-    "visibile"
+    "visibile",
+    "soundplayer",
+    "hearbeat",
+    "placemark",
+    "willpeer",
+    "waspeer"
   ],
   "dictionaries": [
     "typescript",
