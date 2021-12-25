@@ -5,8 +5,8 @@ on:
     branches:
       - main
   pull_request:
-    branches:
-      - main
+    branches-ignore:
+      - "dependabot/**"
 
 env:
   PRIMARY_NODE_VERSION: 16
