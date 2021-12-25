@@ -1,6 +1,7 @@
 import { FrameCallback } from "../index";
 import type * as Cesium from "cesium";
 import type * as L from "leaflet";
+import runways from "./runways";
 
 declare class LTileLayerFallback extends L.TileLayer {
   options: L.TileLayerOptions & { minNativeZoom: number };
@@ -194,8 +195,8 @@ declare namespace api {
   function hideSun(): void;
 
   function advancedRenderingQuality(): void;
-  // TODO preferences
-  function renderingQuality(a: { [key: string]: any }, b: boolean): void;
+  
+  function renderingQuality(a: number, b?: boolean): void;
 
   function adaptativeRenderingQuality(): void;
 
@@ -522,8 +523,7 @@ declare namespace api {
     getLevelMaximumGeometricError(a: number): number;
     getTileDataAvailable(a: number, b: number, c: number): boolean;
     setMaximumLevel(a: number): void;
-    /* TODO runway(s?) */
-    addRunway(a: any): void;
+    addRunway(a: runways.runway): void;
     requestTileGeometry(
       a: number,
       b: number,

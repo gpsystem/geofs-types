@@ -95,8 +95,7 @@ declare namespace ui {
 
   namespace userDialog {
     function init(): void;
-    // TODO multiplayer
-    function open(a: unknown): void;
+    function open(a: string): void;
     function close(): void;
   }
 

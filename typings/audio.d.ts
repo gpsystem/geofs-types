@@ -10,7 +10,7 @@ declare namespace audio {
       playSound(a: string, b: boolean): void;
       stopSound(a: string): void;
       setVolume(a: string, b: number): void;
-      setRate(a: string, b: number /*TODO*/): void;
+      setRate(a: string, b: number): void;
       destroyPlayer(): void;
     };
     html5: {
