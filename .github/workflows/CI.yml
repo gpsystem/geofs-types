@@ -1,66 +1,93 @@
-name: CI
+name: Node.js CI
 
 on:
   push:
+    branches:
+      - main
   pull_request:
+    branches:
+      - main
+
+env:
+  PRIMARY_NODE_VERSION: 16
 
 jobs:
-  job_1:
-    name: Code style check
+  typecheck:
+    name: Typecheck
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2
+      - uses: actions/checkout@v2
 
-      - name: Setup node.js
+      - name: Use Node.js ${{ env.PRIMARY_NODE_VERSION }}
         uses: actions/setup-node@v2
         with:
-          node-version: "17.x"
+          node-version: ${{ env.PRIMARY_NODE_VERSION }}
 
-      - name: Install packages
-        run: npm i
+      - name: Install dependencies
+        run: npm ci
 
-      - name: Prettier
-        run: sudo npx prettier --check .
+      - name: Typecheck
+        run: npx tsc --noEmit
 
-  job_2:
-    name: Lint code
+  test_on_primary_node_version:
+    name: Unit tests
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-
-      - name: Setup node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: "17.x"
-
-      - name: Install packages
-        run: npm i
-
-      - name: ESLint
-        run: sudo npx eslint .
-
-      - name: TSC
-        if: always()
-        run: sudo npx tsc
-
-  job_3:
-    name: CodeQL
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
+      - uses: actions/checkout@v2
         with:
           fetch-depth: 2
 
-      - name: Initialize CodeQL
-        uses: github/codeql-action/init@v1
+      - name: Use Node.js ${{ env.PRIMARY_NODE_VERSION }}
+        uses: actions/setup-node@v2
         with:
-          languages: javascript
+          node-version: ${{ env.PRIMARY_NODE_VERSION }}
 
-      - name: Perform CodeQL Analysis
-        uses: github/codeql-action/analyze@v1
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run unit tests
+        run: npm test
+
+  linting_and_style:
+    name: Code style and lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Use Node.js ${{ env.PRIMARY_NODE_VERSION }}
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ env.PRIMARY_NODE_VERSION }}
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Check code formatting
+        run: npm run check-format
+
+      - name: Lint code
+        run: npm run lint
+
+      - name: Check spelling
+        run: npm run check-spelling
+
+  unit_tests_on_other_node_versions:
+    name: Run unit tests on other Node.js versions
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        node-version: [12, 14, 17]
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run unit tests
+        run: npm test

@@ -81,7 +81,7 @@ declare namespace api {
       groundSaturationShift: number;
       groundHueShift: number;
       fogBrightness: number;
-      cloudsBrightnes: number;
+      cloudsBrightness: number;
     };
   };
   const defaultAtmosphereColorModifier: Readonly<
@@ -609,7 +609,7 @@ declare namespace api {
             }
           >;
         };
-        visibileTiles: {
+        visibileTiles?: {
           [key in `${string}/${string}`]: Array<
             [string, number, number, number, number, number] & {
               marker: L.CircleMarker;

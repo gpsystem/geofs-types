@@ -4,7 +4,7 @@ declare namespace runways {
   let runwayNumberLimit: number;
   let refreshRate: number;
   let refreshDistanceThreshold: number;
-  let modelVisibilleanity: boolean;
+  let modelVisibility: boolean;
   let defaultPadding: number;
   let defaultWidth: number;
   let tileLength: number;
