@@ -195,7 +195,7 @@ declare namespace api {
   function hideSun(): void;
 
   function advancedRenderingQuality(): void;
-  
+
   function renderingQuality(a: number, b?: boolean): void;
 
   function adaptativeRenderingQuality(): void;

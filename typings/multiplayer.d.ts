@@ -1,5 +1,6 @@
 import type * as Cesium from "cesium";
 import api from "./geofs/api";
+import fx from "./geofs/fx";
 
 declare namespace multiplayer {
   let nbUsers: number;
@@ -159,7 +160,7 @@ declare namespace multiplayer {
     deviationFix: number[];
     distance?: number;
     // other stuff
-    contrailEmitter?: null; // TODO probably a particleEmitter
+    contrailEmitter?: null | fx.ParticleEmitter;
     contrailLod: 0 | 1 | 2 | 3;
     premium: boolean;
     label?: { text: string; position: Cesium.Cartesian3 };
