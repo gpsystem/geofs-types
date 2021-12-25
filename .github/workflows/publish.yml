@@ -5,6 +5,9 @@ on:
     tags:
       - "*"
 
+env:
+  PRIMARY_NODE_VERSION: 16
+
 jobs:
   job_1:
     name: Publish
@@ -14,10 +17,10 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Setup node.js
+      - name: Use Node.js ${{ env.PRIMARY_NODE_VERSION }}
         uses: actions/setup-node@v2
         with:
-          node-version: "17.x"
+          node-version: ${{ env.PRIMARY_NODE_VERSION }}
           registry-url: "https://registry.npmjs.org"
 
       - name: Publish

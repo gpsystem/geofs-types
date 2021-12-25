@@ -119,7 +119,7 @@ declare global {
     animationVisibility?: boolean;
     scale: typeof Overlay.prototype.definition.scale;
     positionOffset: typeof Overlay.prototype.definition.offset;
-    _offest: {
+    _offset: {
       x: number;
       y: number;
     };

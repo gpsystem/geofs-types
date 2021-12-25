@@ -1,0 +1,7 @@
+{
+  "compilerOptions": {
+    "strict": true
+  },
+  "include": ["index.*.ts"],
+  "files": ["../typings/index.d.ts"]
+}
