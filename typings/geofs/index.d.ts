@@ -6,6 +6,7 @@ import utilsNamespace from "./utils";
 import fxNamespace, { runwaysLights as fxRunwaysLights } from "./fx";
 import debugNamespace from "./debug";
 import { preferencesDefault } from "./preferences";
+import aircraftNamespace from "./aircraft";
 import type * as Cesium from "cesium";
 /**
  * Types living in the geofs global variable
@@ -50,6 +51,7 @@ declare namespace geofs {
   const fx: typeof fxNamespace;
   const debug: typeof debugNamespace;
   let debugOn: boolean;
+  const aircraft: typeof aircraftNamespace;
 
   // some random variables that are under geofs:
   function selectDropdown(a: HTMLElement, b: number): void;
