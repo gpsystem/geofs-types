@@ -36,9 +36,9 @@
   },
   "devDependencies": {
     "@types/node": "^17.0.5",
-    "@typescript-eslint/eslint-plugin": "^5.8.0",
+    "@typescript-eslint/eslint-plugin": "^5.8.1",
     "check-dts": "^0.6.6",
-    "cspell": "^5.13.4",
+    "cspell": "^5.14.0",
     "eslint": "^8.5.0",
     "eslint-config-prettier": "^8.3.0",
     "husky": "^7.0.4",

@@ -67,7 +67,8 @@
     "hearbeat",
     "placemark",
     "willpeer",
-    "waspeer"
+    "waspeer",
+    "veldir"
   ],
   "dictionaries": [
     "typescript",

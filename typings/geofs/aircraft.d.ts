@@ -41,7 +41,7 @@ declare namespace aircraft {
       }[];
       shadowBox: number[];
     };
-    setup: {};
+    setup: Record<string, unknown>;
     shadow: geofs.shadow;
     id?: string;
     controllers: {
