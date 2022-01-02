@@ -26,7 +26,6 @@ Since this isn't an `@types` package, the TypeScript compiler won't automaticall
 
 Currently, these types are still incomplete. We are still missing types for the following:
 
-- [`Object3D`](./typings/Object3D.d.ts)
 - [`instruments`](./typings/instruments.d.ts)
 - [`geofs.camera`](./typings/geofs/camera.d.ts)
 

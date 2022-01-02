@@ -1,4 +1,5 @@
 declare namespace animation {
+  // TODO handle animations better (geofs contributors' guide might help)
   let values: { [key: string]: any };
 
   function init(): void;
