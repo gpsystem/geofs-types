@@ -6,7 +6,7 @@ GeoFS' API is pretty mysterious, since its true source code has never popped int
 
 You need to install the package from npm.
 
-```
+```sh
 npm install @geps/geofs-types
 ```
 
@@ -26,10 +26,9 @@ Since this isn't an `@types` package, the TypeScript compiler won't automaticall
 
 Currently, these types are still incomplete. We are still missing types for the following:
 
-- `Object3D`
-- `aircraft`
-- `instruments`
-- `camera`
+- [`Object3D`](./typings/Object3D.d.ts)
+- [`instruments`](./typings/instruments.d.ts)
+- [`geofs.camera`](./typings/geofs/camera.d.ts)
 
 <!-- ## How to contribute
 
