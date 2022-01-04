@@ -36,7 +36,7 @@
   },
   "devDependencies": {
     "@types/node": "^17.0.5",
-    "@typescript-eslint/eslint-plugin": "^5.8.1",
+    "@typescript-eslint/eslint-plugin": "^5.9.0",
     "check-dts": "^0.6.6",
     "cspell": "^5.14.0",
     "eslint": "^8.5.0",
