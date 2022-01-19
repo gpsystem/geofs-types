@@ -1,3 +1,19 @@
+/*
+****************************************************************
+UTILITY TYPES
+****************************************************************
+*/
+type DistributiveOmit<T, K extends PropertyKey> = T extends any
+  ? Omit<T, K>
+  : never;
+
+/**
+ * Properties all the values can have
+ */
+interface Base {
+  comment?: string;
+}
+
 /**
  * Animation filters.
  */
@@ -112,56 +128,11 @@ interface Filters {
   fmin: number;
   fmax: number;
   negthreshold: number;
+  preoffset: number;
+  set: number;
 }
 
-type AnimationValues =
-  | "enginesOn"
-  | "prop"
-  | "thrust"
-  | "rpm"
-  | "throttle"
-  | "pitch"
-  | "roll"
-  | "yaw"
-  | "brakes"
-  | "gearPosition"
-  | "gearTarget"
-  | "flapsValue"
-  | "flapsPosition"
-  | "flapsTarget"
-  | "airbrakesPosition"
-  | "airbrakesTarget"
-  | "groundContact"
-  | "rollingSpeed"
-  | "maxAngularVRatio"
-  | "kias"
-  | "tas"
-  | "mach"
-  | "altitude"
-  | "tenFeet"
-  | "hundredFeet"
-  | "thousandFeet"
-  | "climbrate"
-  | "heading"
-  | "heading360"
-  | "atilt"
-  //cspell:disable-next-line
-  | "aroll"
-  | "relativeWind"
-  | "windSpeed"
-  | "view"
-  | "strobe"
-  | "strobe2"
-  // Values taken from aircraft definitions:
-  | "altThousands"
-  | "climbrateABS"
-  | "climbrateLog"
-  | "gear_left_suspensionRotation"
-  | "gear_right_suspensionRotation"
-  | "nose_suspensionRotation"
-  | "night";
-
-interface AnimationBase extends Partial<Filters> {
+interface AnimationBase extends Partial<Filters>, Base {
   type:
     | "rotate"
     | "scale"
@@ -177,7 +148,9 @@ interface AnimationBase extends Partial<Filters> {
     | "scaleX"
     | "scaleY"
     | "moveX"
-    | "moveY";
+    | "moveY"
+    | "throttle"
+    | "pitch";
 
   /**
    * "X", "Y", "Z" for rotation, vector for translation
@@ -188,91 +161,172 @@ interface AnimationBase extends Partial<Filters> {
   frame?: string;
 }
 
-type Animation = AnimationBase &
-  (
-    | {
-        /**
-         * • enginesOn: Boolean: 1 if engine is on, 0 if not.
-         *
-         * • prop: Prop rotation [0, 360].
-         *
-         * • thrust: In Newton.
-         *
-         * • rpm, throttle: [0, 1]
-         *
-         * • pitch: Control input [0, 1]
-         *
-         * • roll: Control input [0, 1]
-         *
-         * • yaw: Control input [0, 1]
-         *
-         * • brakes: Boolean: 1 if brakes are on, 0 if not.
-         *
-         * • gearPosition: Current gear position [0, 1]
-         *
-         * • gearTarget: Reaching gear position [0, 1]
-         *
-         * • flapsValue: Current flaps position as [0, 1]
-         *
-         * • flapsPosition: Current flaps position in steps [0, flapsSteps]
-         *
-         * • flapsTarget: Reaching flaps position in steps [0, flapsSteps]
-         *
-         * • airbrakesPosition: Current airbrakes position as [0, 1]
-         *
-         * • airbrakesTarget: Reaching airbrakes position as [0, 1]
-         *
-         * • groundContact: Boolean: 1 if aircraft is in contact with ground, 0 if not.
-         *
-         * • rollingSpeed: Aircraft speed in m/s when rolling on ground.
-         *
-         * • maxAngularVRatio: Rolling wheel angular speed.
-         *
-         * • kias: Indicated airspeed in knots.
-         *
-         * • tas: True airspeed in knots.
-         *
-         * • mach: Airspeed as Mach number.
-         *
-         * • altitude: In feet.
-         *
-         * • tenFeet: Altitude in tens of feet.
-         *
-         * • hundredFeet: Altitude in hundreds of feet.
-         *
-         * • thousandFeet: Altitude in thousands of feet.
-         *
-         * • climbrate: Climb rate in feet per minute.
-         *
-         * • heading: The aircraft's heading in degrees [-180, 180].
-         *
-         * • heading360: The aircraft's heading in degrees [0, 360].
-         *
-         * • atilt: The aircraft's tilt in degrees.
-         *
-         * • aroll: The aircraft's roll in degrees.
-         *
-         * • relativeWind: In degrees, from aircraft forward.
-         *
-         * • windSpeed: Wind speed in meters per second.
-         *
-         * • view: camera mode name ["follow", "cockpit", "cockpitless", "chase", "free"].
-         *
-         * • strobe: Boolean, set to 1 every 1400ms, for 100ms duration.
-         *
-         * • strobe2: Boolean set to 1 every 1700ms, for 100ms duration.
-         */
-        value: AnimationValues;
-      }
-    | {
-        /**
-         * A function to run. Must return a value that will be used as the animation value.
-         */
-        function: `{${string}return ${string}}`;
-      }
-  );
+interface AnimationWithValue extends AnimationBase {
+  /**
+   * • enginesOn: Boolean: 1 if engine is on, 0 if not.
+   *
+   * • prop: Prop rotation [0, 360].
+   *
+   * • thrust: In Newton.
+   *
+   * • rpm, throttle: [0, 1]
+   *
+   * • pitch: Control input [0, 1]
+   *
+   * • roll: Control input [0, 1]
+   *
+   * • yaw: Control input [0, 1]
+   *
+   * • brakes: Boolean: 1 if brakes are on, 0 if not.
+   *
+   * • gearPosition: Current gear position [0, 1]
+   *
+   * • gearTarget: Reaching gear position [0, 1]
+   *
+   * • flapsValue: Current flaps position as [0, 1]
+   *
+   * • flapsPosition: Current flaps position in steps [0, flapsSteps]
+   *
+   * • flapsTarget: Reaching flaps position in steps [0, flapsSteps]
+   *
+   * • airbrakesPosition: Current airbrakes position as [0, 1]
+   *
+   * • airbrakesTarget: Reaching airbrakes position as [0, 1]
+   *
+   * • groundContact: Boolean: 1 if aircraft is in contact with ground, 0 if not.
+   *
+   * • rollingSpeed: Aircraft speed in m/s when rolling on ground.
+   *
+   * • maxAngularVRatio: Rolling wheel angular speed.
+   *
+   * • kias: Indicated airspeed in knots.
+   *
+   * • tas: True airspeed in knots.
+   *
+   * • mach: Airspeed as Mach number.
+   *
+   * • altitude: In feet.
+   *
+   * • tenFeet: Altitude in tens of feet.
+   *
+   * • hundredFeet: Altitude in hundreds of feet.
+   *
+   * • thousandFeet: Altitude in thousands of feet.
+   *
+   * • climbrate: Climb rate in feet per minute.
+   *
+   * • heading: The aircraft's heading in degrees [-180, 180].
+   *
+   * • heading360: The aircraft's heading in degrees [0, 360].
+   *
+   * • atilt: The aircraft's tilt in degrees.
+   *
+   * • aroll: The aircraft's roll in degrees.
+   *
+   * • relativeWind: In degrees, from aircraft forward.
+   *
+   * • windSpeed: Wind speed in meters per second.
+   *
+   * • view: camera mode name ["follow", "cockpit", "cockpitless", "chase", "free"].
+   *
+   * • strobe: Boolean, set to 1 every 1400ms, for 100ms duration.
+   *
+   * • strobe2: Boolean set to 1 every 1700ms, for 100ms duration.
+   */
+  value:
+    | "enginesOn"
+    | "prop"
+    | "thrust"
+    | "rpm"
+    | "throttle"
+    | "pitch"
+    | "roll"
+    | "yaw"
+    | "brakes"
+    | "gearPosition"
+    | "gearTarget"
+    | "flapsValue"
+    | "flapsPosition"
+    | "flapsTarget"
+    | "airbrakesPosition"
+    | "airbrakesTarget"
+    | "groundContact"
+    | "rollingSpeed"
+    | "maxAngularVRatio"
+    | "kias"
+    | "tas"
+    | "mach"
+    | "altitude"
+    | "tenFeet"
+    | "hundredFeet"
+    | "thousandFeet"
+    | "climbrate"
+    | "heading"
+    | "heading360"
+    | "atilt"
+    //cspell:disable-next-line
+    | "aroll"
+    | "relativeWind"
+    | "windSpeed"
+    | "view"
+    | `strobe${number | ""}`
+    // Values taken from aircraft definitions:
+    | "altThousands"
+    | "climbrateABS"
+    | "climbrateLog"
+    | "gear_left_suspensionRotation"
+    | "gear_right_suspensionRotation"
+    | "nose_suspensionRotation"
+    | "night"
+    | "gearLeftSuspension"
+    | "gearLeftRotation"
+    | "gearRightSuspension"
+    | "gearRightRotation"
+    | "optionalAnimatedPartPosition"
+    | "leftGearRotation"
+    | "rightGearRotation"
+    | "frontGearSuspension"
+    | "frontGearRotation"
+    | "cameraMode"
+    | "leftwheelarmRotation"
+    | "invGearPosition"
+    | "rightwheelarmRotation"
+    | "frontwheelarmRotation"
+    | "l_gear_armSuspension"
+    | "l_gear_armRotation"
+    | "r_gear_armSuspension"
+    | "r_gear_armRotation"
+    | "f_gear_suspensionRotation"
+    | "front_gearRotation"
+    | "front_gearSuspension"
+    | "gear_rightRotation"
+    | "gear_leftRotation"
+    | "altTensShift"
+    | "machUnits"
+    | "machTens"
+    | "machHundredth"
+    | "frontGearPistonRotation"
+    | "frontGearPistonSuspension"
+    | "arrestingHookTension"
+    | "accX"
+    | "accY"
+    | "tailSpringRotation"
+    | "tailGearSuspension"
+    | "trim"
+    | "rawPitch"
+    | "rawYaw";
+}
 
-interface Part {
+interface AnimationWithFunction extends AnimationBase {
+  /**
+   * A function to run. Must return a value that will be used as the animation value.
+   */
+  function: `{${string}return ${string}}`;
+}
+
+type Animation = AnimationWithValue | AnimationWithFunction;
+
+interface Part extends Base {
   /**
    * Part's name/id.
    */
@@ -283,7 +337,7 @@ interface Part {
    */
   parent?: string;
 
-  type?: "frame" | "root" | "none";
+  type?: "frame" | "root" | "none" | string;
 
   /**
    * Name of the DAE model declared in KML.
@@ -346,6 +400,9 @@ interface Part {
   }[];
 
   buoyancy?: number;
+  noCastShadows?: boolean;
+  noReceiveShadows?: boolean;
+  propwash?: number;
 }
 
 interface AirfoilPartBasics extends Omit<Part, "type"> {
@@ -355,6 +412,10 @@ interface AirfoilPartBasics extends Omit<Part, "type"> {
    * Specify if an airfoil is subject to stall.
    */
   stalls?: boolean;
+  /**
+   * @see stalls
+   */
+  stall?: boolean;
 
   /**
    * Angle of Attack (AoA) in deg. at which stall occurs.
@@ -409,18 +470,26 @@ interface EnginePart extends Omit<Part, "type"> {
   /**
    * Does the engine generate contrail
    */
-  contrail: boolean;
+  contrail?: boolean;
 }
 
 interface WheelPart extends Omit<Part, "type"> {
-  type: "wheel";
+  type: "wheel" | "pad";
 
   suspension: {
-    motion: "rotation" | "translate";
-    axis: "X" | "Y" | "Z";
-    ratio: number;
+    motion?: "rotation" | "translate";
+    axis?: "X" | "Y" | "Z";
+    ratio?: number;
     stiffness: number;
     damping: number;
+  };
+}
+
+interface HookPart extends Omit<Part, "type"> {
+  type: "hook";
+
+  hook: {
+    strength: number;
   };
 }
 
@@ -442,7 +511,7 @@ interface BaseContactProperty {
   damping: number;
 }
 
-interface Instrument {
+interface Instrument extends Base {
   /**
    * only for visibility for now
    */
@@ -475,6 +544,11 @@ interface Instrument {
       y: number;
     };
 
+    offset?: {
+      x: number;
+      y: number;
+    };
+
     iconFrame?: {
       x: number;
       y: number;
@@ -492,9 +566,11 @@ interface Instrument {
 
     name?: string;
   };
+
+  center?: boolean;
 }
 
-interface Sound {
+interface Sound extends Base {
   /**
    * Sound id.
    */
@@ -511,7 +587,7 @@ interface Sound {
   effects?: Partial<
     Record<
       "volume" | "pitch" | "start",
-      Omit<Exclude<Animation, { function: string }>, "type" | "axis">
+      DistributiveOmit<Animation, "type" | "axis">
     >
   >;
 
@@ -519,13 +595,15 @@ interface Sound {
    * duration of fade-in/fade-out in ms
    */
   fadeDuration?: number;
+
+  cut?: [number, number];
 }
 
 /**
  * For some reason, GeoFS requires the definition to be an array,
  * even though there is only one object.
  */
-interface DefinitionBase {
+interface DefinitionBase extends Base {
   /**
    * Total mass in Kg.
    */
@@ -549,32 +627,32 @@ interface DefinitionBase {
   /**
    * In seconds
    */
-  gearTravelTime: number;
+  gearTravelTime?: number;
 
   /**
    * Seconds per degrees.
    */
-  flapsTravelTime: number;
+  flapsTravelTime?: number;
 
   /**
    * Number of positions for the flaps.
    */
-  flapsSteps: number;
+  flapsSteps?: number;
 
   /**
    * Positions in degrees for each flap step.
    */
-  flapsPositions: number[];
+  flapsPositions?: number[];
 
   /**
    * In seconds.
    */
-  airbrakesTravelTime: number;
+  airbrakesTravelTime?: number;
 
   /**
    * Are thrust reversers available.
    */
-  reverse: boolean;
+  reverse?: boolean;
 
   /**
    * The altitude in feet at which the engine does not produce any thrust (linear from sea level).
@@ -630,8 +708,10 @@ interface DefinitionBase {
    * When set to @code{true}, enable the default autopilot.
    *
    * When set to an object, enable an autopilot with custom PID controls. All configuration is optional.
+   *
+   * Leave empty to disbale the autopilot (same as @code{false}).
    */
-  autopilot:
+  autopilot?:
     | boolean
     | {
         /**
@@ -647,17 +727,17 @@ interface DefinitionBase {
         /**
          * Controller for bank angle based on heading target.
          */
-        bankAnglePID: [number, number, number];
+        bankAnglePID?: [number, number, number];
 
         /**
          * Controller for ailerons deflection based on bankAnglePID output.
          */
-        aileronsRollPID: [number, number, number];
+        aileronsRollPID?: [number, number, number];
 
         /**
          * Controller for throttle based on speed target.
          */
-        throttlePID: [number, number, number];
+        throttlePID?: [number, number, number];
 
         /**
          * Maximum speed related deflection divider
@@ -695,7 +775,7 @@ interface DefinitionBase {
    *
    * Applicable properties vary with part's type (frame, airfoil, engine, wheel).
    */
-  parts: (Part | AirfoilPart | EnginePart | WheelPart)[];
+  parts: (Part | AirfoilPart | EnginePart | WheelPart | HookPart)[];
 
   /**
    * Contact properties must be specified for part types that declares collisionPoints.
@@ -712,7 +792,7 @@ interface DefinitionBase {
       /**
        * arbitrary minimum speed at which the wheel lock (static rest)
        */
-      lockSpeed: number;
+      lockSpeed?: number;
     };
   };
 
@@ -744,7 +824,7 @@ interface DefinitionBase {
   /**
    * For legacy reasons.
    */
-  soundSet: "player";
+  soundSet?: "player";
 
   /**
    * "startup" and "shutdown" sound ids are hardcoded.
@@ -759,11 +839,14 @@ interface DefinitionBase {
   };
 
   // Properties taken from aircraft definitions
-  cockpitShadowMapMaxDistance: number;
-  zeroRPMAltitude: number;
-  shutdownTime: number;
+  cockpitShadowMapMaxDistance?: number;
+  zeroRPMAltitude?: number;
+  shutdownTime?: number;
   cockpitModel: true;
   shadowBox: [number, number];
+  optionalAnimatedPartTravelTime?: number;
+  cockpitScaleFix?: number;
+  shadowFile?: string;
 }
 
 /**
