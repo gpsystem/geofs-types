@@ -1,3 +1,1 @@
-import { Definition } from "../typings/geofs/aircraftDefinition";
-
-// const aircraft: Definition = {}:
+// Positive tests go here.

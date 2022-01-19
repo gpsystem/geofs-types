@@ -53,6 +53,7 @@ interface Filters {
    * Not equal to value (!=)
    */
   notEq: number | string;
+  noteq: number | string;
 
   /**
    * [FILTER]
@@ -132,6 +133,7 @@ interface Filters {
   set: number;
   loop: boolean;
   retard: number;
+  currentValue: number;
 }
 
 interface AnimationBase extends Partial<Filters>, Base {
@@ -144,7 +146,7 @@ interface AnimationBase extends Partial<Filters>, Base {
     | "sound"
     | "property"
     | "justhide"
-    // Types taken from aircraft definitions
+    | "justshow"
     | "translateX"
     | "translateY"
     | "scaleX"
@@ -152,7 +154,8 @@ interface AnimationBase extends Partial<Filters>, Base {
     | "moveX"
     | "moveY"
     | "throttle"
-    | "pitch";
+    | "pitch"
+    | "strobe";
 
   /**
    * "X", "Y", "Z" for rotation, vector for translation
@@ -237,6 +240,7 @@ interface AnimationWithValue extends AnimationBase {
    * • strobe2: Boolean set to 1 every 1700ms, for 100ms duration.
    */
   value:
+    | ""
     | "enginesOn"
     | "prop"
     | "thrust"
@@ -275,6 +279,10 @@ interface AnimationWithValue extends AnimationBase {
     | `strobe${number | ""}`
     // Values taken from aircraft definitions:
     | "random"
+    | "parkingBrake"
+    | "random"
+    | "stalls"
+    | "aoa"
     | "altThousands"
     | "climbrateABS"
     | "climbrateLog"
@@ -292,6 +300,7 @@ interface AnimationWithValue extends AnimationBase {
     | "frontGearSuspension"
     | "frontGearRotation"
     | "cameraMode"
+    | "hours"
     | "leftwheelarmRotation"
     | "invGearPosition"
     | "rightwheelarmRotation"
@@ -306,18 +315,23 @@ interface AnimationWithValue extends AnimationBase {
     | "gear_rightRotation"
     | "gear_leftRotation"
     | "altTensShift"
+    | "altTens"
+    | "altTenThousands"
     | "machUnits"
     | "machTens"
+    | "machTenth"
     | "machHundredth"
     | "frontGearPistonRotation"
     | "frontGearPistonSuspension"
     | "arrestingHookTension"
     | "accX"
     | "accY"
+    | "accZ"
     | "tailSpringRotation"
     | "tailGearSuspension"
     | "trim"
     | "rawPitch"
+    | "rawpitch"
     | "rawYaw"
     | "outsideGearLeftPistonRotation"
     | "insideGearLeftPistonRotation"
@@ -351,7 +365,44 @@ interface AnimationWithValue extends AnimationBase {
     | "strutleft2-1Rotation"
     | "strutleft1-1Rotation"
     | "strutright2-1Rotation"
-    | "strutright1-1Rotation";
+    | "strutright1-1Rotation"
+    | "ktas"
+    | "PHY_Nose_SuspensionSuspension"
+    | "PHY_Nose_SuspensionRotation"
+    | "PHY_Main_Suspension-RRotation"
+    | "PHY_Main_Suspension-RSuspension"
+    | "PHY_Main_Suspension-LRotation"
+    | "PHY_Main_Suspension-LSuspension"
+    | "Nose Main_suspensionRotation"
+    | "gearTraget"
+    | "Nose SuspentionRotation"
+    | "R Back SuspentionRotation"
+    | "L Back SuspentionRotation"
+    | "Front SuspentionSuspension"
+    | "Front SuspentionRotation"
+    | "Main Suspention R?Suspension"
+    | "Main Suspention R?Rotation"
+    | "Main Suspention L?Suspension"
+    | "Main Suspention L?Rotation"
+    | "Tail Gear Main PhySuspension"
+    | "Suspention L PhySuspension"
+    | "Suspention R PhyRotation"
+    | "Suspention R PhySuspension"
+    | "Suspention L PhyRotation"
+    | "GS_RSuspension"
+    | "GS_FSuspension"
+    | "GS_LSuspension"
+    | "GS_LRotation"
+    | "GS_FRotation"
+    | "GS_RRotation"
+    | "gear_left_suspensionSuspension"
+    | "gear_right_suspensionSuspension"
+    | "nose_suspensionSuspension"
+    | "pivotRotation"
+    | "sus gear leftRotation"
+    | "sus gear rightRotation"
+    | "pivotSuspension"
+    | "sus gear leftSuspension";
 }
 
 interface AnimationWithFunction extends AnimationBase {
@@ -361,13 +412,13 @@ interface AnimationWithFunction extends AnimationBase {
   function: `{${string}return${" " | ""}${string}}`;
 }
 
-type Animation = AnimationWithValue | AnimationWithFunction;
+type Animation = AnimationWithValue | AnimationWithFunction | AnimationBase;
 
 interface Part extends Base {
   /**
    * Part's name/id.
    */
-  name: string;
+  name?: string;
 
   /**
    * Parent's name.
@@ -396,6 +447,7 @@ interface Part extends Base {
   /**
    * Relative to the parent (or root).
    */
+  rotaition?: [number, number, number];
   rotation?: [number, number, number];
 
   /**
@@ -426,7 +478,7 @@ interface Part extends Base {
    * Array of animations to be applied.
    * @see {Animation} for animation implementation.
    */
-  animations?: Animation[];
+  animations?: Animation[] | "";
 
   light?: "white" | "red" | "green" | "";
 
@@ -456,6 +508,8 @@ interface Part extends Base {
     sensitivity?: number;
     ratio: number;
   };
+
+  area?: number;
 }
 
 interface AirfoilPartBasics extends Omit<Part, "type"> {
@@ -540,6 +594,9 @@ interface WheelPart extends Omit<Part, "type"> {
     ratio?: number;
     stiffness: number;
     damping: number;
+
+    restLength?: number;
+    hardPoint?: number;
   };
 
   contactType?: string;
@@ -689,6 +746,7 @@ interface DefinitionBase extends Base {
    * To move the center of mass of the aircraft
    */
   com?: [number, number, number];
+  COM?: [number, number, number];
 
   /**
    * In seconds
@@ -698,12 +756,12 @@ interface DefinitionBase extends Base {
   /**
    * Seconds per degrees.
    */
-  flapsTravelTime?: number;
+  flapsTravelTime?: number | null;
 
   /**
    * Number of positions for the flaps.
    */
-  flapsSteps?: number;
+  flapsSteps?: number | null;
 
   /**
    * Positions in degrees for each flap step.
@@ -886,7 +944,9 @@ interface DefinitionBase extends Base {
           | "brakes"
           | "gear"
           | "flaps",
-          Instrument | "" // "" for not overwriting the instrument
+          | Instrument
+          | "" /* for not overwriting the instrument */
+          | `${string}` /*3460, for example*/
         >
       >
     | Record<string, Instrument>;
@@ -926,7 +986,6 @@ interface DefinitionBase extends Base {
 /**
  * The aircraft definition passed into GeoFS.
  * Typings taken from {@link https://www.geo-fs.com/backend/aircraft/doc.html|The GeoFS Aircraft Documentation}
- * TODO test against ALL aircraft definitions in the game.
  */
 export type Definition = (DefinitionBase & Partial<PluginsDefinition>)[];
 
@@ -940,4 +999,7 @@ interface PluginsDefinition {
   platform: string;
   version: string;
   maxLimits: number[];
+
+  type: string;
+  typeIndex: string;
 }
