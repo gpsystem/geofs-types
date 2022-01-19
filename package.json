@@ -9,7 +9,7 @@
     "prettier": "prettier . --write --ignore-path .gitignore",
     "lint": "eslint . --ignore-path .gitignore",
     "test": "check-dts",
-    "precommit": "",
+    "precommit": "tsc --noEmit && npm test && npm run check-format && npm run lint",
     "prepare": "husky install"
   },
   "repository": {
