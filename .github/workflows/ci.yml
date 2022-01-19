@@ -66,9 +66,6 @@ jobs:
       - name: Lint code
         run: npm run lint
 
-      - name: Check spelling
-        run: npm run check-spelling
-
   unit_tests_on_other_node_versions:
     name: Run unit tests on other Node.js versions
     runs-on: ubuntu-latest
