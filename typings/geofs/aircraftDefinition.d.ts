@@ -107,9 +107,61 @@ interface Filters {
    * Ratios are looked-up in the array depending on value varying from 0 to 1.
    */
   ratioRamp: [number, number] | [number, number, number, number];
+
+  // Filters taken from aircraft definitions:
+  fmin: number;
+  fmax: number;
+  negthreshold: number;
 }
 
-interface Animation extends Partial<Filters> {
+type AnimationValues =
+  | "enginesOn"
+  | "prop"
+  | "thrust"
+  | "rpm"
+  | "throttle"
+  | "pitch"
+  | "roll"
+  | "yaw"
+  | "brakes"
+  | "gearPosition"
+  | "gearTarget"
+  | "flapsValue"
+  | "flapsPosition"
+  | "flapsTarget"
+  | "airbrakesPosition"
+  | "airbrakesTarget"
+  | "groundContact"
+  | "rollingSpeed"
+  | "maxAngularVRatio"
+  | "kias"
+  | "tas"
+  | "mach"
+  | "altitude"
+  | "tenFeet"
+  | "hundredFeet"
+  | "thousandFeet"
+  | "climbrate"
+  | "heading"
+  | "heading360"
+  | "atilt"
+  //cspell:disable-next-line
+  | "aroll"
+  | "relativeWind"
+  | "windSpeed"
+  | "view"
+  | "strobe"
+  | "strobe2"
+  // Values taken from aircraft definitions:
+  | "altThousands"
+  | "climbrateABS"
+  | "climbrateLog"
+  | "gear_left_suspensionRotation"
+  | "gear_right_suspensionRotation"
+  | "nose_suspensionRotation"
+  | "night";
+
+interface AnimationBase extends Partial<Filters> {
   type:
     | "rotate"
     | "scale"
@@ -118,123 +170,107 @@ interface Animation extends Partial<Filters> {
     | "hide"
     | "sound"
     | "property"
-    | "justhide";
-
-  /**
-   * enginesOn: Boolean: 1 if engine is on, 0 if not.
-   *
-   * prop: Prop rotation [0, 360].
-   *
-   * thrust: In Newton.
-   *
-   * rpm, throttle: [0, 1]
-   *
-   * pitch: Control input [0, 1]
-   *
-   * roll: Control input [0, 1]
-   *
-   * yaw: Control input [0, 1]
-   *
-   * brakes: Boolean: 1 if brakes are on, 0 if not.
-   *
-   * gearPosition: Current gear position [0, 1]
-   *
-   * gearTarget: Reaching gear position [0, 1]
-   *
-   * flapsValue: Current flaps position as [0, 1]
-   *
-   * flapsPosition: Current flaps position in steps [0, flapsSteps]
-   *
-   * flapsTarget: Reaching flaps position in steps [0, flapsSteps]
-   *
-   * airbrakesPosition: Current airbrakes position as [0, 1]
-   *
-   * airbrakesTarget: Reaching airbrakes position as [0, 1]
-   *
-   * groundContact: Boolean: 1 if aircraft is in contact with ground, 0 if not.
-   *
-   * rollingSpeed: Aircraft speed in m/s when rolling on ground.
-   *
-   * maxAngularVRatio: Rolling wheel angular speed.
-   *
-   * kias: Indicated airspeed in knots.
-   *
-   * tas: True airspeed in knots.
-   *
-   * mach: Airspeed as Mach number.
-   *
-   * altitude: In feet.
-   *
-   * tenFeet: Altitude in tens of feet.
-   *
-   * hundredFeet: Altitude in hundreds of feet.
-   *
-   * thousandFeet: Altitude in thousands of feet.
-   *
-   * climbrate: Climb rate in feet per minute.
-   *
-   * heading: The aircraft's heading in degrees [-180, 180].
-   *
-   * heading360: The aircraft's heading in degrees [0, 360].
-   *
-   * atilt: The aircraft's tilt in degrees.
-   *
-   * aroll: The aircraft's roll in degrees.
-   *
-   * relativeWind: In degrees, from aircraft forward.
-   *
-   * windSpeed: Wind speed in meters per second.
-   *
-   * view: camera mode name ["follow", "cockpit", "cockpitless", "chase", "free"].
-   *
-   * strobe: Boolean, set to 1 every 1400ms, for 100ms duration.
-   *
-   * strobe2: Boolean set to 1 every 1700ms, for 100ms duration.
-   */
-  value:
-    | "enginesOn"
-    | "prop"
-    | "thrust"
-    | "rpm"
-    | "throttle"
-    | "pitch"
-    | "roll"
-    | "yaw"
-    | "brakes"
-    | "gearPosition"
-    | "gearTarget"
-    | "flapsValue"
-    | "flapsPosition"
-    | "flapsTarget"
-    | "airbrakesPosition"
-    | "airbrakesTarget"
-    | "groundContact"
-    | "rollingSpeed"
-    | "maxAngularVRatio"
-    | "kias"
-    | "tas"
-    | "mach"
-    | "altitude"
-    | "tenFeet"
-    | "hundredFeet"
-    | "thousandFeet"
-    | "climbrate"
-    | "heading"
-    | "heading360"
-    | "atilt"
-    //cspell:disable-next-line
-    | "aroll"
-    | "relativeWind"
-    | "windSpeed"
-    | "view"
-    | "strobe"
-    | "strobe2";
+    | "justhide"
+    // Types taken from aircraft definitions
+    | "translateX"
+    | "translateY"
+    | "scaleX"
+    | "scaleY"
+    | "moveX"
+    | "moveY";
 
   /**
    * "X", "Y", "Z" for rotation, vector for translation
    */
   axis?: "X" | "Y" | "Z" | [number, number, number];
+
+  // Properties taken from aircraft definitions
+  frame?: string;
 }
+
+type Animation = AnimationBase &
+  (
+    | {
+        /**
+         * • enginesOn: Boolean: 1 if engine is on, 0 if not.
+         *
+         * • prop: Prop rotation [0, 360].
+         *
+         * • thrust: In Newton.
+         *
+         * • rpm, throttle: [0, 1]
+         *
+         * • pitch: Control input [0, 1]
+         *
+         * • roll: Control input [0, 1]
+         *
+         * • yaw: Control input [0, 1]
+         *
+         * • brakes: Boolean: 1 if brakes are on, 0 if not.
+         *
+         * • gearPosition: Current gear position [0, 1]
+         *
+         * • gearTarget: Reaching gear position [0, 1]
+         *
+         * • flapsValue: Current flaps position as [0, 1]
+         *
+         * • flapsPosition: Current flaps position in steps [0, flapsSteps]
+         *
+         * • flapsTarget: Reaching flaps position in steps [0, flapsSteps]
+         *
+         * • airbrakesPosition: Current airbrakes position as [0, 1]
+         *
+         * • airbrakesTarget: Reaching airbrakes position as [0, 1]
+         *
+         * • groundContact: Boolean: 1 if aircraft is in contact with ground, 0 if not.
+         *
+         * • rollingSpeed: Aircraft speed in m/s when rolling on ground.
+         *
+         * • maxAngularVRatio: Rolling wheel angular speed.
+         *
+         * • kias: Indicated airspeed in knots.
+         *
+         * • tas: True airspeed in knots.
+         *
+         * • mach: Airspeed as Mach number.
+         *
+         * • altitude: In feet.
+         *
+         * • tenFeet: Altitude in tens of feet.
+         *
+         * • hundredFeet: Altitude in hundreds of feet.
+         *
+         * • thousandFeet: Altitude in thousands of feet.
+         *
+         * • climbrate: Climb rate in feet per minute.
+         *
+         * • heading: The aircraft's heading in degrees [-180, 180].
+         *
+         * • heading360: The aircraft's heading in degrees [0, 360].
+         *
+         * • atilt: The aircraft's tilt in degrees.
+         *
+         * • aroll: The aircraft's roll in degrees.
+         *
+         * • relativeWind: In degrees, from aircraft forward.
+         *
+         * • windSpeed: Wind speed in meters per second.
+         *
+         * • view: camera mode name ["follow", "cockpit", "cockpitless", "chase", "free"].
+         *
+         * • strobe: Boolean, set to 1 every 1400ms, for 100ms duration.
+         *
+         * • strobe2: Boolean set to 1 every 1700ms, for 100ms duration.
+         */
+        value: AnimationValues;
+      }
+    | {
+        /**
+         * A function to run. Must return a value that will be used as the animation value.
+         */
+        function: `{${string}return ${string}}`;
+      }
+  );
 
 interface Part {
   /**
@@ -302,6 +338,14 @@ interface Part {
   animations?: Animation[];
 
   light?: "white" | "red" | "green";
+
+  // Properties taken from aircraft definitions:
+  textures?: {
+    index: number;
+    filename: string;
+  }[];
+
+  buoyancy?: number;
 }
 
 interface AirfoilPartBasics extends Omit<Part, "type"> {
@@ -412,6 +456,42 @@ interface Instrument {
 
     scale: number;
   };
+
+  overlay?: {
+    url: string;
+
+    size: {
+      x: number | null;
+      y: number | null;
+    };
+
+    anchor: {
+      x: number;
+      y: number;
+    };
+
+    position: {
+      x: number;
+      y: number;
+    };
+
+    iconFrame?: {
+      x: number;
+      y: number;
+    };
+
+    drawOrder: number;
+
+    rescale?: boolean;
+
+    rescalePosition?: boolean;
+
+    overlays?: Instrument["overlay"][];
+
+    animations?: Animation[];
+
+    name?: string;
+  };
 }
 
 interface Sound {
@@ -429,7 +509,10 @@ interface Sound {
    * Sound effects
    */
   effects?: Partial<
-    Record<"volume" | "pitch" | "start", Omit<Animation, "type" | "axis">>
+    Record<
+      "volume" | "pitch" | "start",
+      Omit<Exclude<Animation, { function: string }>, "type" | "axis">
+    >
   >;
 
   /**
@@ -496,7 +579,7 @@ interface DefinitionBase {
   /**
    * The altitude in feet at which the engine does not produce any thrust (linear from sea level).
    */
-  zeroThrustAltitude: number;
+  zeroThrustAltitude?: number;
 
   /**
    * Minimum RPM of the engine.
@@ -541,7 +624,7 @@ interface DefinitionBase {
   /**
    * Ratio of head (camera) motion due to acceleration.
    */
-  motionSensitivity: number;
+  motionSensitivity?: number;
 
   /**
    * When set to @code{true}, enable the default autopilot.
@@ -668,27 +751,19 @@ interface DefinitionBase {
    */
   sounds: Sound[];
 
-  camera: {
-    /**
-     * Distance from the aircraft in meters.
-     */
-    follow: number;
-
-    /**
-     * Distance from aircraft origin on the Z axis at which the camera will look at
-     */
-    lookAtHeight?: number;
-
-    /**
-     * Position relative to aircraft origin
-     */
-    cockpit: [number, number, number];
-
-    /**
-     * Initial camera tilt in cockpit
-     */
-    cockpitTilt: number;
+  cameras: {
+    follow: unknown;
+    cockpit: unknown;
+  } & {
+    [key: string]: unknown;
   };
+
+  // Properties taken from aircraft definitions
+  cockpitShadowMapMaxDistance: number;
+  zeroRPMAltitude: number;
+  shutdownTime: number;
+  cockpitModel: true;
+  shadowBox: [number, number];
 }
 
 /**
