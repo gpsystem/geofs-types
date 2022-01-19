@@ -107,7 +107,7 @@ interface Filters {
    * Specify a ramp of values to replace the original animation value.
    * New values are looked-up in the array depending on original value varying from 0 to 1.
    */
-  valueRamp: [number, number] | [number, number, number, number];
+  valueRamp: number[];
 
   /**
    * [FILTER]
@@ -122,7 +122,7 @@ interface Filters {
    * Specify a ramp of ratios by which to multiply the value.
    * Ratios are looked-up in the array depending on value varying from 0 to 1.
    */
-  ratioRamp: [number, number] | [number, number, number, number];
+  ratioRamp: number[];
 
   // Filters taken from aircraft definitions:
   fmin: number;
@@ -130,6 +130,8 @@ interface Filters {
   negthreshold: number;
   preoffset: number;
   set: number;
+  loop: boolean;
+  retard: number;
 }
 
 interface AnimationBase extends Partial<Filters>, Base {
@@ -159,6 +161,7 @@ interface AnimationBase extends Partial<Filters>, Base {
 
   // Properties taken from aircraft definitions
   frame?: string;
+  name?: string;
 }
 
 interface AnimationWithValue extends AnimationBase {
@@ -271,6 +274,7 @@ interface AnimationWithValue extends AnimationBase {
     | "view"
     | `strobe${number | ""}`
     // Values taken from aircraft definitions:
+    | "random"
     | "altThousands"
     | "climbrateABS"
     | "climbrateLog"
@@ -314,14 +318,47 @@ interface AnimationWithValue extends AnimationBase {
     | "tailGearSuspension"
     | "trim"
     | "rawPitch"
-    | "rawYaw";
+    | "rawYaw"
+    | "outsideGearLeftPistonRotation"
+    | "insideGearLeftPistonRotation"
+    | "outsideGearRightPistonRotation"
+    | "insideGearRightPistonRotation"
+    | "gearRotation"
+    | "gearRightPistonRotation"
+    | "gearRightPistonSuspension"
+    | "gearLeftPistonSuspension"
+    | "gearLeftPistonRotation"
+    | "frontGearLegRotation"
+    | "frontGearLegSuspension"
+    | "gearRightLegRotation"
+    | "gearRightLegSuspension"
+    | "gearLeftLegRotation"
+    | "gearLeftLegSuspension"
+    | "tailWheelArmRotation"
+    | "frontWheelPivotRotation"
+    | "frontWheelPivotSuspension"
+    | "gearrightRotation"
+    | "gearleftRotation"
+    | "frontgearRotation"
+    | "envelopeTemp"
+    | "function()"
+    | "frontgearstrut2Rotation"
+    | "strutleft1Rotation"
+    | "strutright1Rotation"
+    | "frontstrut2Rotation"
+    | "strutleft2Rotation"
+    | "strutright2Rotation"
+    | "strutleft2-1Rotation"
+    | "strutleft1-1Rotation"
+    | "strutright2-1Rotation"
+    | "strutright1-1Rotation";
 }
 
 interface AnimationWithFunction extends AnimationBase {
   /**
    * A function to run. Must return a value that will be used as the animation value.
    */
-  function: `{${string}return ${string}}`;
+  function: `{${string}return${" " | ""}${string}}`;
 }
 
 type Animation = AnimationWithValue | AnimationWithFunction;
@@ -391,7 +428,7 @@ interface Part extends Base {
    */
   animations?: Animation[];
 
-  light?: "white" | "red" | "green";
+  light?: "white" | "red" | "green" | "";
 
   // Properties taken from aircraft definitions:
   textures?: {
@@ -403,6 +440,22 @@ interface Part extends Base {
   noCastShadows?: boolean;
   noReceiveShadows?: boolean;
   propwash?: number;
+  include?: string;
+  indices?: number;
+  liftFactor?: number;
+  dragFactor?: number;
+
+  initialTemperature?: number;
+  volume?: number;
+  heatingSpeed?: number;
+  coolingSpeed?: number;
+
+  controller?: {
+    name: "pitch";
+    recenter?: boolean;
+    sensitivity?: number;
+    ratio: number;
+  };
 }
 
 interface AirfoilPartBasics extends Omit<Part, "type"> {
@@ -426,6 +479,11 @@ interface AirfoilPartBasics extends Omit<Part, "type"> {
    * Angle of Attack (AoA) at which, lift equals 0 - lift decreases linearly from stallIncidence
    */
   zeroLiftIncidence?: number;
+
+  span?: number;
+  chord?: number;
+  efficiencyFactor?: number;
+  aspectRatio?: number;
 }
 
 type AirfoilPart = (
@@ -483,6 +541,8 @@ interface WheelPart extends Omit<Part, "type"> {
     stiffness: number;
     damping: number;
   };
+
+  contactType?: string;
 }
 
 interface HookPart extends Omit<Part, "type"> {
@@ -554,7 +614,7 @@ interface Instrument extends Base {
       y: number;
     };
 
-    drawOrder: number;
+    drawOrder?: number;
 
     rescale?: boolean;
 
@@ -568,6 +628,8 @@ interface Instrument extends Base {
   };
 
   center?: boolean;
+
+  stackX?: boolean;
 }
 
 interface Sound extends Base {
@@ -586,8 +648,10 @@ interface Sound extends Base {
    */
   effects?: Partial<
     Record<
-      "volume" | "pitch" | "start",
-      DistributiveOmit<Animation, "type" | "axis">
+      "volume" | "pitch" | "start" | "stop" | "play",
+      DistributiveOmit<Animation, "type" | "axis"> & {
+        duration?: number;
+      }
     >
   >;
 
@@ -597,6 +661,8 @@ interface Sound extends Base {
   fadeDuration?: number;
 
   cut?: [number, number];
+
+  lowLatency?: boolean;
 }
 
 /**
@@ -617,7 +683,7 @@ interface DefinitionBase extends Base {
   /**
    * A global drag coefficient.
    */
-  dragFactor: number;
+  dragFactor?: number;
 
   /**
    * To move the center of mass of the aircraft
@@ -682,7 +748,7 @@ interface DefinitionBase extends Base {
   /**
    * In seconds - to match the startup sound.
    */
-  startupTime: number;
+  startupTime?: number;
 
   /**
    * Compensate for landing gear height at initialization (when on ground)
@@ -692,7 +758,7 @@ interface DefinitionBase extends Base {
   /**
    * Initial tilt angle (when on ground).
    */
-  startTilt: number;
+  startTilt?: number;
 
   /**
    * Initial speed when in the air, in knots.
@@ -713,6 +779,8 @@ interface DefinitionBase extends Base {
    */
   autopilot?:
     | boolean
+    | "true"
+    | "false"
     | {
         /**
          * Controller for aircraft pitch angle based on altitude target
@@ -768,6 +836,8 @@ interface DefinitionBase extends Base {
          * @default 30
          */
         maxBankAngle?: number;
+
+        yawBankAngleRatio?: number;
       };
 
   /**
@@ -842,11 +912,15 @@ interface DefinitionBase extends Base {
   cockpitShadowMapMaxDistance?: number;
   zeroRPMAltitude?: number;
   shutdownTime?: number;
-  cockpitModel: true;
+  cockpitModel?: boolean;
   shadowBox: [number, number];
   optionalAnimatedPartTravelTime?: number;
   cockpitScaleFix?: number;
   shadowFile?: string;
+  shadowURL?: string;
+  dragCoefficient?: number;
+  brakeDamping?: number;
+  scale?: number;
 }
 
 /**
@@ -854,4 +928,16 @@ interface DefinitionBase extends Base {
  * Typings taken from {@link https://www.geo-fs.com/backend/aircraft/doc.html|The GeoFS Aircraft Documentation}
  * TODO test against ALL aircraft definitions in the game.
  */
-export type Definition = DefinitionBase[];
+export type Definition = (DefinitionBase & Partial<PluginsDefinition>)[];
+
+interface PluginsDefinition {
+  fmc: {
+    [key in "climb" | "descent"]: number[][];
+  };
+
+  nosewheel: number[];
+
+  platform: string;
+  version: string;
+  maxLimits: number[];
+}
