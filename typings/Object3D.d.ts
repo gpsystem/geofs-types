@@ -1,12 +1,11 @@
 import type * as Cesium from "cesium";
 import fx from "./geofs/fx";
-declare namespace Object3D {
-  namespace utilities {
-    function getPointLla(a: number[] | unknown, b?: number[]): number[];
-  }
-}
 
 declare class Object3D {
+  static utilities: {
+    getPointLla(a: number[] | unknown, b?: number[]): number[];
+  };
+
   _name: string;
   _nodeName: string;
   _children: Object3D[];
@@ -65,6 +64,7 @@ declare class Object3D {
     type: string;
     // TODO all the other things
   };
+
   constructor(a: typeof Object3D.prototype._options);
   reset(): void;
   //cspell:disable-next-line

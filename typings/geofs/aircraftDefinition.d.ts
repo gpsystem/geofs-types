@@ -339,13 +339,18 @@ interface AnimationWithFunction extends AnimationBase {
   function: `{${string}return${" " | ""}${string}}`;
 }
 
-type Animation = AnimationWithValue | AnimationWithFunction | AnimationBase;
+export type AnimationValues = AnimationWithValue["value"];
+
+export type Animation =
+  | AnimationWithValue
+  | AnimationWithFunction
+  | AnimationBase;
 
 interface Part extends Base {
   /**
    * Part's name/id.
    */
-  name?: string;
+  name: string | "undefined";
 
   /**
    * Parent's name.
@@ -917,7 +922,8 @@ interface DefinitionBase extends Base {
  * The aircraft definition passed into GeoFS.
  * Typings taken from {@link https://www.geo-fs.com/backend/aircraft/doc.html|The GeoFS Aircraft Documentation}
  */
-export type Definition = (DefinitionBase & Partial<PluginsDefinition>)[];
+type Definition = [DefinitionBase & Partial<PluginsDefinition>];
+export default Definition;
 
 interface PluginsDefinition {
   fmc: {

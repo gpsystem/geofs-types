@@ -1,3 +1,5 @@
+import Definition from "./geofs/aircraftDefinition";
+
 declare namespace audio {
   let impl: {
     webAudio: {
@@ -60,7 +62,7 @@ declare namespace audio {
   };
   let on: boolean;
 
-  function init(a: []): void;
+  function init(a: Definition[0]["sounds"]): void;
   function loaded(a: string): void;
   function stopped(a: string): void;
   function update(): void;
