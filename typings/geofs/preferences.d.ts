@@ -1,3 +1,27 @@
+type DefaultOptions =
+  | "Toggle Autopilot"
+  | "Bank left"
+  | "Bank right"
+  | "Pitch down"
+  | "Pitch up"
+  | "Steer left"
+  | "Steer right"
+  | "Brakes"
+  | "Parking brake"
+  | "Increase throttle"
+  | "Decrease throttle"
+  | "PgUp"
+  | "PgDwn"
+  | "Elevator trim up"
+  | "Elevator trip down"
+  | "Elevator trim neutral"
+  | "Engine switch (on/off)"
+  | "Gear toggle (up/down)"
+  | "Lower flaps"
+  | "Raise flaps"
+  | "Airbrake toggle (on/off)"
+  | "Optional Animated Part toggle (on/off)";
+
 export interface preferencesDefault {
   aircraft: string;
   coordinates: string;
@@ -8,95 +32,10 @@ export interface preferencesDefault {
     mixYawRoll: boolean;
     mixYawRollQuantity: number;
     keys: {
-      "Toggle Autopilot": {
+      [key in DefaultOptions | string]: {
         keycode: number;
         label: string;
       };
-      "Bank left": {
-        keycode: number;
-        label: string;
-      };
-      "Bank right": {
-        keycode: number;
-        label: string;
-      };
-      "Pitch down": {
-        keycode: number;
-        label: string;
-      };
-      "Pitch up": {
-        keycode: number;
-        label: string;
-      };
-      "Steer left": {
-        keycode: number;
-        label: string;
-      };
-      "Steer right": {
-        keycode: number;
-        label: string;
-      };
-      Brakes: {
-        keycode: number;
-        label: string;
-      };
-      "Parking brake": {
-        keycode: number;
-        label: string;
-      };
-      "Increase throttle": {
-        keycode: 107;
-        label: "+";
-      };
-      "Decrease throttle": {
-        keycode: number;
-        label: string;
-      };
-      PgUp: {
-        keycode: number;
-        label: string;
-      };
-      PgDwn: {
-        keycode: number;
-        label: string;
-      };
-      "Elevator trim up": {
-        keycode: number;
-        label: string;
-      };
-      "Elevator trim down": {
-        keycode: number;
-        label: string;
-      };
-      "Elevator trim neutral": {
-        keycode: number;
-        label: string;
-      };
-      "Engine switch (on/off)": {
-        keycode: number;
-        label: string;
-      };
-      "Gear toggle (up/down)": {
-        keycode: number;
-        label: string;
-      };
-      "Lower flaps": {
-        keycode: number;
-        label: string;
-      };
-      "Raise flaps": {
-        keycode: number;
-        label: string;
-      };
-      "Airbrake toggle (on/off)": {
-        keycode: number;
-        label: string;
-      };
-      "Optional Animated Part toggle (on/off)": {
-        keycode: number;
-        label: string;
-      };
-      [key: string]: { keycode: number; label: string };
     };
   };
   mouse: {

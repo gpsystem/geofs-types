@@ -22,7 +22,7 @@ declare class Object3D {
     contactProperties: {
       damping: number;
       dynamicFriction: number;
-      //cspell:disable-next-line
+
       frictionCoef: number;
       lockSpeed: number;
     };
@@ -46,7 +46,6 @@ declare class Object3D {
   lla?: number[];
 
   _options: {
-    //cspell:disable-next-line
     "3dmodel": Cesium.Model;
     animations: Record<string, unknown>[];
     brakesController: boolean;
@@ -67,7 +66,7 @@ declare class Object3D {
 
   constructor(a: typeof Object3D.prototype._options);
   reset(): void;
-  //cspell:disable-next-line
+
   setInitiallRotation(a?: number[]): void;
   rotateInitialRotation(a?: number[]): void;
   rotate(a: number): void;

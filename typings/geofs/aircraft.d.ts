@@ -1,7 +1,7 @@
 import geofs from "./index";
 import Definition from "./aircraftDefinition";
-// This needs to be an interface because `default` is not accepted
-// as a variable name.
+
+// TODO: This needs to be an interface because `default` is not accepted as a variable name.
 declare namespace aircraft {
   // let default: number;
   let instance: Aircraft;
@@ -17,7 +17,7 @@ declare namespace aircraft {
     /**
      * [latitude, longitude, altitude]
      */
-    llaLocation: number[];
+    llaLocation: [number, number, number];
 
     collResult: {
       location: number[];
@@ -28,30 +28,22 @@ declare namespace aircraft {
     /**
      * [heading, tilt, roll]
      */
-    htr: number[];
+    htr: [number, number, number];
     htrAngularSpeed: number[];
     veldir: number[];
     trueAirSpeed: number;
-    aircraftRecord?: {
-      fullPath: string;
-    };
+    aircraftRecord?:
+      | {
+          fullPath: string;
+        }
+      | undefined;
     definition: Definition[0];
     cockpitSetup: /*TODO me; can get using `https://www.geo-fs.com/models/aircraft/load.php?id=${id}&cockpit=true` */ any;
     setup: Record<string, unknown>;
     shadow: geofs.shadow;
-    id?: string;
+    id?: string | undefined;
     controllers: {
-      pitch: {
-        recenter: boolean;
-        sensitivity: number;
-        ratio: number;
-      };
-      roll: {
-        recenter: boolean;
-        sensitivity: number;
-        ratio: number;
-      };
-      yaw: {
+      [key in "pitch" | "roll" | "yaw"]: {
         recenter: boolean;
         sensitivity: number;
         ratio: number;
@@ -79,14 +71,14 @@ declare namespace aircraft {
     rigidBody: rigidBody;
     crashed: boolean;
     crashNotified: boolean;
-    arrestingCableContact: null | {
+    arrestingCableContact: {
       collisionPoint: number[];
       normal: number[];
       type: "arrestingCable";
       object: unknown;
       contactFwdDir: number[];
       contactSideDir: number[];
-    };
+    } | null;
 
     _cockpitLoaded: boolean;
 
@@ -97,12 +89,12 @@ declare namespace aircraft {
     loadDefault(a: string): void;
     parseRecord(a: string): unknown;
     change(
-      a?: string | number,
-      b?: string,
-      c?: string,
-      d?: boolean
+      a?: string | number | undefined,
+      b?: string | undefined,
+      c?: string | undefined,
+      d?: boolean | undefined
     ): Promise<void>;
-    loadLivery(a?: string): void;
+    loadLivery(a?: string | undefined): void;
     loadWithLivery(a: string, b?: number[], c?: string): void;
     load(a: string, b?: number[], c?: string, d?: boolean): Promise<void>;
     init(a: Definition[0], b: number[], c?: boolean, d?: boolean): void;

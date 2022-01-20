@@ -101,11 +101,13 @@ declare global {
       };
       overlays: Partial<typeof Overlay.prototype.definition>[];
     } & {
-      animations?: {
-        type: string;
-        [key: string]: any;
-      };
-      animateRotation?: boolean;
+      animations?:
+        | {
+            type: string;
+            [key: string]: any;
+          }
+        | undefined;
+      animateRotation?: boolean | undefined;
     };
     children: Overlay[];
     parent: this;
@@ -115,8 +117,8 @@ declare global {
       x: number;
       y: number;
     };
-    animateVisibility?: boolean;
-    animationVisibility?: boolean;
+    animateVisibility?: boolean | undefined;
+    animationVisibility?: boolean | undefined;
     scale: typeof Overlay.prototype.definition.scale;
     positionOffset: typeof Overlay.prototype.definition.offset;
     _offset: {

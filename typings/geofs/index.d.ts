@@ -269,21 +269,23 @@ declare namespace geofs {
     planeMarker: apiNamespace.map.planeMarker;
     mapActive: boolean;
     ATCMode: boolean;
-    dontMove?: boolean;
-    dontMoveTimeout?: number;
-    dontMoveTimeoutValue?: number;
+    dontMove?: boolean | undefined;
+    dontMoveTimeout?: number | undefined;
+    dontMoveTimeoutValue?: number | undefined;
     lastMapUpdate: number;
     mapUpdateInterval: number;
     tooltipVisibility: boolean;
     constructor(
-      a?: Partial<{
-        zoom: number;
-        holder: JQuery;
-        standalone: boolean;
-        norunways: boolean;
-      }>,
-      b?: number,
-      c?: number
+      a?:
+        | Partial<{
+            zoom: number;
+            holder: JQuery;
+            standalone: boolean;
+            norunways: boolean;
+          }>
+        | undefined,
+      b?: number | undefined,
+      c?: number | undefined
     );
 
     resize(): void;

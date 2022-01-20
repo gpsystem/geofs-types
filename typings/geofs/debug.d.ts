@@ -7,15 +7,18 @@ interface Debug {
   $debugFrame: JQuery<HTMLElement>;
   $debugWatch: JQuery<HTMLElement>;
   $debugLog: JQuery<HTMLElement>;
-  axis: null | {
+  axis: {
     model: Cesium.Model;
-  };
-  probe?: null | {
-    model: Cesium.Model;
-  };
+  } | null;
+  probe?:
+    | {
+        model: Cesium.Model;
+      }
+    | null
+    | undefined;
   atmosphereSize: number[];
   atmosphereResolution: number[];
-  dataSource?: Cesium.CustomDataSource;
+  dataSource?: Cesium.CustomDataSource | undefined;
 
   init(): void;
   turnOn(): void;

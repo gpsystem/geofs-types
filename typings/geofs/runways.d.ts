@@ -70,7 +70,7 @@ declare namespace runways {
     threshold2: number[];
     imageryLayers: Cesium.ImageryLayer[];
     modelExists: boolean;
-    entities?: Cesium.Entity[] | null;
+    entities?: Cesium.Entity[] | null | undefined;
     creationTime: number | null;
 
     constructor(

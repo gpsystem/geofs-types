@@ -11,7 +11,7 @@ type DistributiveOmit<T, K extends PropertyKey> = T extends any
  * Properties all the values can have
  */
 interface Base {
-  comment?: string;
+  comment?: string | undefined;
 }
 
 /**
@@ -53,6 +53,10 @@ interface Filters {
    * Not equal to value (!=)
    */
   notEq: number | string;
+
+  /**
+   * @see {@link notEq}
+   */
   noteq: number | string;
 
   /**
@@ -81,13 +85,13 @@ interface Filters {
 
   /**
    * [FILTER]
-   * Returns @code{true} if the value is in the array; otherwise, @code{false}.
+   * Returns true if the value is in the array; otherwise, false.
    */
   when: (string | number)[];
 
   /**
    * [FILTER]
-   * Returns @code{true} if the value is not in the array; otherwise, @code{false}.
+   * Returns true if the value is not in the array; otherwise, false.
    */
   whenNot: unknown;
 
@@ -113,7 +117,7 @@ interface Filters {
   /**
    * [FILTER]
    * Array of 2 or 4 stop values to generate an increasing--level--decreasing ramp from 0 to 1 (eventually back to 0) - mostly used for sound.
-   * @see {valueRamp}
+   * @see {@link valueRamp}
    * @deprecated
    */
   ramp: unknown[];
@@ -127,13 +131,13 @@ interface Filters {
 
   /**
    * [FILTER]
-   * @see {min}
+   * @see {@link min}
    */
   fmin: number;
 
   /**
    * [FILTER]
-   * @see {max}
+   * @see {@link max}
    */
   fmax: number;
 
@@ -178,11 +182,11 @@ interface AnimationBase extends Partial<Filters>, Base {
   /**
    * "X", "Y", "Z" for rotation, vector for translation
    */
-  axis?: "X" | "Y" | "Z" | [number, number, number];
+  axis?: "X" | "Y" | "Z" | [number, number, number] | undefined;
 
   // Properties taken from aircraft definitions
-  frame?: string;
-  name?: string;
+  frame?: string | undefined;
+  name?: string | undefined;
 }
 
 interface AnimationWithValue extends AnimationBase {
@@ -327,7 +331,7 @@ interface AnimationWithValue extends AnimationBase {
     | "function()"
     | "ktas"
     | "gearTraget"
-    // GeoFs assigns 2 custom values to all suspension parts, a Rotation value and a Suspension value
+    // GeoFS assigns 2 custom values to all suspension parts, a Rotation value and a Suspension value
     | `${DefinitionBase["parts"][number]["name"]}Rotation`
     | `${DefinitionBase["parts"][number]["name"]}Suspension`;
 }
@@ -355,93 +359,99 @@ interface Part extends Base {
   /**
    * Parent's name.
    */
-  parent?: string;
+  parent?: string | undefined;
 
-  type?: "frame" | "root" | "none" | string;
+  type?: "frame" | "root" | "none" | string | undefined;
 
   /**
    * Name of the DAE model declared in KML.
    */
-  model?: string;
+  model?: string | undefined;
 
   /**
    * Name of the node in the root model.
    *
    * ! A "root" part must be declared to load the main GLTF file.
    */
-  node?: string;
+  node?: string | undefined;
 
   /**
    * Relative to the parent (or root).
    */
-  position?: [number, number, number] | null;
+  position?: [number, number, number] | null | undefined;
 
   /**
    * Relative to the parent (or root).
    */
-  rotaition?: [number, number, number];
-  rotation?: [number, number, number];
+  rotaition?: [number, number, number] | undefined;
+  rotation?: [number, number, number] | undefined;
 
   /**
    * Relative to the parent (or root).
    */
-  scale?: [number, number, number];
+  scale?: [number, number, number] | undefined;
 
   /**
    * The direction in which the force (lift, thrust) will be applied.
    */
-  forceDirection?: "X" | "Y" | "Z";
+  forceDirection?: "X" | "Y" | "Z" | undefined;
 
-  points?: {
-    /**
-     * The source of force vector relative to the part origin
-     */
-    forceSourcePoint: [number, number, number];
+  points?:
+    | {
+        /**
+         * The source of force vector relative to the part origin
+         */
+        forceSourcePoint: [number, number, number];
 
-    [key: string]: [number, number, number];
-  };
+        [key: string]: [number, number, number];
+      }
+    | undefined;
 
   /**
    * Specify where, on the model, collisions with the ground should occur - best used on the "body" part of the aircraft (type=frame).
    */
-  collisionPoints?: [number, number, number][];
+  collisionPoints?: [number, number, number][] | undefined;
 
   /**
    * Array of animations to be applied.
    * @see {Animation} for animation implementation.
    */
-  animations?: Animation[] | "";
+  animations?: Animation[] | "" | undefined;
 
-  light?: "white" | "red" | "green" | "";
+  light?: "white" | "red" | "green" | "" | undefined;
 
   // Properties taken from aircraft definitions:
-  textures?: {
-    index: number;
-    filename: string;
-  }[];
+  textures?:
+    | {
+        index: number;
+        filename: string;
+      }[]
+    | undefined;
 
-  buoyancy?: number;
-  noCastShadows?: boolean;
-  noReceiveShadows?: boolean;
-  propwash?: number;
-  include?: string;
-  indices?: number;
-  liftFactor?: number;
-  dragFactor?: number;
+  buoyancy?: number | undefined;
+  noCastShadows?: boolean | undefined;
+  noReceiveShadows?: boolean | undefined;
+  propwash?: number | undefined;
+  include?: string | undefined;
+  indices?: number | undefined;
+  liftFactor?: number | undefined;
+  dragFactor?: number | undefined;
 
-  initialTemperature?: number;
-  volume?: number;
-  heatingSpeed?: number;
-  coolingSpeed?: number;
+  initialTemperature?: number | undefined;
+  volume?: number | undefined;
+  heatingSpeed?: number | undefined;
+  coolingSpeed?: number | undefined;
 
-  controller?: {
-    name: "pitch";
-    recenter?: boolean;
-    sensitivity?: number;
-    ratio: number;
-  };
+  controller?:
+    | {
+        name: "pitch";
+        recenter?: boolean;
+        sensitivity?: number;
+        ratio: number;
+      }
+    | undefined;
 
-  area?: number;
+  area?: number | undefined;
 }
 
 interface AirfoilPartBasics extends Omit<Part, "type"> {
@@ -450,26 +460,26 @@ interface AirfoilPartBasics extends Omit<Part, "type"> {
   /**
    * Specify if an airfoil is subject to stall.
    */
-  stalls?: boolean;
+  stalls?: boolean | undefined;
   /**
    * @see stalls
    */
-  stall?: boolean;
+  stall?: boolean | undefined;
 
   /**
    * Angle of Attack (AoA) in deg. at which stall occurs.
    */
-  stallIncidence?: number;
+  stallIncidence?: number | undefined;
 
   /**
    * Angle of Attack (AoA) at which, lift equals 0 - lift decreases linearly from stallIncidence
    */
-  zeroLiftIncidence?: number;
+  zeroLiftIncidence?: number | undefined;
 
-  span?: number;
-  chord?: number;
-  efficiencyFactor?: number;
-  aspectRatio?: number;
+  span?: number | undefined;
+  chord?: number | undefined;
+  efficiencyFactor?: number | undefined;
+  aspectRatio?: number | undefined;
 }
 
 type AirfoilPart = (
@@ -504,34 +514,34 @@ interface EnginePart extends Omit<Part, "type"> {
   /**
    * In Newton.
    */
-  afterBurnerThrust?: number;
+  afterBurnerThrust?: number | undefined;
 
   /**
    * In Newton.
    */
-  reverseThrust?: number;
+  reverseThrust?: number | undefined;
 
   /**
    * Does the engine generate contrail
    */
-  contrail?: boolean;
+  contrail?: boolean | undefined;
 }
 
 interface WheelPart extends Omit<Part, "type"> {
   type: "wheel" | "pad";
 
   suspension: {
-    motion?: "rotation" | "translate";
-    axis?: "X" | "Y" | "Z";
-    ratio?: number;
+    motion?: "rotation" | "translate" | undefined;
+    axis?: "X" | "Y" | "Z" | undefined;
+    ratio?: number | undefined;
     stiffness: number;
     damping: number;
 
-    restLength?: number;
-    hardPoint?: number;
+    restLength?: number | undefined;
+    hardPoint?: number | undefined;
   };
 
-  contactType?: string;
+  contactType?: string | undefined;
 }
 
 interface HookPart extends Omit<Part, "type"> {
@@ -546,7 +556,7 @@ interface BaseContactProperty {
   /**
    * Static friction coefficient - when not slipping.
    */
-  //cspell:disable-next-line
+
   frictionCoef: number;
 
   /**
@@ -564,61 +574,69 @@ interface Instrument extends Base {
   /**
    * only for visibility for now
    */
-  animations?: Animation[];
+  animations?: Animation[] | undefined;
 
-  cockpit?: {
-    /**
-     * In cockpit position relative to origin
-     */
-    position: [number, number, number];
+  cockpit?:
+    | {
+        /**
+         * In cockpit position relative to origin
+         */
+        position: [number, number, number];
 
-    scale: number;
-  };
+        scale: number;
+      }
+    | undefined;
 
-  overlay?: {
-    url: string;
+  overlay?:
+    | {
+        url: string;
 
-    size: {
-      x: number | null;
-      y: number | null;
-    };
+        size: {
+          x: number | null;
+          y: number | null;
+        };
 
-    anchor: {
-      x: number;
-      y: number;
-    };
+        anchor: {
+          x: number;
+          y: number;
+        };
 
-    position: {
-      x: number;
-      y: number;
-    };
+        position: {
+          x: number;
+          y: number;
+        };
 
-    offset?: {
-      x: number;
-      y: number;
-    };
+        offset?:
+          | {
+              x: number;
+              y: number;
+            }
+          | undefined;
 
-    iconFrame?: {
-      x: number;
-      y: number;
-    };
+        iconFrame?:
+          | {
+              x: number;
+              y: number;
+            }
+          | undefined;
 
-    drawOrder?: number;
+        drawOrder?: number | undefined;
 
-    rescale?: boolean;
+        rescale?: boolean | undefined;
 
-    rescalePosition?: boolean;
+        rescalePosition?: boolean | undefined;
 
-    overlays?: Instrument["overlay"][];
+        overlays?: Instrument["overlay"][] | undefined;
 
-    animations?: Animation[];
+        animations?: Animation[] | undefined;
 
-    name?: string;
-  };
+        name?: string | undefined;
+      }
+    | undefined;
 
-  center?: boolean;
+  center?: boolean | undefined;
 
-  stackX?: boolean;
+  stackX?: boolean | undefined;
 }
 
 interface Sound extends Base {
@@ -635,26 +653,28 @@ interface Sound extends Base {
   /**
    * Sound effects
    */
-  effects?: Partial<
-    Record<
-      "volume" | "pitch" | "start" | "stop" | "play",
-      DistributiveOmit<Animation, "type" | "axis"> & {
-        duration?: number;
-      }
-    >
-  >;
+  effects?:
+    | Partial<
+        Record<
+          "volume" | "pitch" | "start" | "stop" | "play",
+          DistributiveOmit<Animation, "type" | "axis"> & {
+            duration?: number;
+          }
+        >
+      >
+    | undefined;
 
   /**
    * duration of fade-in/fade-out in ms
    */
   fadeDuration?: number;
 
-  cut?: [number, number];
+  cut?: [number, number] | undefined;
 
-  lowLatency?: boolean;
+  lowLatency?: boolean | undefined;
 
-  loop?: boolean;
-  retard?: number;
+  loop?: boolean | undefined;
+  retard?: number | undefined;
 }
 
 /**
@@ -670,53 +690,55 @@ interface DefinitionBase extends Base {
   /**
    * Tweak the rotation inertia.
    */
-  tensorFactor?: number;
+  tensorFactor?: number | undefined;
 
   /**
    * A global drag coefficient.
    */
-  dragFactor?: number;
+  dragFactor?: number | undefined;
 
   /**
    * To move the center of mass of the aircraft
    */
-  com?: [number, number, number];
-  COM?: [number, number, number];
+  com?: [number, number, number] | undefined;
+
+  /** @see {@link com} */
+  COM?: [number, number, number] | undefined;
 
   /**
    * In seconds
    */
-  gearTravelTime?: number;
+  gearTravelTime?: number | undefined;
 
   /**
    * Seconds per degrees.
    */
-  flapsTravelTime?: number | null;
+  flapsTravelTime?: number | null | undefined;
 
   /**
    * Number of positions for the flaps.
    */
-  flapsSteps?: number | null;
+  flapsSteps?: number | null | undefined;
 
   /**
    * Positions in degrees for each flap step.
    */
-  flapsPositions?: number[];
+  flapsPositions?: number[] | undefined;
 
   /**
    * In seconds.
    */
-  airbrakesTravelTime?: number;
+  airbrakesTravelTime?: number | undefined;
 
   /**
    * Are thrust reversers available.
    */
-  reverse?: boolean;
+  reverse?: boolean | undefined;
 
   /**
    * The altitude in feet at which the engine does not produce any thrust (linear from sea level).
    */
-  zeroThrustAltitude?: number;
+  zeroThrustAltitude?: number | undefined;
 
   /**
    * Minimum RPM of the engine.
@@ -741,7 +763,7 @@ interface DefinitionBase extends Base {
   /**
    * In seconds - to match the startup sound.
    */
-  startupTime?: number;
+  startupTime?: number | undefined;
 
   /**
    * Compensate for landing gear height at initialization (when on ground)
@@ -751,7 +773,7 @@ interface DefinitionBase extends Base {
   /**
    * Initial tilt angle (when on ground).
    */
-  startTilt?: number;
+  startTilt?: number | undefined;
 
   /**
    * Initial speed when in the air, in knots.
@@ -761,14 +783,14 @@ interface DefinitionBase extends Base {
   /**
    * Ratio of head (camera) motion due to acceleration.
    */
-  motionSensitivity?: number;
+  motionSensitivity?: number | undefined;
 
   /**
-   * When set to @code{true}, enable the default autopilot.
+   * When set to true, enable the default autopilot.
    *
    * When set to an object, enable an autopilot with custom PID controls. All configuration is optional.
    *
-   * Leave empty to disbale the autopilot (same as @code{false}).
+   * Leave empty to disbale the autopilot (same as false).
    */
   autopilot?:
     | boolean
@@ -831,7 +853,8 @@ interface DefinitionBase extends Base {
         maxBankAngle?: number;
 
         yawBankAngleRatio?: number;
-      };
+      }
+    | undefined;
 
   /**
    * Part defined for the aircraft can be associated to a 3D model a node in the model or simply have a functional role (airfoil, engine, etc.).
@@ -849,14 +872,16 @@ interface DefinitionBase extends Base {
     },
     "wheel"
   > & {
-    wheel?: BaseContactProperty & {
-      rollingFriction: number;
+    wheel?:
+      | (BaseContactProperty & {
+          rollingFriction: number;
 
-      /**
-       * arbitrary minimum speed at which the wheel lock (static rest)
-       */
-      lockSpeed?: number;
-    };
+          /**
+           * arbitrary minimum speed at which the wheel lock (static rest)
+           */
+          lockSpeed?: number;
+        })
+      | undefined;
   };
 
   instruments:
@@ -868,9 +893,7 @@ interface DefinitionBase extends Base {
           | "altitude"
           | "attitude"
           | "attitudeJet"
-          //cspell:disable-next-line
           | "vario"
-          //cspell:disable-next-line
           | "varioJet"
           | "compass"
           | "rpm"
@@ -889,7 +912,7 @@ interface DefinitionBase extends Base {
   /**
    * For legacy reasons.
    */
-  soundSet?: "player";
+  soundSet?: "player" | undefined;
 
   /**
    * "startup" and "shutdown" sound ids are hardcoded.
@@ -904,18 +927,18 @@ interface DefinitionBase extends Base {
   };
 
   // Properties taken from aircraft definitions
-  cockpitShadowMapMaxDistance?: number;
-  zeroRPMAltitude?: number;
-  shutdownTime?: number;
-  cockpitModel?: boolean;
+  cockpitShadowMapMaxDistance?: number | undefined;
+  zeroRPMAltitude?: number | undefined;
+  shutdownTime?: number | undefined;
+  cockpitModel?: boolean | undefined;
   shadowBox: [number, number];
-  optionalAnimatedPartTravelTime?: number;
-  cockpitScaleFix?: number;
-  shadowFile?: string;
-  shadowURL?: string;
-  dragCoefficient?: number;
-  brakeDamping?: number;
-  scale?: number;
+  optionalAnimatedPartTravelTime?: number | undefined;
+  cockpitScaleFix?: number | undefined;
+  shadowFile?: string | undefined;
+  shadowURL?: string | undefined;
+  dragCoefficient?: number | undefined;
+  brakeDamping?: number | undefined;
+  scale?: number | undefined;
 }
 
 /**

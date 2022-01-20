@@ -58,7 +58,7 @@ declare namespace camera {
         current: number[];
         last: number[];
       };
-      FOV?: number;
+      FOV?: number | undefined;
     };
   };
 

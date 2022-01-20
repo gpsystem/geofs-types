@@ -156,8 +156,8 @@ declare namespace fx {
     baseColor: Cesium.Color;
     adjustedColor: Cesium.Color;
     brightness: number;
-    ppStage?: Cesium.PostProcessStage;
-    density?: number;
+    ppStage?: Cesium.PostProcessStage | undefined;
+    density?: number | undefined;
     create(): void;
     setBrightness(a?: number): void;
     setColor(a: number, b: number, c: number): void;
@@ -173,14 +173,16 @@ declare namespace fx {
       opacity: number;
       cutoff: number;
     };
-    canvases?: {
-      a: HTMLCanvasElement & { used: boolean };
-      b: HTMLCanvasElement;
-    };
-    ramp?: typeof fx.volumetricFog.defaultRamp;
-    material?: Cesium.Material;
+    canvases?:
+      | {
+          a: HTMLCanvasElement & { used: boolean };
+          b: HTMLCanvasElement;
+        }
+      | undefined;
+    ramp?: typeof fx.volumetricFog.defaultRamp | undefined;
+    material?: Cesium.Material | undefined;
 
-    getCanvas(): HTMLCanvasElement & { used?: boolean };
+    getCanvas(): HTMLCanvasElement & { used?: boolean | undefined };
     getColorRamp(
       a?: Partial<typeof fx.volumetricFog.ramp>
     ): HTMLCanvasElement & { used?: boolean };
@@ -218,12 +220,12 @@ declare namespace fx {
     groundBrightnessRamp: number[];
     brightness: number;
 
-    instance?: typeof fx.cloudManager;
-    cloudSituation?: null | number;
-    fullCover?: CloudCover;
-    lastBrightness?: number;
-    cloudColor?: Cesium.Color;
-    percentCoverage?: number;
+    instance?: typeof fx.cloudManager | undefined;
+    cloudSituation?: number | null | undefined;
+    fullCover?: CloudCover | undefined;
+    lastBrightness?: number | undefined;
+    cloudColor?: Cesium.Color | undefined;
+    percentCoverage?: number | undefined;
 
     setCloudCoverToCloudNumber(a?: number): void;
     init(a: number[]): void;
@@ -278,10 +280,10 @@ declare namespace fx {
       maxScale: number;
       maxRadius: number;
       opacity: number;
-      billboard?: string;
-      shadow?: boolean;
-      model?: string;
-      rotationMultiplier?: number;
+      billboard?: string | undefined;
+      shadow?: boolean | undefined;
+      model?: string | undefined;
+      rotationMultiplier?: number | undefined;
     }[];
     billboardOptions: {
       sizeInMeters: boolean;
@@ -377,7 +379,7 @@ declare namespace fx {
       baseColour: string;
       blendColour: string;
     }[];
-    tilingScheme?: Cesium.WebMercatorTilingScheme;
+    tilingScheme?: Cesium.WebMercatorTilingScheme | undefined;
 
     reset(): void;
     create(): void;
@@ -388,7 +390,7 @@ declare namespace fx {
   let wake: {
     anchor: number[];
     altitude: number;
-    emitter?: ParticleEmitter;
+    emitter?: ParticleEmitter | undefined;
 
     create(): void;
     update(): void;

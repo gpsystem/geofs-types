@@ -340,7 +340,7 @@ declare namespace api {
 
   class cssTransform {
     constructor();
-    _$element?: JQuery;
+    _$element?: JQuery | undefined;
     positionY: number;
     positionX: number;
     rotation: number;
@@ -350,11 +350,13 @@ declare namespace api {
     };
     static rotationThreshold: number;
     static translationThreshold: number;
-    image?: HTMLImageElement;
-    naturalSize?: {
-      x: number;
-      y: number;
-    };
+    image?: HTMLImageElement | undefined;
+    naturalSize?:
+      | {
+          x: number;
+          y: number;
+        }
+      | undefined;
 
     setDrawOrder(a: number): void;
     setUrl(a: string): void;
@@ -401,7 +403,7 @@ declare namespace api {
       rotation: number;
       geofsFixCameraRotation: boolean;
     }>;
-    rotationFixCallback?: number;
+    rotationFixCallback?: number | undefined;
 
     setUrl(a: string): void;
     setVisibility(a: boolean): void;
@@ -609,13 +611,15 @@ declare namespace api {
             }
           >;
         };
-        visibileTiles?: {
-          [key in `${string}/${string}`]: Array<
-            [string, number, number, number, number, number] & {
-              marker: L.CircleMarker;
+        visibileTiles?:
+          | {
+              [key in `${string}/${string}`]: Array<
+                [string, number, number, number, number, number] & {
+                  marker: L.CircleMarker;
+                }
+              >;
             }
-          >;
-        };
+          | undefined;
       };
     };
     let majorRunwayMarkers: [];
