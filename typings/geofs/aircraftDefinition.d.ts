@@ -26,7 +26,7 @@ interface Filters {
 
   /**
    * [FILTER]
-   * Value is converted to boolean when greater than threshold
+   * Value is converted to boolean when smaller than threshold
    */
   threshold: number;
 
@@ -69,31 +69,31 @@ interface Filters {
 
   /**
    * [FILTER]
-   *
+   * Returns the value if it is larger than min. If not, returns min.
    */
   min: number;
 
   /**
    * [FILTER]
-   *
+   * Returns the value if it is smaller than max. If not, returns max.
    */
   max: number;
 
   /**
    * [FILTER]
-   *
+   * Returns @code{true} if the value is in the array; otherwise, @code{false}.
    */
-  when: unknown;
+  when: (string | number)[];
 
   /**
    * [FILTER]
-   *
+   * Returns @code{true} if the value is not in the array; otherwise, @code{false}.
    */
   whenNot: unknown;
 
   /**
    * [FILTER]
-   * Add offset before applying "ratio"
+   * Add offset after applying "ratio"
    */
   offset: number;
 
@@ -125,15 +125,33 @@ interface Filters {
    */
   ratioRamp: number[];
 
-  // Filters taken from aircraft definitions:
+  /**
+   * [FILTER]
+   * @see {min}
+   */
   fmin: number;
+
+  /**
+   * [FILTER]
+   * @see {max}
+   */
   fmax: number;
+
+  /**
+   * Value is converted to boolean when greater than threshold
+   */
   negthreshold: number;
+
+  /**
+   * [FILTER]
+   * Add offset before applying "ratio"
+   */
   preoffset: number;
+
+  /**
+   * [FILTER]
+   */
   set: number;
-  loop: boolean;
-  retard: number;
-  currentValue: number;
 }
 
 interface AnimationBase extends Partial<Filters>, Base {
@@ -238,6 +256,8 @@ interface AnimationWithValue extends AnimationBase {
    * • strobe: Boolean, set to 1 every 1400ms, for 100ms duration.
    *
    * • strobe2: Boolean set to 1 every 1700ms, for 100ms duration.
+   *
+   * • random: Returns a random value [0, 1).
    */
   value:
     | ""
@@ -271,49 +291,23 @@ interface AnimationWithValue extends AnimationBase {
     | "heading"
     | "heading360"
     | "atilt"
-    //cspell:disable-next-line
     | "aroll"
     | "relativeWind"
     | "windSpeed"
     | "view"
-    | `strobe${number | ""}`
-    // Values taken from aircraft definitions:
+    | `strobe${"" | 2 | 3}`
     | "random"
     | "parkingBrake"
-    | "random"
     | "stalls"
     | "aoa"
     | "altThousands"
     | "climbrateABS"
     | "climbrateLog"
-    | "gear_left_suspensionRotation"
-    | "gear_right_suspensionRotation"
-    | "nose_suspensionRotation"
     | "night"
-    | "gearLeftSuspension"
-    | "gearLeftRotation"
-    | "gearRightSuspension"
-    | "gearRightRotation"
     | "optionalAnimatedPartPosition"
-    | "leftGearRotation"
-    | "rightGearRotation"
-    | "frontGearSuspension"
-    | "frontGearRotation"
     | "cameraMode"
     | "hours"
-    | "leftwheelarmRotation"
     | "invGearPosition"
-    | "rightwheelarmRotation"
-    | "frontwheelarmRotation"
-    | "l_gear_armSuspension"
-    | "l_gear_armRotation"
-    | "r_gear_armSuspension"
-    | "r_gear_armRotation"
-    | "f_gear_suspensionRotation"
-    | "front_gearRotation"
-    | "front_gearSuspension"
-    | "gear_rightRotation"
-    | "gear_leftRotation"
     | "altTensShift"
     | "altTens"
     | "altTenThousands"
@@ -321,88 +315,21 @@ interface AnimationWithValue extends AnimationBase {
     | "machTens"
     | "machTenth"
     | "machHundredth"
-    | "frontGearPistonRotation"
-    | "frontGearPistonSuspension"
     | "arrestingHookTension"
     | "accX"
     | "accY"
     | "accZ"
-    | "tailSpringRotation"
-    | "tailGearSuspension"
     | "trim"
     | "rawPitch"
     | "rawpitch"
     | "rawYaw"
-    | "outsideGearLeftPistonRotation"
-    | "insideGearLeftPistonRotation"
-    | "outsideGearRightPistonRotation"
-    | "insideGearRightPistonRotation"
-    | "gearRotation"
-    | "gearRightPistonRotation"
-    | "gearRightPistonSuspension"
-    | "gearLeftPistonSuspension"
-    | "gearLeftPistonRotation"
-    | "frontGearLegRotation"
-    | "frontGearLegSuspension"
-    | "gearRightLegRotation"
-    | "gearRightLegSuspension"
-    | "gearLeftLegRotation"
-    | "gearLeftLegSuspension"
-    | "tailWheelArmRotation"
-    | "frontWheelPivotRotation"
-    | "frontWheelPivotSuspension"
-    | "gearrightRotation"
-    | "gearleftRotation"
-    | "frontgearRotation"
     | "envelopeTemp"
     | "function()"
-    | "frontgearstrut2Rotation"
-    | "strutleft1Rotation"
-    | "strutright1Rotation"
-    | "frontstrut2Rotation"
-    | "strutleft2Rotation"
-    | "strutright2Rotation"
-    | "strutleft2-1Rotation"
-    | "strutleft1-1Rotation"
-    | "strutright2-1Rotation"
-    | "strutright1-1Rotation"
     | "ktas"
-    | "PHY_Nose_SuspensionSuspension"
-    | "PHY_Nose_SuspensionRotation"
-    | "PHY_Main_Suspension-RRotation"
-    | "PHY_Main_Suspension-RSuspension"
-    | "PHY_Main_Suspension-LRotation"
-    | "PHY_Main_Suspension-LSuspension"
-    | "Nose Main_suspensionRotation"
     | "gearTraget"
-    | "Nose SuspentionRotation"
-    | "R Back SuspentionRotation"
-    | "L Back SuspentionRotation"
-    | "Front SuspentionSuspension"
-    | "Front SuspentionRotation"
-    | "Main Suspention R?Suspension"
-    | "Main Suspention R?Rotation"
-    | "Main Suspention L?Suspension"
-    | "Main Suspention L?Rotation"
-    | "Tail Gear Main PhySuspension"
-    | "Suspention L PhySuspension"
-    | "Suspention R PhyRotation"
-    | "Suspention R PhySuspension"
-    | "Suspention L PhyRotation"
-    | "GS_RSuspension"
-    | "GS_FSuspension"
-    | "GS_LSuspension"
-    | "GS_LRotation"
-    | "GS_FRotation"
-    | "GS_RRotation"
-    | "gear_left_suspensionSuspension"
-    | "gear_right_suspensionSuspension"
-    | "nose_suspensionSuspension"
-    | "pivotRotation"
-    | "sus gear leftRotation"
-    | "sus gear rightRotation"
-    | "pivotSuspension"
-    | "sus gear leftSuspension";
+    // GeoFs assigns 2 custom values to all suspension parts, a Rotation value and a Suspension value
+    | `${DefinitionBase["parts"][number]["name"]}Rotation`
+    | `${DefinitionBase["parts"][number]["name"]}Suspension`;
 }
 
 interface AnimationWithFunction extends AnimationBase {
@@ -720,6 +647,9 @@ interface Sound extends Base {
   cut?: [number, number];
 
   lowLatency?: boolean;
+
+  loop?: boolean;
+  retard?: number;
 }
 
 /**
