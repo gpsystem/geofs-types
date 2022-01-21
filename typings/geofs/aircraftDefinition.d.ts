@@ -570,7 +570,7 @@ interface BaseContactProperty {
   damping: number;
 }
 
-interface Instrument extends Base {
+export interface Instrument extends Base {
   /**
    * only for visibility for now
    */
