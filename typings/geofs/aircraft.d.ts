@@ -36,7 +36,7 @@ declare namespace aircraftNamespace {
         }
       | undefined;
     definition: Definition[0];
-    cockpitSetup: /*TODO me; can get using `https://www.geo-fs.com/models/aircraft/load.php?id=${id}&cockpit=true` */ any;
+    cockpitSetup: [Partial<Definition[0]> & Pick<Definition[0], "parts">];
     setup: Record<string, unknown>;
     shadow: geofs.shadow;
     id?: string | undefined;

@@ -156,6 +156,12 @@ interface Filters {
    * [FILTER]
    */
   set: number;
+
+  /**
+   * [FILTER]
+   * When set to @code{true}, use the absolute value of the value.
+   */
+  abs: boolean | 1 | 0;
 }
 
 interface AnimationBase extends Partial<Filters>, Base {
@@ -311,6 +317,7 @@ interface AnimationWithValue extends AnimationBase {
     | "optionalAnimatedPartPosition"
     | "cameraMode"
     | "hours"
+    | "minutes"
     | "invGearPosition"
     | "altTensShift"
     | "altTens"
@@ -331,6 +338,7 @@ interface AnimationWithValue extends AnimationBase {
     | "function()"
     | "ktas"
     | "gearTraget"
+    | "turnrate"
     // GeoFS assigns 2 custom values to all suspension parts, a Rotation value and a Suspension value
     | `${DefinitionBase["parts"][number]["name"]}Rotation`
     | `${DefinitionBase["parts"][number]["name"]}Suspension`;
@@ -452,6 +460,7 @@ interface Part extends Base {
     | undefined;
 
   area?: number | undefined;
+  doNotScalePosition?: boolean;
 }
 
 interface AirfoilPartBasics extends Omit<Part, "type"> {

@@ -35,10 +35,6 @@ If the previous method doesn't work for your use case, you will have to manually
 
 **WARNING**: These types rely on JQuery's types, so when you declare these types in your tsconfig, you must be careful to also declare JQuery's types in the tsconfig.
 
-Currently, these types are still incomplete. We are still missing types for the following:
-
-- [Cockpit definitions](./typings/geofs/aircraft.d.ts) <!-- line 39 -->
-
 <!-- ## How to contribute
 
 We accept PRs! Read our [contributing guide](./CONTRIBUTING.md) for more info. -->
