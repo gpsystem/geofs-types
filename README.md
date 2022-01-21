@@ -38,7 +38,6 @@ If the previous method doesn't work for your use case, you will have to manually
 Currently, these types are still incomplete. We are still missing types for the following:
 
 - [Cockpit definitions](./typings/geofs/aircraft.d.ts) <!-- line 39 -->
-- [`instruments`](./typings/instruments.d.ts)
 
 <!-- ## How to contribute
 
