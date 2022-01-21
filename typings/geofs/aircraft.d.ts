@@ -1,9 +1,7 @@
 import geofs from "./index";
 import Definition from "./aircraftDefinition";
 
-// TODO: This needs to be an interface because `default` is not accepted as a variable name.
-declare namespace aircraft {
-  // let default: number;
+declare namespace aircraftNamespace {
   let instance: Aircraft;
   class Aircraft {
     engine: {
@@ -114,5 +112,10 @@ declare namespace aircraft {
     crash(): void;
   }
 }
+
+// HACK: We can't use default as a variable in the namespace because 'default' is not allowed as a variable declaration name.ts(1389)
+declare const aircraft: typeof aircraftNamespace & {
+  default: number;
+};
 
 export default aircraft;
