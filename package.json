@@ -30,7 +30,7 @@
   "homepage": "https://github.com/gpsystem/geofs-types#readme",
   "dependencies": {
     "@types/jquery": "3.5.13",
-    "@types/leaflet": "1.7.8",
+    "@types/leaflet": "1.7.9",
     "cesium": "1.89.0"
   },
   "devDependencies": {
