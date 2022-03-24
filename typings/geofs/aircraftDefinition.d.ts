@@ -1,23 +1,33 @@
+/**
+ * Not technically a part of the GeoFS api;
+ * This includes the schema of the aircraft JSON files. It could be possible
+ * to convert this to a JSON schema, creating a vs-code extension that would help
+ * the community contributors.
+ * @module aircraftDefinition
+ * @category geofs
+ */
+
 /*
 ****************************************************************
 UTILITY TYPES
 ****************************************************************
 */
-type DistributiveOmit<T, K extends PropertyKey> = T extends any
+
+export type DistributiveOmit<T, K extends PropertyKey> = T extends any
   ? Omit<T, K>
   : never;
 
 /**
  * Properties all the values can have
  */
-interface Base {
+export interface Base {
   comment?: string | undefined;
 }
 
 /**
  * Animation filters.
  */
-interface Filters {
+export interface Filters {
   /**
    * [FILTER]
    * A multiplier for the value.
@@ -164,7 +174,7 @@ interface Filters {
   abs: boolean | 1 | 0;
 }
 
-interface AnimationBase extends Partial<Filters>, Base {
+export interface AnimationBase extends Partial<Filters>, Base {
   type:
     | "rotate"
     | "scale"
@@ -195,7 +205,7 @@ interface AnimationBase extends Partial<Filters>, Base {
   name?: string | undefined;
 }
 
-interface AnimationWithValue extends AnimationBase {
+export interface AnimationWithValue extends AnimationBase {
   /**
    * • enginesOn: Boolean: 1 if engine is on, 0 if not.
    *
@@ -344,7 +354,7 @@ interface AnimationWithValue extends AnimationBase {
     | `${DefinitionBase["parts"][number]["name"]}Suspension`;
 }
 
-interface AnimationWithFunction extends AnimationBase {
+export interface AnimationWithFunction extends AnimationBase {
   /**
    * A function to run. Must return a value that will be used as the animation value.
    */
@@ -358,7 +368,7 @@ export type Animation =
   | AnimationWithFunction
   | AnimationBase;
 
-interface Part extends Base {
+export interface Part extends Base {
   /**
    * Part's name/id.
    */
@@ -463,7 +473,7 @@ interface Part extends Base {
   doNotScalePosition?: boolean;
 }
 
-interface AirfoilPartBasics extends Omit<Part, "type"> {
+export interface AirfoilPartBasics extends Omit<Part, "type"> {
   type: "airfoil";
 
   /**
@@ -491,7 +501,7 @@ interface AirfoilPartBasics extends Omit<Part, "type"> {
   aspectRatio?: number | undefined;
 }
 
-type AirfoilPart = (
+export type AirfoilPart = (
   | {
       /**
        * An arbitrary lift coefficient for airfoils (not used if "area" is specified).
@@ -512,7 +522,7 @@ type AirfoilPart = (
 ) &
   AirfoilPartBasics;
 
-interface EnginePart extends Omit<Part, "type"> {
+export interface EnginePart extends Omit<Part, "type"> {
   type: "engine";
 
   /**
@@ -536,7 +546,7 @@ interface EnginePart extends Omit<Part, "type"> {
   contrail?: boolean | undefined;
 }
 
-interface WheelPart extends Omit<Part, "type"> {
+export interface WheelPart extends Omit<Part, "type"> {
   type: "wheel" | "pad";
 
   suspension: {
@@ -553,7 +563,7 @@ interface WheelPart extends Omit<Part, "type"> {
   contactType?: string | undefined;
 }
 
-interface HookPart extends Omit<Part, "type"> {
+export interface HookPart extends Omit<Part, "type"> {
   type: "hook";
 
   hook: {
@@ -561,7 +571,7 @@ interface HookPart extends Omit<Part, "type"> {
   };
 }
 
-interface BaseContactProperty {
+export interface BaseContactProperty {
   /**
    * Static friction coefficient - when not slipping.
    */
@@ -648,7 +658,7 @@ export interface Instrument extends Base {
   stackX?: boolean | undefined;
 }
 
-interface Sound extends Base {
+export interface Sound extends Base {
   /**
    * Sound id.
    */
@@ -690,7 +700,7 @@ interface Sound extends Base {
  * For some reason, GeoFS requires the definition to be an array,
  * even though there is only one object.
  */
-interface DefinitionBase extends Base {
+export interface DefinitionBase extends Base {
   /**
    * Total mass in Kg.
    */
@@ -957,7 +967,7 @@ interface DefinitionBase extends Base {
 type Definition = [DefinitionBase & Partial<PluginsDefinition>];
 export default Definition;
 
-interface PluginsDefinition {
+export interface PluginsDefinition {
   fmc: {
     [key in "climb" | "descent"]: number[][];
   };

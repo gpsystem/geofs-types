@@ -1,7 +1,13 @@
-import api from "./geofs/api";
+/**
+ * Can be accessed with `GlassPanel`.
+ * @module GlassPanel
+ * @ignore
+ * @category Global
+ */
+import * as api from "./geofs/api";
 import * as Cesium from "cesium";
 
-declare class GlassPanel {
+export class GlassPanel {
   canvas: api.Canvas;
   entity: Cesium.Entity;
 
@@ -12,5 +18,3 @@ declare class GlassPanel {
   updateCockpitPosition(): void;
   destroy(): void;
 }
-
-export default GlassPanel;

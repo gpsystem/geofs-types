@@ -1,15 +1,16 @@
+/**
+ * Can be accessed with `ui.chat`.
+ * @module chat
+ * @category ui
+ */
 import { ServerResponse } from "../multiplayer";
 
-declare namespace chat {
-  let maxNumberMessages: number;
-  function init(): void;
-  function showInput(): void;
-  function hideInput(a: boolean): void;
+export let maxNumberMessages: number;
+export function init(): void;
+export function showInput(): void;
+export function hideInput(a: boolean): void;
 
-  function publish(a: typeof ServerResponse.chatMessages[number]): void;
-  function removeUserMessages(a: string): void;
-  function hide(): void;
-  function show(): void;
-}
-
-export default chat;
+export function publish(a: typeof ServerResponse.chatMessages[number]): void;
+export function removeUserMessages(a: string): void;
+export function hide(): void;
+export function show(): void;

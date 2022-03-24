@@ -1,6 +1,12 @@
+/**
+ * Can be accessed with `Indicator`.
+ * @module Indicator
+ * @ignore
+ * @category Global
+ */
 import { Instrument } from "./geofs/aircraftDefinition";
 
-declare class Indicator {
+export class Indicator {
   definition: Instrument;
   visibility: boolean;
   overlay: Overlay;
@@ -14,5 +20,3 @@ declare class Indicator {
   update(a: boolean): void;
   destroy(): void;
 }
-
-export default Indicator;

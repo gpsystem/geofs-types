@@ -1,3 +1,8 @@
+/**
+ * Can be accessed with `geofs.preferences`.
+ * @module preferences
+ * @category geofs
+ */
 type DefaultOptions =
   | "Toggle Autopilot"
   | "Bank left"

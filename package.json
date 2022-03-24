@@ -9,7 +9,8 @@
     "lint": "eslint . --ignore-path .gitignore",
     "test": "check-dts",
     "precommit": "tsc --noEmit && npm test && npm run check-format && npm run lint",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "docs": "npx typedoc --entryPointStrategy expand typings"
   },
   "repository": {
     "type": "git",

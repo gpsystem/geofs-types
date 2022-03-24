@@ -1,7 +1,12 @@
+/**
+ * Can be accessed with `geofs.api`.
+ * @module api
+ * @category geofs
+ */
 import { FrameCallback } from "../index";
 import type * as Cesium from "cesium";
 import type * as L from "leaflet";
-import runways from "./runways";
+import * as runways from "./runways";
 
 declare class LTileLayerFallback extends L.TileLayer {
   options: L.TileLayerOptions & { minNativeZoom: number };
@@ -42,630 +47,635 @@ declare class LPolylinePlotter extends L.Polyline {
   _redraw(): void;
 }
 
-declare namespace api {
-  const march2019theTwentyFirst = 2458563;
-  const halfADayInSeconds = 43200;
-  const overlayBaseZIndex = 60;
-  const ALTITUDE_RELATIVE = "ALTITUDE_RELATIVE";
-  const CLAMP_TO_GROUND = "CLAMP_TO_GROUND";
-  let nativeMouseHandling: false;
-  let viewer: Cesium.Viewer;
-  let blackMarble: Cesium.ImageryLayer;
-  let labels: Cesium.LabelCollection;
-  let billboards: {
-    default: Cesium.BillboardCollection;
-    opaque: Cesium.BillboardCollection;
-    translucent: Cesium.BillboardCollection;
+export const march2019theTwentyFirst = 2458563;
+export const halfADayInSeconds = 43200;
+export const overlayBaseZIndex = 60;
+export const ALTITUDE_RELATIVE = "ALTITUDE_RELATIVE";
+export const CLAMP_TO_GROUND = "CLAMP_TO_GROUND";
+export let nativeMouseHandling: false;
+export let viewer: Cesium.Viewer;
+export let blackMarble: Cesium.ImageryLayer;
+export let labels: Cesium.LabelCollection;
+export let billboards: {
+  default: Cesium.BillboardCollection;
+  opaque: Cesium.BillboardCollection;
+  translucent: Cesium.BillboardCollection;
+};
+export let models: Cesium.PrimitiveCollection;
+export let camera: Cesium.Camera;
+
+export const imageryColorModifiers: {
+  [key: string]: {
+    brightness: number;
+    contrast: number;
+    saturation: number;
+    gamma: number;
+    hue: number;
   };
-  let models: Cesium.PrimitiveCollection;
-  let camera: Cesium.Camera;
-
-  const imageryColorModifiers: {
-    [key: string]: {
-      brightness: number;
-      contrast: number;
-      saturation: number;
-      gamma: number;
-      hue: number;
-    };
+};
+export const defaultImageryColorModifier: Readonly<
+  typeof imageryColorModifiers[string]
+>;
+export const atmosphereColorModifiers: {
+  [key: string]: {
+    brightnessShift: number;
+    saturationShift: number;
+    hueShift: number;
+    groundBrightnessShift: number;
+    groundSaturationShift: number;
+    groundHueShift: number;
+    fogBrightness: number;
+    cloudsBrightness: number;
   };
-  const defaultImageryColorModifier: Readonly<
-    typeof imageryColorModifiers[string]
-  >;
-  const atmosphereColorModifiers: {
-    [key: string]: {
-      brightnessShift: number;
-      saturationShift: number;
-      hueShift: number;
-      groundBrightnessShift: number;
-      groundSaturationShift: number;
-      groundHueShift: number;
-      fogBrightness: number;
-      cloudsBrightness: number;
-    };
-  };
-  const defaultAtmosphereColorModifier: Readonly<
-    typeof atmosphereColorModifiers[string]
-  >;
-  const maxRenderingQualityLevel: number;
-  const renderingSettings: {
-    resolutionScale: number;
-    tileCacheSize: number;
-    fxaa: boolean;
-    maximumScreenSpaceError: number;
-    globeLighting: boolean;
-    dropShadow: boolean;
-    cloudCoverToCloudNumber: number;
-    fogScreenSpaceErrorFactor: number;
-    fogDensity: number;
-    shadowMapSize: number;
-    waterResolution: number;
-    viewingDistance: number;
-    degradedCollisions: boolean;
-    lowResRunways: boolean;
-  };
-  const renderingQualityLevels: Readonly<{
-    [key in 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7]: typeof renderingSettings;
-  }>;
-  const adaptativeMaxMaximumScreenSpaceError: number;
-  const adaptativeTopSpeed: number;
-  const adaptativeTopAltitude: number;
-  const adaptativeTurnrateRatio: number;
-  let altitudeErrorThreshold: number;
-  let wrongAltitudeTries: number;
-  let oldNormal: number[];
-  let normalDotThreshold: number;
-  let wrongNormalTries: number;
-  let shadowOffset: number;
-  let tileLayerConstructor: (
-    urlTemplate: string,
-    options: L.TileLayerOptions & { minNativeZoom: number }
-  ) => LTileLayerFallback;
-  const mapMaxZoom: number;
-  const mapOption: {
-    minZoom: number;
-    maxZoom: number;
-    markerZoomAnimation: boolean;
-    worldCopyJump: boolean;
-    preferCanvas: boolean;
-  };
-  const mapTooltipOptions: {
-    permanent: boolean;
-  };
-  const toolTipPositioning: {
-    direction: "top" | "right" | "bottom" | "left";
-    offset: L.Point;
-  }[];
+};
+export const defaultAtmosphereColorModifier: Readonly<
+  typeof atmosphereColorModifiers[string]
+>;
+export const maxRenderingQualityLevel: number;
+export const renderingSettings: {
+  resolutionScale: number;
+  tileCacheSize: number;
+  fxaa: boolean;
+  maximumScreenSpaceError: number;
+  globeLighting: boolean;
+  dropShadow: boolean;
+  cloudCoverToCloudNumber: number;
+  fogScreenSpaceErrorFactor: number;
+  fogDensity: number;
+  shadowMapSize: number;
+  waterResolution: number;
+  viewingDistance: number;
+  degradedCollisions: boolean;
+  lowResRunways: boolean;
+};
+export const renderingQualityLevels: Readonly<{
+  [key in 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7]: typeof renderingSettings;
+}>;
+export const adaptativeMaxMaximumScreenSpaceError: number;
+export const adaptativeTopSpeed: number;
+export const adaptativeTopAltitude: number;
+export const adaptativeTurnrateRatio: number;
+export let altitudeErrorThreshold: number;
+export let wrongAltitudeTries: number;
+export let oldNormal: number[];
+export let normalDotThreshold: number;
+export let wrongNormalTries: number;
+export let shadowOffset: number;
+export let tileLayerConstructor: (
+  urlTemplate: string,
+  options: L.TileLayerOptions & { minNativeZoom: number }
+) => LTileLayerFallback;
+export const mapMaxZoom: number;
+export const mapOption: {
+  minZoom: number;
+  maxZoom: number;
+  markerZoomAnimation: boolean;
+  worldCopyJump: boolean;
+  preferCanvas: boolean;
+};
+export const mapTooltipOptions: {
+  permanent: boolean;
+};
+export const toolTipPositioning: {
+  direction: "top" | "right" | "bottom" | "left";
+  offset: L.Point;
+}[];
 
-  function initWorld(a: string, b?: Cesium.Viewer.ConstructorOptions): void;
-  function destroyWorld(): void;
+export function initWorld(
+  a: string,
+  b?: Cesium.Viewer.ConstructorOptions
+): void;
+export function destroyWorld(): void;
 
-  function triggerExplicitRendering(): void;
-  function addFrameCallback(
-    a: (a: number) => void,
-    b: string,
-    c: number
-  ): number; // a in the callback is geofs.api.precisionTime
-  function removeFrameCallback(a: number, b?: string): void;
-  function frameCallbackWrapper(a: number, b: FrameCallback): void;
+export function triggerExplicitRendering(): void;
+export function addFrameCallback(
+  a: (a: number) => void,
+  b: string,
+  c: number
+): number; // a in the callback is geofs.api.precisionTime
+export function removeFrameCallback(a: number, b?: string): void;
+export function frameCallbackWrapper(a: number, b: FrameCallback): void;
 
-  function configureOutsideView(): void;
-  function configureInsideView(): void;
+export function configureOutsideView(): void;
+export function configureInsideView(): void;
 
-  function setGlobeLighting(a: boolean): void;
-  function setWaterEffect(a: boolean): void;
-  function setHD(a: boolean): void;
+export function setGlobeLighting(a: boolean): void;
+export function setWaterEffect(a: boolean): void;
+export function setHD(a: boolean): void;
 
-  function setImageryProvider(
-    a: Cesium.ImageryProvider,
-    b: boolean,
-    c: number,
-    d: number,
-    e: number
-  ): Cesium.ImageryLayer;
+export function setImageryProvider(
+  a: Cesium.ImageryProvider,
+  b: boolean,
+  c: number,
+  d: number,
+  e: number
+): Cesium.ImageryLayer;
 
-  function setDebugImageryProvider(): void;
-  function setTimeAndDate(a: number, b: number): Cesium.JulianDate;
-  function setClock(a: number): void;
+export function setDebugImageryProvider(): void;
+export function setTimeAndDate(a: number, b: number): Cesium.JulianDate;
+export function setClock(a: number): void;
 
-  function isWebXRAvailable(): boolean;
-  function toggleVr(): void;
+export function isWebXRAvailable(): boolean;
+export function toggleVr(): void;
 
-  function enhanceColors(a: number): void;
-  function setImageryColorModifier(
+export function enhanceColors(a: number): void;
+export function setImageryColorModifier(
+  a: string,
+  b: typeof imageryColorModifiers[string]
+): void;
+export function removeImageryColorModifier(a: string): void;
+export function applyImageryColorModifiers(): void;
+export function setImageryBrightness(a: number): number;
+export function setImageryContrast(a: number): number;
+export function setImagerySaturation(a: number): number;
+export function setImageryHue(a: number): number;
+export function setImageryGamma(a: number): number;
+
+export function setAtmosphereColorModifier(
+  a: string,
+  b: typeof atmosphereColorModifiers[string]
+): void;
+export function removeAtmosphereColorModifier(a: string): void;
+export function applyAtmosphereColorModifiers(): void;
+
+export function showSun(): void;
+export function hideSun(): void;
+
+export function advancedRenderingQuality(): void;
+
+export function renderingQuality(a: number, b?: boolean): void;
+
+export function adaptativeRenderingQuality(): void;
+
+export function useNativeShadows(a: boolean): void;
+
+export function addLabel(
+  a: string,
+  b: number[],
+  c: Parameters<typeof labels.add>[0]
+): { text: string; position: Cesium.Cartesian3 };
+export function updateLabelText(
+  a: { text: string; position: Cesium.Cartesian3 },
+  b: string
+): void;
+export function removeLabel(a: Cesium.Label): void;
+export function setLabelPosition(
+  a: { text: string; position: Cesium.Cartesian3 },
+  b: number[]
+): void;
+
+export function getGuarantiedGroundAltitude(
+  a: number[]
+): Promise<[{ height: number }] | Cesium.Cartographic[]>;
+export function getGroundAltitude(a: number[], b: unknown /*no clue*/): number;
+
+export function getGroundNormal(a: number[], b: unknown /*no clue*/): number[];
+
+export function createShadow(a: string, b: number): Cesium.Model;
+export function setShadowLocationRotation(
+  a: Cesium.Model,
+  b: number[],
+  c: number[],
+  d: number[]
+): void;
+
+export class Model {
+  constructor(
     a: string,
-    b: typeof api.imageryColorModifiers[string]
-  ): void;
-  function removeImageryColorModifier(a: string): void;
-  function applyImageryColorModifiers(): void;
-  function setImageryBrightness(a: number): number;
-  function setImageryContrast(a: number): number;
-  function setImagerySaturation(a: number): number;
-  function setImageryHue(a: number): number;
-  function setImageryGamma(a: number): number;
+    b: Partial<
+      Parameters<typeof Cesium.Model.fromGltf>[0] & { justLoad: boolean }
+    >
+  );
+  _model: Cesium.Model;
+  _opacity: number;
+  _lla: number[];
 
-  function setAtmosphereColorModifier(
-    a: string,
-    b: typeof api.atmosphereColorModifiers[string]
-  ): void;
-  function removeAtmosphereColorModifier(a: string): void;
-  function applyAtmosphereColorModifiers(): void;
+  setOpacity(a: number): void;
+  setRotation(a: number, b: number): void;
+  setScale(a: number): void;
+  setPositionOrientationAndScale(a: number[], b?: number[], c?: number[]): void;
+  setLocation(a: number[]): void;
+  setColor(a: Cesium.Color): void;
+  setCssColor(a: string): void;
+  changeTexture(a: string, b: string, c?: Cesium.Model): void;
+  hide(): void;
+  show(): void;
+  destroy(): void;
+  remove(): void;
+}
 
-  function showSun(): void;
-  function hideSun(): void;
+export function loadModel(
+  a:
+    | string
+    | (Parameters<typeof Cesium.Model.fromGltf>[0] & { justLoad: boolean })
+): Cesium.Model;
+export function addModelToWorld(a: Cesium.Model): void;
+export function changeModelTexture(a: Cesium.Model, b: string, c: string): void;
+export function toggleModelShadow(a: Cesium.Model, b: Cesium.ShadowMode): void;
+export function removeModelFromWorld(a: Cesium.Model): void;
+export function setModelVisibility(a: Cesium.Model, b: boolean): void;
+export function setModelOpacity(a: Cesium.Model, b: number): void;
+export function destroyModel(a?: Cesium.Model): void;
+export function getModelFromScreenCoords(a: number, b: number): Cesium.Model;
+export function headingPitchRollScaleToFixedFrame(
+  a: Cesium.Cartesian3,
+  b: number,
+  c: number,
+  d: number,
+  e: number[]
+): Cesium.Matrix4;
+export function getPositionOrientationAndScaleMatrix(
+  a: number[],
+  b?: number[],
+  c?: number[]
+): Cesium.Matrix4;
+export function setModelElevation(a: Cesium.Model, b: number): void;
+export function setModelPositionOrientationAndScale(
+  a: Cesium.Model,
+  b: number[] | number,
+  c?: number[] | number,
+  d?: number[] | number
+): void;
 
-  function advancedRenderingQuality(): void;
+export function getModelNode(
+  a: Cesium.Model,
+  b: string | number
+): Cesium.ModelNode;
+export function setModelRotationPosition(
+  a: Cesium.Model,
+  b?: number[],
+  c?: number[]
+): void;
+export function setNodeRotationTranslationScale(
+  a: Cesium.ModelNode,
+  b?: number[],
+  c?: number[],
+  d?: number[]
+): void;
+export function setNodeScale(a: Cesium.ModelNode, b: number[]): void;
+export function setNodeVisibility(a: Cesium.ModelNode, b: boolean): boolean;
+export function getNodePosition(a: Cesium.ModelNode): number[];
+export function getNodeRotation(a?: Cesium.ModelNode): number[];
+export function setEntityPositionOrientation(
+  a: Cesium.Model,
+  b: number[],
+  c: number[]
+): void;
 
-  function renderingQuality(a: number, b?: boolean): void;
+export function initAndGetCamera(): Cesium.Camera;
+export function getFOV(a: Cesium.Camera): number;
+export function setFOV(a: Cesium.Camera, b: number): void;
+export function setCameraPositionAndOrientation(
+  a: Cesium.Camera,
+  b: number[],
+  c: number[]
+): void;
+export function getCameraLla(a: Cesium.Camera): number[];
+export function setCameraLookAt(a: Cesium.Camera, b: number[]): void;
+export function getHeading(a: Cesium.Camera): number;
 
-  function adaptativeRenderingQuality(): void;
+export function debug(a: boolean): void;
 
-  function useNativeShadows(a: boolean): void;
+export function getLlaFromScreencoordDepth(
+  a: number,
+  b: number,
+  c: number
+): number[];
+export function getScreenCoordFromLla(a: number[]): Cesium.Cartesian2;
+export function xyz2lla(a: number[], b: number[]): number[];
 
-  function addLabel(
-    a: string,
-    b: number[],
-    c: Parameters<typeof labels.add>[0]
-  ): { text: string; position: Cesium.Cartesian3 };
-  function updateLabelText(
-    a: { text: string; position: Cesium.Cartesian3 },
-    b: string
-  ): void;
-  function removeLabel(a: Cesium.Label): void;
-  function setLabelPosition(
-    a: { text: string; position: Cesium.Cartesian3 },
-    b: number[]
-  ): void;
+export class cssTransform {
+  constructor();
+  _$element?: JQuery | undefined;
+  positionY: number;
+  positionX: number;
+  rotation: number;
+  offset: {
+    x: number;
+    y: number;
+  };
+  static rotationThreshold: number;
+  static translationThreshold: number;
+  image?: HTMLImageElement | undefined;
+  naturalSize?:
+    | {
+        x: number;
+        y: number;
+      }
+    | undefined;
 
-  function getGuarantiedGroundAltitude(
-    a: number[]
-  ): Promise<[{ height: number }] | Cesium.Cartographic[]>;
-  function getGroundAltitude(a: number[], b: unknown /*no clue*/): number;
+  setDrawOrder(a: number): void;
+  setUrl(a: string): void;
+  setText(a: string): void;
+  setTitle(a: string): void;
+  setClass(a: string): void;
+  setStyle(a: string): void;
+  loaded(): void;
+  setFrameSize(a: { x: number; y: number }): void;
+  setVisibility(a: boolean): void;
+  setAnchor(a: { x: number; y: number }): void;
+  setRotationCenter(a: { x: number; y: number }): void;
+  setSize(a: { x: number; y: number }): void;
+  setPosition(a: { x: number; y: number }): void;
+  setPositionX(a: number): void;
+  setPositionY(a: number): void;
+  setPositionOffset(a: { x: number; y: number }): void;
+  setOpacity(a: number): void;
+  setRotation(a: number): void;
+  destroy(): void;
+}
 
-  function getGroundNormal(a: number[], b: unknown /*no clue*/): number[];
-
-  function createShadow(a: string, b: number): Cesium.Model;
-  function setShadowLocationRotation(
-    a: Cesium.Model,
-    b: number[],
-    c: number[],
-    d: number[]
-  ): void;
-
-  class Model {
-    constructor(
-      a: string,
-      b: Partial<
-        Parameters<typeof Cesium.Model.fromGltf>[0] & { justLoad: boolean }
-      >
-    );
-    _model: Cesium.Model;
-    _opacity: number;
-    _lla: number[];
-
-    setOpacity(a: number): void;
-    setRotation(a: number, b: number): void;
-    setScale(a: number): void;
-    setPositionOrientationAndScale(
-      a: number[],
-      b?: number[],
-      c?: number[]
-    ): void;
-    setLocation(a: number[]): void;
-    setColor(a: Cesium.Color): void;
-    setCssColor(a: string): void;
-    changeTexture(a: string, b: string, c?: Cesium.Model): void;
-    hide(): void;
-    show(): void;
-    destroy(): void;
-    remove(): void;
-  }
-
-  function loadModel(
-    a:
-      | string
-      | (Parameters<typeof Cesium.Model.fromGltf>[0] & { justLoad: boolean })
-  ): Cesium.Model;
-  function addModelToWorld(a: Cesium.Model): void;
-  function changeModelTexture(a: Cesium.Model, b: string, c: string): void;
-  function toggleModelShadow(a: Cesium.Model, b: Cesium.ShadowMode): void;
-  function removeModelFromWorld(a: Cesium.Model): void;
-  function setModelVisibility(a: Cesium.Model, b: boolean): void;
-  function setModelOpacity(a: Cesium.Model, b: number): void;
-  function destroyModel(a?: Cesium.Model): void;
-  function getModelFromScreenCoords(a: number, b: number): Cesium.Model;
-  function headingPitchRollScaleToFixedFrame(
-    a: Cesium.Cartesian3,
-    b: number,
-    c: number,
-    d: number,
-    e: number[]
-  ): Cesium.Matrix4;
-  function getPositionOrientationAndScaleMatrix(
+export class billboard {
+  constructor(
     a: number[],
-    b?: number[],
-    c?: number[]
-  ): Cesium.Matrix4;
-  function setModelElevation(a: Cesium.Model, b: number): void;
-  function setModelPositionOrientationAndScale(
-    a: Cesium.Model,
-    b: number[] | number,
-    c?: number[] | number,
-    d?: number[] | number
-  ): void;
-
-  function getModelNode(a: Cesium.Model, b: string | number): Cesium.ModelNode;
-  function setModelRotationPosition(
-    a: Cesium.Model,
-    b?: number[],
-    c?: number[]
-  ): void;
-  function setNodeRotationTranslationScale(
-    a: Cesium.ModelNode,
-    b?: number[],
-    c?: number[],
-    d?: number[]
-  ): void;
-  function setNodeScale(a: Cesium.ModelNode, b: number[]): void;
-  function setNodeVisibility(a: Cesium.ModelNode, b: boolean): boolean;
-  function getNodePosition(a: Cesium.ModelNode): number[];
-  function getNodeRotation(a?: Cesium.ModelNode): number[];
-  function setEntityPositionOrientation(
-    a: Cesium.Model,
-    b: number[],
-    c: number[]
-  ): void;
-
-  function initAndGetCamera(): Cesium.Camera;
-  function getFOV(a: Cesium.Camera): number;
-  function setFOV(a: Cesium.Camera, b: number): void;
-  function setCameraPositionAndOrientation(
-    a: Cesium.Camera,
-    b: number[],
-    c: number[]
-  ): void;
-  function getCameraLla(a: Cesium.Camera): number[];
-  function setCameraLookAt(a: Cesium.Camera, b: number[]): void;
-  function getHeading(a: Cesium.Camera): number;
-
-  function debug(a: boolean): void;
-
-  function getLlaFromScreencoordDepth(
-    a: number,
-    b: number,
-    c: number
-  ): number[];
-  function getScreenCoordFromLla(a: number[]): Cesium.Cartesian2;
-  function xyz2lla(a: number[], b: number[]): number[];
-
-  class cssTransform {
-    constructor();
-    _$element?: JQuery | undefined;
-    positionY: number;
-    positionX: number;
-    rotation: number;
-    offset: {
-      x: number;
-      y: number;
-    };
-    static rotationThreshold: number;
-    static translationThreshold: number;
-    image?: HTMLImageElement | undefined;
-    naturalSize?:
-      | {
-          x: number;
-          y: number;
-        }
-      | undefined;
-
-    setDrawOrder(a: number): void;
-    setUrl(a: string): void;
-    setText(a: string): void;
-    setTitle(a: string): void;
-    setClass(a: string): void;
-    setStyle(a: string): void;
-    loaded(): void;
-    setFrameSize(a: { x: number; y: number }): void;
-    setVisibility(a: boolean): void;
-    setAnchor(a: { x: number; y: number }): void;
-    setRotationCenter(a: { x: number; y: number }): void;
-    setSize(a: { x: number; y: number }): void;
-    setPosition(a: { x: number; y: number }): void;
-    setPositionX(a: number): void;
-    setPositionY(a: number): void;
-    setPositionOffset(a: { x: number; y: number }): void;
-    setOpacity(a: number): void;
-    setRotation(a: number): void;
-    destroy(): void;
-  }
-
-  class billboard {
-    constructor(
-      a: number[],
-      b: string,
-      c: Partial<{
-        collection: string;
-        image: string;
-        opacity: number;
-        scale: number;
-        rotation: number;
-
-        geofsFixCameraRotation: boolean;
-      }>
-    );
-    _billboard: Cesium.BillboardCollection;
-    _lla: number[];
-    _options: Partial<{
+    b: string,
+    c: Partial<{
       collection: string;
       image: string;
       opacity: number;
       scale: number;
       rotation: number;
+
       geofsFixCameraRotation: boolean;
-    }>;
-    rotationFixCallback?: number | undefined;
+    }>
+  );
+  _billboard: Cesium.BillboardCollection;
+  _lla: number[];
+  _options: Partial<{
+    collection: string;
+    image: string;
+    opacity: number;
+    scale: number;
+    rotation: number;
+    geofsFixCameraRotation: boolean;
+  }>;
+  rotationFixCallback?: number | undefined;
 
-    setUrl(a: string): void;
-    setVisibility(a: boolean): void;
-    setColor(a: Cesium.Color): void;
-    setCssColor(a: string): void;
-    setOpacity(a: number): void;
-    setRotation(a: number): void;
-    setScale(a: number): void;
-    setLocation(a: number[]): void;
-    getLla(a?: any /* a isn't used in the function*/): number[];
-    fixCameraRotation(): void;
-    destroy(): void;
-  }
+  setUrl(a: string): void;
+  setVisibility(a: boolean): void;
+  setColor(a: Cesium.Color): void;
+  setCssColor(a: string): void;
+  setOpacity(a: number): void;
+  setRotation(a: number): void;
+  setScale(a: number): void;
+  setLocation(a: number[]): void;
+  getLla(a?: any /* a isn't used in the export function*/): number[];
+  fixCameraRotation(): void;
+  destroy(): void;
+}
 
-  class groundTexture {
-    constructor(
-      a: number[],
-      b: string,
-      c: Partial<{
-        width: number;
-        image: string;
-        opacity: number;
-        scale: number;
-        rotation: number;
-      }>
-    );
-    lla: number[];
-    _options: {
+export class groundTexture {
+  constructor(
+    a: number[],
+    b: string,
+    c: Partial<{
       width: number;
       image: string;
-      position: Cesium.Cartesian3;
-      opacity?: number;
-      scale?: number;
-      rotation?: number;
-    };
-    _entity: Cesium.Entity;
+      opacity: number;
+      scale: number;
+      rotation: number;
+    }>
+  );
+  lla: number[];
+  _options: {
+    width: number;
+    image: string;
+    position: Cesium.Cartesian3;
+    opacity?: number;
+    scale?: number;
+    rotation?: number;
+  };
+  _entity: Cesium.Entity;
 
-    setUrl(a: string): void;
-    setVisibility(a: boolean): void;
-    setColor(a: Cesium.Color): void;
-    setOpacity(a: number): void;
-    setRotation(a: number): void;
-    setScale(a: number): void;
-    getLla(a?: any /* a isn't used in the function */): number[];
-    destroy(): void;
-  }
+  setUrl(a: string): void;
+  setVisibility(a: boolean): void;
+  setColor(a: Cesium.Color): void;
+  setOpacity(a: number): void;
+  setRotation(a: number): void;
+  setScale(a: number): void;
+  getLla(a?: any /* a isn't used in the export function */): number[];
+  destroy(): void;
+}
 
-  function notify(a: string, b?: string, c?: any /* never used?*/): void;
+export function notify(a: string, b?: string, c?: any /* never used?*/): void;
 
-  namespace analytics {
-    function init(): void;
-    function event(a: string, b: string, c?: string, d?: number): void;
-  }
+export namespace analytics {
+  export function init(): void;
+  export function event(a: string, b: string, c?: string, d?: number): void;
+}
 
-  function postMessage(a: any /* can accept anything */): void;
+export function postMessage(a: any /* can accept anything */): void;
 
-  class Canvas {
-    constructor(
-      a: Partial<{
-        width: number;
-        height: number;
-        color: string;
-        patchSize: number;
-      }>
-    );
-    canvas: HTMLCanvasElement;
-    context: CanvasRenderingContext2D;
-    _options: Partial<{
+export class Canvas {
+  constructor(
+    a: Partial<{
       width: number;
       height: number;
       color: string;
       patchSize: number;
-    }>;
+    }>
+  );
+  canvas: HTMLCanvasElement;
+  context: CanvasRenderingContext2D;
+  _options: Partial<{
+    width: number;
+    height: number;
+    color: string;
     patchSize: number;
-    _imageElements: HTMLImageElement[];
+  }>;
+  patchSize: number;
+  _imageElements: HTMLImageElement[];
 
-    loadImage(a: string | string[]): Promise<HTMLCanvasElement>;
-    paintAndResolve(a: (value: HTMLCanvasElement) => void): void;
-    makeImageElement(): HTMLImageElement;
-    getImageAsURLData(): string;
-    destroy(): void;
-  }
+  loadImage(a: string | string[]): Promise<HTMLCanvasElement>;
+  paintAndResolve(a: (value: HTMLCanvasElement) => void): void;
+  makeImageElement(): HTMLImageElement;
+  getImageAsURLData(): string;
+  destroy(): void;
+}
 
-  class FlatRunwayTerrainProvider {
-    constructor(
-      a: Partial<{
-        baseProvider: Cesium.TerrainProvider;
-        maximumLevel: number;
-        bypass: boolean;
-      }>
-    );
-    baseProvider: Cesium.TerrainProvider;
-    regions: {
-      [name: string]: number[];
-    };
+export class FlatRunwayTerrainProvider {
+  constructor(
+    a: Partial<{
+      baseProvider: Cesium.TerrainProvider;
+      maximumLevel: number;
+      bypass: boolean;
+    }>
+  );
+  baseProvider: Cesium.TerrainProvider;
+  regions: {
+    [name: string]: number[];
+  };
+  tiles: Record<string, unknown>;
+  minFlatteningLevel: number;
+  defaultMinFlatteningLevel: number;
+  maximumLevel: number;
+  defaultMaximumLevel: number;
+  flatten: boolean;
+  aName: "FlatRunwayTerrainProvider";
+
+  get availability(): Cesium.TileAvailability;
+  get credit(): Cesium.Credit;
+  get errorEvent(): Cesium.Event;
+  get hasVertexNormals(): boolean;
+  get hasWaterMask(): boolean;
+  get ready(): boolean;
+  get readyPromise(): Promise<boolean>;
+  get tilingScheme(): Cesium.TilingScheme;
+
+  getLevelMaximumGeometricError(a: number): number;
+  getTileDataAvailable(a: number, b: number, c: number): boolean;
+  setMaximumLevel(a: number): void;
+  addRunway(a: runways.runway): void;
+  requestTileGeometry(
+    a: number,
+    b: number,
+    c: number,
+    d: Cesium.Request
+  ): Cesium.TerrainData;
+  getPromise(a: any, b: any, c: any): Promise<any>; // no clue
+}
+export namespace waterDetection {
+  export let initialized: boolean;
+  export let canvasAPI: Canvas | null;
+  export let blur: number;
+  export let waterColour: string;
+  export let depthSlope: number;
+  export let depthOffset: number;
+  export let waterBlueColorRange: number[];
+  export let waterRedColorRange: number[];
+  export let tileSize: number;
+  export let zoomLevel: number;
+  export let lastTileURL: string | null;
+  export let lastDepth: number;
+
+  export function create(): void;
+  export function reset(): void;
+  export function getWaterDepth(a: number, b: number): string | number | null;
+  export function destroy(): void;
+}
+
+export class map {
+  _holder: HTMLElement;
+  map: L.Map;
+  icons: {
+    yellow: L.Icon;
+    blue: L.Icon;
+    traffic: L.Icon;
+  };
+
+  constructor(
+    a: Partial<{ zoom: number; holder: JQuery }>,
+    b: number,
+    c: number
+  );
+  init(): void;
+  updateMap(a: number, b: number): void;
+  getCenterLla(a?: number, b?: number): number[];
+  addLayeredMarker(
+    a: string,
+    b: [string, number, number, number, number, number] & {
+      marker: L.Marker;
+    },
+    c: number,
+    d: number
+  ): void;
+  getVisibleTiles(
+    a: L.LatLngBounds,
+    b: number
+  ): { [key in `${string}/${string}`]: true };
+  showTile(
+    a: typeof map.runwayLayers["major" | "minor"],
+    b: `${string}/${string}`
+  ): void;
+  hideTile(
+    a: typeof map.runwayLayers["major" | "minor"],
+    b: `${string}/${string}`
+  ): void;
+  updateMarkerLayers(): void;
+  setGenericLocationPopup(): void;
+  mapClickHandler(a: Event): void;
+  setTooltipVisibility(a: boolean): void;
+}
+export namespace map {
+  export let runwayMarkerRadius: number;
+  export let defaultLayer: {
+    minZoom: number;
+    maxZoom: number;
+    tileSize: number;
     tiles: Record<string, unknown>;
-    minFlatteningLevel: number;
-    defaultMinFlatteningLevel: number;
-    maximumLevel: number;
-    defaultMaximumLevel: number;
-    flatten: boolean;
-    aName: "FlatRunwayTerrainProvider";
-
-    get availability(): Cesium.TileAvailability;
-    get credit(): Cesium.Credit;
-    get errorEvent(): Cesium.Event;
-    get hasVertexNormals(): boolean;
-    get hasWaterMask(): boolean;
-    get ready(): boolean;
-    get readyPromise(): Promise<boolean>;
-    get tilingScheme(): Cesium.TilingScheme;
-
-    getLevelMaximumGeometricError(a: number): number;
-    getTileDataAvailable(a: number, b: number, c: number): boolean;
-    setMaximumLevel(a: number): void;
-    addRunway(a: runways.runway): void;
-    requestTileGeometry(
-      a: number,
-      b: number,
-      c: number,
-      d: Cesium.Request
-    ): Cesium.TerrainData;
-    getPromise(a: any, b: any, c: any): Promise<any>; // no clue
-  }
-  namespace waterDetection {
-    let initialized: boolean;
-    let canvasAPI: Canvas | null;
-    let blur: number;
-    let waterColour: string;
-    let depthSlope: number;
-    let depthOffset: number;
-    let waterBlueColorRange: number[];
-    let waterRedColorRange: number[];
-    let tileSize: number;
-    let zoomLevel: number;
-    let lastTileURL: string | null;
-    let lastDepth: number;
-
-    function create(): void;
-    function reset(): void;
-    function getWaterDepth(a: number, b: number): string | number | null;
-    function destroy(): void;
-  }
-
-  class map {
-    _holder: HTMLElement;
-    map: L.Map;
-    icons: {
-      yellow: L.Icon;
-      blue: L.Icon;
-      traffic: L.Icon;
-    };
-
-    constructor(
-      a: Partial<{ zoom: number; holder: JQuery }>,
-      b: number,
-      c: number
-    );
-    init(): void;
-    updateMap(a: number, b: number): void;
-    getCenterLla(a?: number, b?: number): number[];
-    addLayeredMarker(
-      a: string,
-      b: [string, number, number, number, number, number] & {
-        marker: L.Marker;
-      },
-      c: number,
-      d: number
-    ): void;
-    getVisibleTiles(
-      a: L.LatLngBounds,
-      b: number
-    ): { [key in `${string}/${string}`]: true };
-    showTile(
-      a: typeof api.map.runwayLayers["major" | "minor"],
-      b: `${string}/${string}`
-    ): void;
-    hideTile(
-      a: typeof api.map.runwayLayers["major" | "minor"],
-      b: `${string}/${string}`
-    ): void;
-    updateMarkerLayers(): void;
-    setGenericLocationPopup(): void;
-    mapClickHandler(a: Event): void;
-    setTooltipVisibility(a: boolean): void;
-  }
-  namespace map {
-    let runwayMarkerRadius: number;
-    let defaultLayer: {
+  };
+  export let instance: map;
+  export let runwayLayers: {
+    [key in "major" | "minor"]: {
       minZoom: number;
       maxZoom: number;
       tileSize: number;
-      tiles: Record<string, unknown>;
-    };
-    let instance: map;
-    let runwayLayers: {
-      [key in "major" | "minor"]: {
-        minZoom: number;
-        maxZoom: number;
-        tileSize: number;
-        tiles: {
-          [key in `${string}/${string}`]: Array<
-            [string, number, number, number, number, number] & {
-              marker: L.CircleMarker;
-            }
-          >;
-        };
-        visibileTiles?:
-          | {
-              [key in `${string}/${string}`]: Array<
-                [string, number, number, number, number, number] & {
-                  marker: L.CircleMarker;
-                }
-              >;
-            }
-          | undefined;
+      tiles: {
+        [key in `${string}/${string}`]: Array<
+          [string, number, number, number, number, number] & {
+            marker: L.CircleMarker;
+          }
+        >;
       };
+      visibileTiles?:
+        | {
+            [key in `${string}/${string}`]: Array<
+              [string, number, number, number, number, number] & {
+                marker: L.CircleMarker;
+              }
+            >;
+          }
+        | undefined;
     };
-    let majorRunwayMarkers: [];
-    let minorRunwayMarkers: [];
-    let flightPath: null | LPolylinePlotter;
-    let flightPathOn: boolean;
+  };
+  export let majorRunwayMarkers: [];
+  export let minorRunwayMarkers: [];
+  export let flightPath: null | LPolylinePlotter;
+  export let flightPathOn: boolean;
 
-    function runwayMarkerPopup(a: L.CircleMarker): string;
-    function addRunwayMarker(
-      a: typeof api.map.runwayLayers[
-        | "major"
-        | "minor"]["tiles"][`${string}/${string}`],
-      b?: map
-    ): L.CircleMarker;
+  export function runwayMarkerPopup(a: L.CircleMarker): string;
+  export function addRunwayMarker(
+    a: typeof map.runwayLayers[
+      | "major"
+      | "minor"]["tiles"][`${string}/${string}`],
+    b?: map
+  ): L.CircleMarker;
 
-    class planeMarker {
-      style: string;
-      apiMap: typeof map.instance;
-      label: string;
-      _marker: L.Marker;
+  export class planeMarker {
+    style: string;
+    apiMap: typeof map.instance;
+    label: string;
+    _marker: L.Marker;
 
-      constructor(
-        a: number,
-        b: number,
-        c: map,
-        d?: string,
-        e?: number,
-        f?: string
-      );
-      updatePlaneMarker(a: number, b: number, c: number, d?: string): void;
-      destroyPlaneMarker(a?: any /* a isn't used */): void;
-      resetTooltip(): void;
-    }
-
-    function createPath(a: typeof map.instance, b: L.LatLngExpression[]): void;
-    function stopCreatePath(): void;
-    function clearPath(): void;
-    function getPathPoints(): [];
-    function setPathPoints(a: L.LatLngExpression[]): void;
+    constructor(
+      a: number,
+      b: number,
+      c: map,
+      d?: string,
+      e?: number,
+      f?: string
+    );
+    updatePlaneMarker(a: number, b: number, c: number, d?: string): void;
+    destroyPlaneMarker(a?: any /* a isn't used */): void;
+    resetTooltip(): void;
   }
 
-  function reverserGeocode(a: string, b: (a: number, b: number) => void): void;
-  function checkIfMobile(): void;
-  function isMobile(): boolean;
-  function hasOrientation(): boolean;
-  function getPlatform(): null | string;
-  function doRetro(): void;
+  export function createPath(
+    a: typeof map.instance,
+    b: L.LatLngExpression[]
+  ): void;
+  export function stopCreatePath(): void;
+  export function clearPath(): void;
+  export function getPathPoints(): [];
+  export function setPathPoints(a: L.LatLngExpression[]): void;
 }
-export default api;
+
+export function reverserGeocode(
+  a: string,
+  b: (a: number, b: number) => void
+): void;
+export function checkIfMobile(): void;
+export function isMobile(): boolean;
+export function hasOrientation(): boolean;
+export function getPlatform(): null | string;
+export function doRetro(): void;
