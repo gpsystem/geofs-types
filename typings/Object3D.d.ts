@@ -1,7 +1,13 @@
+/**
+ * Can be accessed with `Object3D`.
+ * @module Object3D
+ * @ignore
+ * @category Global
+ */
 import type * as Cesium from "cesium";
-import fx from "./geofs/fx";
+import { fx } from "./geofs/fx";
 
-declare class Object3D {
+export class Object3D {
   static utilities: {
     getPointLla(a: number[] | unknown, b?: number[]): number[];
   };
@@ -110,5 +116,3 @@ declare class Object3D {
   propagateToTree(a: string, b: any[]): void;
   destroy(): void;
 }
-
-export default Object3D;

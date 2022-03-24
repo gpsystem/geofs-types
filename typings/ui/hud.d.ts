@@ -1,12 +1,13 @@
-declare namespace hud {
-  let stall: Overlay;
-  let stallAlarmSet: boolean;
-  let stallAlarmOn: boolean;
-  let stallAlarmOnTimeout: number;
+/**
+ * Can be accessed with `ui.hud`.
+ * @module hud
+ * @category ui
+ */
+export let stall: Overlay;
+export let stallAlarmSet: boolean;
+export let stallAlarmOn: boolean;
+export let stallAlarmOnTimeout: number;
 
-  function init(): void;
-  function stallAlarm(a: boolean): void;
-  function autopilotIndicator(a: boolean): void;
-}
-
-export default hud;
+export function init(): void;
+export function stallAlarm(a: boolean): void;
+export function autopilotIndicator(a: boolean): void;

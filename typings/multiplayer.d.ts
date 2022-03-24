@@ -1,24 +1,29 @@
+/**
+ * Can be accessed with `multiplayer`.
+ * @module multiplayer
+ * @category Global
+ */
 import type * as Cesium from "cesium";
-import api from "./geofs/api";
-import fx from "./geofs/fx";
+import * as api from "./geofs/api";
+import { fx } from "./geofs/fx";
 
-declare namespace multiplayer {
-  let nbUsers: number;
-  let users: { [key: string]: User };
-  let visibleUsers: { [key: string]: User };
-  let numberOfLOD: number;
-  let captainIconUrl: string;
-  let premiumIconUrl: string;
-  let minUpdateDelay: number;
-  let mapInterval: number;
-  let hearbeatLife: number;
-  let userLife: number;
-  let userHalfLife: number;
-  let userHeartBeatPeriod: number;
-  let trafficLife: number;
-  let trafficHalfLife: number;
-  let trafficHeartBeatPeriod: number;
-  let contrailEmitters: {
+export namespace multiplayer {
+  export let nbUsers: number;
+  export let users: { [key: string]: User };
+  export let visibleUsers: { [key: string]: User };
+  export let numberOfLOD: number;
+  export let captainIconUrl: string;
+  export let premiumIconUrl: string;
+  export let minUpdateDelay: number;
+  export let mapInterval: number;
+  export let hearbeatLife: number;
+  export let userLife: number;
+  export let userHalfLife: number;
+  export let userHeartBeatPeriod: number;
+  export let trafficLife: number;
+  export let trafficHalfLife: number;
+  export let trafficHeartBeatPeriod: number;
+  export let contrailEmitters: {
     1: {
       lod: number;
       anchor: null;
@@ -64,24 +69,24 @@ declare namespace multiplayer {
       rotationAxis: number;
     };
   };
-  let mapUpdatePeriod: number;
-  let myId: string;
-  let lastRequest: null | JQuery.jqXHR;
-  let lastResponse: typeof ServerResponse;
-  let lastJoinedCoordinates: string;
-  let lastRequestTime: number;
-  let serverTimeOffset: number;
-  let labelVisibilityRange: number;
-  let farVisibilityRange: number;
-  let lowVisibilityRange: number;
-  let nearVisibilityRange: number;
-  let chatMessage: string;
-  let chatMessageId: number;
-  let on: boolean;
-  let started: boolean;
-  let callsignPlacemarkAltitude: number;
-  let updateFunctions: [];
-  let labelOptions: {
+  export let mapUpdatePeriod: number;
+  export let myId: string;
+  export let lastRequest: null | JQuery.jqXHR;
+  export let lastResponse: typeof ServerResponse;
+  export let lastJoinedCoordinates: string;
+  export let lastRequestTime: number;
+  export let serverTimeOffset: number;
+  export let labelVisibilityRange: number;
+  export let farVisibilityRange: number;
+  export let lowVisibilityRange: number;
+  export let nearVisibilityRange: number;
+  export let chatMessage: string;
+  export let chatMessageId: number;
+  export let on: boolean;
+  export let started: boolean;
+  export let callsignPlacemarkAltitude: number;
+  export let updateFunctions: [];
+  export let labelOptions: {
     [key in "default" | "xavier" | "premium" | "traffic"]: {
       font: "bold 12pt sans-serif";
       style: Cesium.LabelStyle.FILL_AND_OUTLINE;
@@ -94,7 +99,7 @@ declare namespace multiplayer {
       translucencyByDistance: Cesium.NearFarScalar;
     };
   };
-  let iconOptions: {
+  export let iconOptions: {
     [key in "premium" | "xavier"]: {
       image: string;
       horizontalOrigin: Cesium.HorizontalOrigin;
@@ -106,11 +111,11 @@ declare namespace multiplayer {
       height: number;
     };
   };
-  let nextUpdateTime: number | null;
-  let avgPing: number;
-  let minPing: number;
+  export let nextUpdateTime: number | null;
+  export let avgPing: number;
+  export let minPing: number;
 
-  let flightSharing: {
+  export let flightSharing: {
     requestTimeout: number;
     host: boolean;
     control: boolean;
@@ -131,7 +136,7 @@ declare namespace multiplayer {
     stop(): void;
   };
 
-  class User {
+  export class User {
     id: string;
     acid: number | null;
     callsign: string;
@@ -184,42 +189,40 @@ declare namespace multiplayer {
     isOnGround(): boolean;
   }
 
-  function init(): void;
-  function stop(): void;
-  function start(): void;
-  function startUpdates(): void;
-  function stopUpdates(a?: any /*not unused*/): void;
-  function getServerTime(): number;
-  function getUser(a: string): typeof users[string];
+  export function init(): void;
+  export function stop(): void;
+  export function start(): void;
+  export function startUpdates(): void;
+  export function stopUpdates(a?: any /*not unused*/): void;
+  export function getServerTime(): number;
+  export function getUser(a: string): typeof users[string];
 
-  function updateUsers(a?: typeof ServerResponse.users): void;
-  function startMapUpdate(): void;
-  function update(a: number): void;
-  function errorCallback(a?: JQuery.jqXHR<any>): void;
-  function updateCallback(a?: typeof ServerResponse): void;
-  function sendUpdate(): void;
-  function blockUser(a: string): void;
-  function banUser(a: string): void;
-  function loadModels(): Cesium.Model[];
-  function setNbUsers(a: number): void;
-  function setChatMessage(a: string): void;
+  export function updateUsers(a?: typeof ServerResponse.users): void;
+  export function startMapUpdate(): void;
+  export function update(a: number): void;
+  export function errorCallback(a?: JQuery.jqXHR<any>): void;
+  export function updateCallback(a?: typeof ServerResponse): void;
+  export function sendUpdate(): void;
+  export function blockUser(a: string): void;
+  export function banUser(a: string): void;
+  export function loadModels(): Cesium.Model[];
+  export function setNbUsers(a: number): void;
+  export function setChatMessage(a: string): void;
 }
 
-export default multiplayer;
-
-declare namespace ServerResponse {
-  let chatMessages: {
+export namespace ServerResponse {
+  export let chatMessages: {
     acid: number;
     cls: string;
     cs: string;
     msg: string;
     uid: string;
   }[];
-  let lastMsgId: number;
-  let myId: string;
-  let serverTime: number;
-  let userCount: number;
-  let users: {
+  export let lastMsgId: number;
+  export let myId: string;
+  export let serverTime: number;
+  export let userCount: number;
+  export let users: {
     ac: number;
     ad?: boolean;
     acid?: number | null;
@@ -237,5 +240,3 @@ declare namespace ServerResponse {
     ve: number[];
   }[];
 }
-
-export { ServerResponse };

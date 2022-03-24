@@ -1,3 +1,8 @@
+/**
+ * Can be accessed with `geofs.debug`.
+ * @module debug
+ * @category geofs
+ */
 import type * as Cesium from "cesium";
 
 interface Debug {
@@ -43,10 +48,6 @@ interface Debug {
   drawAtmosphere(a: number[]): void;
 }
 
-declare namespace d {
-  let debug: Debug & {
-    [key: string]: HTMLElement; // debug.watch makes this necessary
-  };
-}
-
-export default d.debug;
+export const debug: Debug & {
+  [key: string]: HTMLElement; // debug.watch makes this necessary
+};

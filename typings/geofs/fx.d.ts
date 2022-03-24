@@ -1,6 +1,11 @@
+/**
+ * Can be accessed with `geofs.fx`.
+ * @module fx
+ * @category geofs
+ */
 import type * as Cesium from "cesium";
-import api from "./api";
-import runways from "./runways";
+import * as api from "./api";
+import * as runways from "./runways";
 
 declare namespace fx {
   let texture2url: {
@@ -398,7 +403,7 @@ declare namespace fx {
   };
 }
 
-export default fx;
+export { fx };
 
 export class runwaysLights {
   runway: runways.runway;

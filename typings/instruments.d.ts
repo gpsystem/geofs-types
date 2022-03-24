@@ -1,3 +1,8 @@
+/**
+ * Can be accessed with `instruments`.
+ * @module instruments
+ * @category Global
+ */
 import Definition, { Instrument, Animation } from "./geofs/aircraftDefinition";
 
 type DefaultInstruments =
@@ -26,55 +31,53 @@ type DefaultIncludes =
   | "3d-oil"
   | "3d-PFD";
 
-declare namespace instruments {
-  let stackPosition: {
-    x: number;
-    y: number;
-  };
+export let stackPosition: {
+  x: number;
+  y: number;
+};
 
-  let margins: number[];
-  let defaultMargin: number;
-  let visible: boolean;
-  let list: {
-    [key in DefaultInstruments | "wind"]: Indicator;
-  };
-  let groups: {
-    all: typeof list;
-  };
-  let gaugeOverlayPosition: number[];
-  let gaugeOverlayOrigin: number[];
+export let margins: number[];
+export let defaultMargin: number;
+export let visible: boolean;
+export let list: {
+  [key in DefaultInstruments | "wind"]: Indicator;
+};
+export let groups: {
+  all: typeof list;
+};
+export let gaugeOverlayPosition: number[];
+export let gaugeOverlayOrigin: number[];
 
-  let definitions: {
-    [key in DefaultInstruments]: Instrument;
-  };
-  let definitionsMobile: never; // Only used when running on mobile; can't bother typing them, since it won't be useful.
-  let definitions3DOverlay: never; // Only used when running on mobile; can't bother typing them, since it won't be useful.
+export let definitions: {
+  [key in DefaultInstruments]: Instrument;
+};
+export let definitionsMobile: never; // Only used when running on mobile; can't bother typing them, since it won't be useful.
+export let definitions3DOverlay: never; // Only used when running on mobile; can't bother typing them, since it won't be useful.
 
-  let includesDefinitions: {
-    [key in Exclude<DefaultIncludes, "3d-PFD">]: [
-      {
-        model: string;
-      },
-      ...{
-        name: string;
-        node: string;
-        animations?: Animation[];
-      }[]
-    ];
-  } & {
-    "3d-PFD": [Record<string, unknown>];
-  };
-  let resizeHandler: any; // TODO me
+export let includesDefinitions: {
+  [key in Exclude<DefaultIncludes, "3d-PFD">]: [
+    {
+      model: string;
+    },
+    ...{
+      name: string;
+      node: string;
+      animations?: Animation[];
+    }[]
+  ];
+} & {
+  "3d-PFD": [Record<string, unknown>];
+};
+export let resizeHandler: any; // TODO me
 
-  function init(a?: "default" | "jet" | Definition[0]["instruments"]): void;
-  function toggle(): void;
-  function add(a: Indicator, b: keyof typeof list): void;
-  function hide(a?: string): void;
-  function show(a?: string): void;
-  function rescale(): void;
-  function update(a?: boolean): void;
-  function updateCockpitPositions(): void;
-  function updateScreenPositions(): void;
-}
-
-export default instruments;
+export function init(
+  a?: "default" | "jet" | Definition[0]["instruments"]
+): void;
+export function toggle(): void;
+export function add(a: Indicator, b: keyof typeof list): void;
+export function hide(a?: string): void;
+export function show(a?: string): void;
+export function rescale(): void;
+export function update(a?: boolean): void;
+export function updateCockpitPositions(): void;
+export function updateScreenPositions(): void;

@@ -1,326 +1,328 @@
-import { FrameCallback } from "../index";
-import apiNamespace from "./api";
-import runwaysNamespace from "./runways";
-import animationNamespace from "./animation";
-import utilsNamespace from "./utils";
-import fxNamespace, { runwaysLights as fxRunwaysLights } from "./fx";
-import debugNamespace from "./debug";
-import { preferencesDefault } from "./preferences";
-import aircraftNamespace from "./aircraft";
-import cameraNamespace from "./camera";
-import type * as Cesium from "cesium";
 /**
- * Types living in the geofs global variable
+ * Can be accessed with `geofs`.
+ * @module geofs
+ * @category Global
  */
-declare namespace geofs {
-  /*
-       Variables defined in the namespace:
-     */
-  let simpleShadowOn: boolean;
-  let shadowsDisabled: boolean;
+import { FrameCallback } from "../index";
+import * as apiNamespace from "./api";
+import * as runwaysNamespace from "./runways";
+import * as animationNamespace from "./animation";
+import * as utilsNamespace from "./utils";
+import { fx as fxNamespace, runwaysLights as fxRunwaysLights } from "./fx";
+import { debug as debugNamespace } from "./debug";
+import { preferencesDefault } from "./preferences";
+import * as aircraftNamespace from "./aircraft";
+import * as cameraNamespace from "./camera";
+import type * as Cesium from "cesium";
 
-  const frameCallbackStack: { [key: string]: FrameCallback };
-  const api: typeof apiNamespace;
-  function fromHeadingPitchRoll(
-    a: number,
-    b: number,
-    c: number,
-    d?: Cesium.Quaternion
-  ): Cesium.Quaternion;
-  function fromHeadingPitchRoll(
-    a: number,
-    b: number,
-    c: number,
-    d?: Cesium.Quaternion
-  ): Cesium.Quaternion;
+export let simpleShadowOn: boolean;
+export let shadowsDisabled: boolean;
 
-  const runways: typeof runwaysNamespace;
-  const animation: typeof animationNamespace;
-  const utils: typeof utilsNamespace;
-  const ajax: {
-    post(
-      a: string,
-      b: any,
-      c: JQuery.TypeOrArray<JQuery.Ajax.SuccessCallback<any>>,
-      d: (
-        arg0: JQuery.jqXHR,
-        arg1: JQuery.Ajax.ErrorTextStatus,
-        arg2: string
-      ) => void
-    ): JQuery.jqXHR;
-  };
-  const fx: typeof fxNamespace;
-  const debug: typeof debugNamespace;
-  let debugOn: boolean;
-  const aircraft: typeof aircraftNamespace;
-  const camera: typeof cameraNamespace;
+export const frameCallbackStack: { [key: string]: FrameCallback };
+export const api: typeof apiNamespace;
+export function fromHeadingPitchRoll(
+  a: number,
+  b: number,
+  c: number,
+  d?: Cesium.Quaternion
+): Cesium.Quaternion;
+export function fromHeadingPitchRoll(
+  a: number,
+  b: number,
+  c: number,
+  d?: Cesium.Quaternion
+): Cesium.Quaternion;
 
-  // some random variables that are under geofs:
-  function selectDropdown(a: HTMLElement, b: number): void;
-  function getLink(): void;
-  function isArray(a: any): boolean;
-  function loadModel(
+export const runways: typeof runwaysNamespace;
+export const animation: typeof animationNamespace;
+export const utils: typeof utilsNamespace;
+
+export const ajax: {
+  post(
     a: string,
-    b?: Parameters<typeof Cesium.Model.fromGltf>[0] & { justLoad: boolean }
-  ): Cesium.Model;
-  function setModelLocation(a: apiNamespace.Model, b: number | number[]): void;
-  function getGroundAltitude(
-    a: number,
-    b: number,
-    c: unknown
-  ): { location: number[]; [key: string]: any };
-  function getCollisionResult(
-    a: number[],
-    b?: number[],
-    c?: { [key: string]: any; location: number[]; normal: number[] },
-    d?: unknown
-  ): { [key: string]: any; location: number[] };
-  function getAltitudeAtPointFromCollisionResult(
-    a: { [key: string]: any; location: number[]; normal: number[] },
-    b: number[]
-  ): number;
-  function getNormalFromCollision(
-    a: number[] | { [key: string]: any; normal: number[] },
-    b: unknown
-  ): number[];
+    b: any,
+    c: JQuery.TypeOrArray<JQuery.Ajax.SuccessCallback<any>>,
+    d: (
+      arg0: JQuery.jqXHR,
+      arg1: JQuery.Ajax.ErrorTextStatus,
+      arg2: string
+    ) => void
+  ): JQuery.jqXHR;
+};
+export const fx: typeof fxNamespace;
+export const debug: typeof debugNamespace;
+export let debugOn: boolean;
+export const aircraft: typeof aircraftNamespace;
 
-  function useSimpleShadow(a: boolean): void;
-  function disableShadows(): void;
-  function enableShadows(): void;
+export const camera: typeof cameraNamespace;
 
-  class shadow {
-    shadow: apiNamespace.Model;
-    context: { [key: string]: any };
-    constructor(a: string, b: number);
+// some random variables that are under geofs:
+export function selectDropdown(a: HTMLElement, b: number): void;
+export function getLink(): void;
+export function isArray(a: any): boolean;
+export function loadModel(
+  a: string,
+  b?: Parameters<typeof Cesium.Model.fromGltf>[0] & { justLoad: boolean }
+): Cesium.Model;
+export function setModelLocation(
+  a: apiNamespace.Model,
+  b: number | number[]
+): void;
+export function getGroundAltitude(
+  a: number,
+  b: number,
+  c: unknown
+): { location: number[]; [key: string]: any };
+export function getCollisionResult(
+  a: number[],
+  b?: number[],
+  c?: { [key: string]: any; location: number[]; normal: number[] },
+  d?: unknown
+): { [key: string]: any; location: number[] };
+export function getAltitudeAtPointFromCollisionResult(
+  a: { [key: string]: any; location: number[]; normal: number[] },
+  b: number[]
+): number;
+export function getNormalFromCollision(
+  a: number[] | { [key: string]: any; normal: number[] },
+  b: unknown
+): number[];
 
-    setLocationRotation(a: number[], b?: any): void;
-    destroy(): void;
-  }
+export function useSimpleShadow(a: boolean): void;
+export function disableShadows(): void;
+export function enableShadows(): void;
 
-  function CesiumCoord2tilePatch(
-    a: number,
-    b: number,
-    c: number,
-    d: number,
-    e: Cesium.TilingScheme
-  ): { x: number; y: number }[];
-  const WGS84TileSize: number;
-  function WGS84Coord2tile(
-    a: number,
-    b: number,
-    c: number
-  ): { x: number; y: number };
-  function WGS84Coord2tileQuad(
-    a: number,
-    b: number,
-    c: number
-  ): { x: number; y: number }[];
-  function WGS84Tile2coord(
-    a: number,
-    b: number,
-    c: number
-  ): { lat: number; lon: number };
-  function coord2tile(
-    a: number,
-    b: number,
-    c: number
-  ): { x: number; y: number };
-  function coord2CenterTile(
-    a: number,
-    b: number,
-    c: number
-  ): { x: number; y: number }[];
-  function coord2tileQuad(
-    a: number,
-    b: number,
-    c: number
-  ): { x: number; y: number }[];
-  function tile2coord(
-    a: number,
-    b: number,
-    c: number
-  ): { lat: number; lon: number };
-  function getLatLonMatrixcoord(a: number, b: number, c: number): string;
+export class shadow {
+  shadow: apiNamespace.Model;
+  context: { [key: string]: any };
+  constructor(a: string, b: number);
 
-  const perlin: {
-    size: number;
-    gradient: number[][];
-    normalizationRatio: number;
+  setLocationRotation(a: number[], b?: any): void;
+  destroy(): void;
+}
 
-    lerp(a: number, b: number, c: number): number;
-    dotGridGradient(a: number, b: number, c: number, d: number): number;
-    get(a: number, b: number, c: number): number;
-  };
+export function CesiumCoord2tilePatch(
+  a: number,
+  b: number,
+  c: number,
+  d: number,
+  e: Cesium.TilingScheme
+): { x: number; y: number }[];
+export const WGS84TileSize: number;
+export function WGS84Coord2tile(
+  a: number,
+  b: number,
+  c: number
+): { x: number; y: number };
+export function WGS84Coord2tileQuad(
+  a: number,
+  b: number,
+  c: number
+): { x: number; y: number }[];
+export function WGS84Tile2coord(
+  a: number,
+  b: number,
+  c: number
+): { lat: number; lon: number };
+export function coord2tile(
+  a: number,
+  b: number,
+  c: number
+): { x: number; y: number };
+export function coord2CenterTile(
+  a: number,
+  b: number,
+  c: number
+): { x: number; y: number }[];
+export function coord2tileQuad(
+  a: number,
+  b: number,
+  c: number
+): { x: number; y: number }[];
+export function tile2coord(
+  a: number,
+  b: number,
+  c: number
+): { lat: number; lon: number };
+export function getLatLonMatrixcoord(a: number, b: number, c: number): string;
 
-  const includes: {
+export const perlin: {
+  size: number;
+  gradient: number[][];
+  normalizationRatio: number;
+
+  lerp(a: number, b: number, c: number): number;
+  dotGridGradient(a: number, b: number, c: number, d: number): number;
+  get(a: number, b: number, c: number): number;
+};
+
+export const includes: {
+  [key: string]: any;
+};
+export let PRODUCTION: boolean;
+export let killCache: string;
+export let isApp: boolean;
+export let autoStart: boolean;
+export let manualStart: boolean;
+export let viewport: HTMLElement;
+export let canvas: JQuery;
+export let resizeHandlers: { [key: number]: () => void };
+export let resizeHandlersIndex: number;
+export let lastTime: number;
+export const initialRunways: number[][];
+export let lastFlight: {
+  coordinates: number[];
+  aircraftId: number;
+  liveryId: string;
+};
+export let lastFlightDefault: Partial<typeof lastFlight>;
+export let world: undefined;
+export let initialCoordinates: number[];
+export function init(): void;
+export function start(a?: number, b?: number[]): void;
+export function unload(): void;
+export function initLoggedInUser(): void;
+export function terrainProbbingDone(): void;
+export const terrainProbingDuration: number;
+export function probeTerrain(): void;
+export let pause: boolean;
+export let pauseLevel: number;
+export let absolutePause: boolean;
+export function togglePause(): void;
+export function isPaused(): true | void;
+export function doPause(a?: number, b?: boolean): void;
+export function undoPause(a?: number): void;
+export function frameCallback(a: number): void;
+export function flyTo(a?: number[], b?: boolean): void;
+export function flyToCamera(): void;
+export function resetFlight(): void;
+
+// preferences
+export let preferences: { version: string } & preferencesDefault;
+export let userRecord: {
+  id: string;
+  email: string;
+  googleid: string | null;
+  facebookid: string | null;
+  deviceid: string | null;
+  schoolid: string | null;
+  externalid: string | null;
+  firstname: string;
+  lastname: string;
+  callsign: string;
+  sessionId: string;
+  created: Date;
+  active: string;
+  ip: string;
+  role: string;
+  muted: string;
+  banned: string;
+  lastlogin: Date | null;
+  mailing: string;
+  password: string;
+  flighttime: string;
+  preferences: any;
+  mutelist: string;
+  premium: any;
+  transactionDate: Date | null;
+  transactionReference: string | null;
+  transactionStatus: string | null;
+  transactionMessage: string | null;
+  subscribed: boolean;
+  subscriptionStart: Date | null;
+  subscriptionEnd: Date | null;
+  trial: string;
+  subscriptionDaysLeft: string;
+  muteList: any[];
+};
+export let preferencesDefault: preferencesDefault;
+export let preferencesKeycodeLookup: { [key: number]: string };
+export function initPreferences(): void;
+export function isPreferencePanelOpen(): boolean;
+export function saveFlight(): void;
+export function savePreferences(): void;
+export function resetPreferences(): void;
+export function readPreferences(a?: () => any): void;
+export function populateButtonAssignments(): void;
+export function populateAxesAssignments(): void;
+export function populateKeyAssignments(): void;
+export function preferencesDebugInfo(): void;
+export function preferencesTestJoystick(): boolean;
+export function preferencesTestOrientation(): boolean;
+export function preferencesStartFeedback(): void;
+export function preferencesStopFeedback(): void;
+export function initializePreferencesPanel(): void;
+export function setPreferenceValues(
+  a: JQuery | HTMLElement | string,
+  b?: boolean
+): void;
+export function setInputHandlers(a: JQuery | HTMLElement | string): void;
+export function destroyPreferencePanel(): void;
+export function cancelPreferencesPanel(): void;
+export function setPreferenceFromInput(a: JQuery): void;
+export function savePreferencesPanel(): void;
+
+// ui
+export class map {
+  minimumPanDistance: number;
+  _options: {
+    location: [number, number, number];
     [key: string]: any;
   };
-  let PRODUCTION: boolean;
-  let killCache: string;
-  let isApp: boolean;
-  let autoStart: boolean;
-  let manualStart: boolean;
-  let viewport: HTMLElement;
-  let canvas: JQuery;
-  let resizeHandlers: { [key: number]: () => void };
-  let resizeHandlersIndex: number;
-  let lastTime: number;
-  const initialRunways: number[][];
-  let lastFlight: {
-    coordinates: number[];
-    aircraftId: number;
-    liveryId: string;
-  };
-  let lastFlightDefault: Partial<typeof lastFlight>;
-  let world: undefined;
-  let initialCoordinates: number[];
-  function init(): void;
-  function start(a?: number, b?: number[]): void;
-  function unload(): void;
-  function initLoggedInUser(): void;
-  function terrainProbbingDone(): void;
-  const terrainProbingDuration: number;
-  function probeTerrain(): void;
-  let pause: boolean;
-  let pauseLevel: number;
-  let absolutePause: boolean;
-  function togglePause(): void;
-  function isPaused(): true | void;
-  function doPause(a?: number, b?: boolean): void;
-  function undoPause(a?: number): void;
-  function frameCallback(a: number): void;
-  function flyTo(a?: number[], b?: boolean): void;
-  function flyToCamera(): void;
-  function resetFlight(): void;
+  apiMap: apiNamespace.map;
+  planeMarker: apiNamespace.map.planeMarker;
+  mapActive: boolean;
+  ATCMode: boolean;
+  dontMove?: boolean | undefined;
+  dontMoveTimeout?: number | undefined;
+  dontMoveTimeoutValue?: number | undefined;
+  lastMapUpdate: number;
+  mapUpdateInterval: number;
+  tooltipVisibility: boolean;
+  constructor(
+    a?:
+      | Partial<{
+          zoom: number;
+          holder: JQuery;
+          standalone: boolean;
+          norunways: boolean;
+        }>
+      | undefined,
+    b?: number | undefined,
+    c?: number | undefined
+  );
 
-  // preferences
-  let preferences: { version: string } & preferencesDefault;
-  let userRecord: {
-    id: string;
-    email: string;
-    googleid: string | null;
-    facebookid: string | null;
-    deviceid: string | null;
-    schoolid: string | null;
-    externalid: string | null;
-    firstname: string;
-    lastname: string;
-    callsign: string;
-    sessionId: string;
-    created: Date;
-    active: string;
-    ip: string;
-    role: string;
-    muted: string;
-    banned: string;
-    lastlogin: Date | null;
-    mailing: string;
-    password: string;
-    flighttime: string;
-    preferences: any;
-    mutelist: string;
-    premium: any;
-    transactionDate: Date | null;
-    transactionReference: string | null;
-    transactionStatus: string | null;
-    transactionMessage: string | null;
-    subscribed: boolean;
-    subscriptionStart: Date | null;
-    subscriptionEnd: Date | null;
-    trial: string;
-    subscriptionDaysLeft: string;
-    muteList: any[];
-  };
-  let preferencesDefault: preferencesDefault;
-  let preferencesKeycodeLookup: { [key: number]: string };
-  function initPreferences(): void;
-  function isPreferencePanelOpen(): boolean;
-  function saveFlight(): void;
-  function savePreferences(): void;
-  function resetPreferences(): void;
-  function readPreferences(a?: () => any): void;
-  function populateButtonAssignments(): void;
-  function populateAxesAssignments(): void;
-  function populateKeyAssignments(): void;
-  function preferencesDebugInfo(): void;
-  function preferencesTestJoystick(): boolean;
-  function preferencesTestOrientation(): boolean;
-  function preferencesStartFeedback(): void;
-  function preferencesStopFeedback(): void;
-  function initializePreferencesPanel(): void;
-  function setPreferenceValues(
-    a: JQuery | HTMLElement | string,
-    b?: boolean
+  resize(): void;
+  addRunways(): void;
+  setMapInfoWindow(): void;
+  stopMap(): void;
+  startMap(): void;
+  stopMovingMap(a: boolean): void;
+  updateMap(a: number, b: number): void;
+  addPlayerMarker(a: string, b: string, c: string): void;
+  updatePlayerMarker(
+    a: string,
+    b: number[],
+    c: string,
+    d: string,
+    e: string,
+    f: number | string
   ): void;
-  function setInputHandlers(a: JQuery | HTMLElement | string): void;
-  function destroyPreferencePanel(): void;
-  function cancelPreferencesPanel(): void;
-  function setPreferenceFromInput(a: JQuery): void;
-  function savePreferencesPanel(): void;
-
-  // ui
-  class map {
-    minimumPanDistance: number;
-    _options: {
-      location: [number, number, number];
-      [key: string]: any;
-    };
-    apiMap: apiNamespace.map;
-    planeMarker: apiNamespace.map.planeMarker;
-    mapActive: boolean;
-    ATCMode: boolean;
-    dontMove?: boolean | undefined;
-    dontMoveTimeout?: number | undefined;
-    dontMoveTimeoutValue?: number | undefined;
-    lastMapUpdate: number;
-    mapUpdateInterval: number;
-    tooltipVisibility: boolean;
-    constructor(
-      a?:
-        | Partial<{
-            zoom: number;
-            holder: JQuery;
-            standalone: boolean;
-            norunways: boolean;
-          }>
-        | undefined,
-      b?: number | undefined,
-      c?: number | undefined
-    );
-
-    resize(): void;
-    addRunways(): void;
-    setMapInfoWindow(): void;
-    stopMap(): void;
-    startMap(): void;
-    stopMovingMap(a: boolean): void;
-    updateMap(a: number, b: number): void;
-    addPlayerMarker(a: string, b: string, c: string): void;
-    updatePlayerMarker(
-      a: string,
-      b: number[],
-      c: string,
-      d: string,
-      e: string,
-      f: number | string
-    ): void;
-    deletePlayerMarker(a: string): void;
-    toggleATCMode(): void;
-    setTooltipVisibility(a: boolean): void;
-  }
-  function handleResize(): void;
-  function addResizeHandler(
-    a: number,
-    b?: {
-      resizeHandlerId: any;
-      [key: string]: any;
-    }
-  ): any;
-  function removeResizeHandler(a: number): void;
-  function getViewportDimentions(): void;
-
-  // fx
-  class runwayLights extends fxRunwaysLights {}
-  const light: fxNamespace.light;
+  deletePlayerMarker(a: string): void;
+  toggleATCMode(): void;
+  setTooltipVisibility(a: boolean): void;
 }
-export default geofs;
+export function handleResize(): void;
+export function addResizeHandler(
+  a: number,
+  b?: {
+    resizeHandlerId: any;
+    [key: string]: any;
+  }
+): any;
+export function removeResizeHandler(a: number): void;
+export function getViewportDimentions(): void;
+
+// fx
+export class runwayLights extends fxRunwaysLights {}
+export const light: fxNamespace.light;

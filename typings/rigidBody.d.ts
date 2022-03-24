@@ -1,4 +1,10 @@
-export default class rigidBody {
+/**
+ * Can be accessed with `rigidBody`.
+ * @module rigidBody
+ * @ignore
+ * @category Global
+ */
+export class rigidBody {
   s_inverseMass: number;
   mass: number;
   minLinearVelocity: number;

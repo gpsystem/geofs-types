@@ -1,88 +1,91 @@
-declare namespace flight {
-  let minPenetrationThreshold: number;
-  let arrestingHookDiscardVelocity: number;
-  let arrestingHookDiscardLength: number;
-  let currentAltitudeTestContext: {
-    lastGroundAltitude: number;
-    oldNormal: number[];
-    wrongAltitude: null;
-    wrongAltitudeTries: number;
-    wrongNormal: number;
-    wrongValue: number;
+/**
+ * Can be accessed with `flight`.
+ * @module flight
+ * @category Global
+ */
+export let minPenetrationThreshold: number;
+export let arrestingHookDiscardVelocity: number;
+export let arrestingHookDiscardLength: number;
+export let currentAltitudeTestContext: {
+  lastGroundAltitude: number;
+  oldNormal: number[];
+  wrongAltitude: null;
+  wrongAltitudeTries: number;
+  wrongNormal: number;
+  wrongValue: number;
+};
+export let pastAltitudeTestContext: {
+  lastGroundAltitude: number;
+  wrongAltitude: number;
+  wrongAltitudeTries: number;
+  wrongValue: number;
+};
+export let skipCollisionResponse: boolean;
+
+export function tick(a: number, b: number): void;
+export function setAnimationValues(a: number): void;
+
+export namespace recorder {
+  export let tape: {
+    time: number;
+    coord: number[];
+    controls: number[];
+    state: boolean[];
+    velocities: number[];
+  }[];
+  export let rate: number;
+  export let frequency: number;
+  export let maxLenth: number;
+  export let playing: boolean;
+  export let lastRecordTime: number;
+  export let currentStep: number;
+  export let deltaRecord: {
+    coord: number[];
+    controls: number[];
+    velocities: number[];
   };
-  let pastAltitudeTestContext: {
-    lastGroundAltitude: number;
-    wrongAltitude: number;
-    wrongAltitudeTries: number;
-    wrongValue: number;
-  };
-  let skipCollisionResponse: boolean;
+  export let liveRecord: typeof recorder.tape[number];
 
-  function tick(a: number, b: number): void;
-  function setAnimationValues(a: number): void;
-
-  namespace recorder {
-    let tape: {
-      time: number;
-      coord: number[];
-      controls: number[];
-      state: boolean[];
-      velocities: number[];
-    }[];
-    let rate: number;
-    let frequency: number;
-    let maxLenth: number;
-    let playing: boolean;
-    let lastRecordTime: number;
-    let currentStep: number;
-    let deltaRecord: {
-      coord: number[];
-      controls: number[];
-      velocities: number[];
-    };
-    let liveRecord: typeof recorder.tape[number];
-
-    function record(): void;
-    function clear(): void;
-    function enterPlayback(): void;
-    function exitPlayback(): void;
-    function pausePlayback(): void;
-    function unpausePlayback(): void;
-    function startPlayback(): void;
-    function setStep(a: number, b: string): boolean;
-    function play(a: number): void;
-  }
-
-  namespace sharing {
-    let minSafeTimeDelta: number;
-    let on: boolean;
-    let liveRecord: null | typeof recorder.tape[number];
-    let deltaRecord: null | ReturnType<typeof interpolator.computeDeltaRecord>;
-    let lastRecord: null | typeof recorder.tape[number];
-
-    function start(): void;
-    function stop(): void;
-    function reset(): void;
-    function peerUpdate(a: typeof recorder.tape[number]): void;
-    function update(a: number): void;
-  }
-
-  namespace interpolator {
-    function computeDeltaRecord(
-      a: typeof recorder.liveRecord,
-      b: typeof recorder.deltaRecord,
-      c: number
-    ): typeof recorder.deltaRecord;
-    function increment(
-      a: typeof recorder.liveRecord,
-      b: typeof recorder.deltaRecord,
-      c: number
-    ): void;
-    function setAircraft(a: typeof recorder.liveRecord): void;
-  }
-
-  function terrainElevationManagement(): void;
-  function reset(): void;
+  export function record(): void;
+  export function clear(): void;
+  export function enterPlayback(): void;
+  export function exitPlayback(): void;
+  export function pausePlayback(): void;
+  export function unpausePlayback(): void;
+  export function startPlayback(): void;
+  export function setStep(a: number, b: string): boolean;
+  export function play(a: number): void;
 }
 
-export default flight;
+export namespace sharing {
+  export let minSafeTimeDelta: number;
+  export let on: boolean;
+  export let liveRecord: null | typeof recorder.tape[number];
+  export let deltaRecord: null | ReturnType<
+    typeof interpolator.computeDeltaRecord
+  >;
+  export let lastRecord: null | typeof recorder.tape[number];
+
+  export function start(): void;
+  export function stop(): void;
+  export function reset(): void;
+  export function peerUpdate(a: typeof recorder.tape[number]): void;
+  export function update(a: number): void;
+}
+
+export namespace interpolator {
+  export function computeDeltaRecord(
+    a: typeof recorder.liveRecord,
+    b: typeof recorder.deltaRecord,
+    c: number
+  ): typeof recorder.deltaRecord;
+  export function increment(
+    a: typeof recorder.liveRecord,
+    b: typeof recorder.deltaRecord,
+    c: number
+  ): void;
+  export function setAircraft(a: typeof recorder.liveRecord): void;
+}
+
+export function terrainElevationManagement(): void;
+export function reset(): void;
