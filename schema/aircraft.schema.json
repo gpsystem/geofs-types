@@ -1,0 +1,642 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema",
+  "$title": "Aircraft",
+  "$description": "A GeoFS aircraft definition",
+  "type": "array",
+  "minItems": 1,
+  "maxItems": 1,
+  "definitions": {
+    "Base": {
+      "type": "object",
+      "properties": {
+        "comment": {
+          "type": "string"
+        }
+      }
+    },
+    "PluginsDefinitions": {
+      "type": "object",
+      "properties": {
+        "fmc": {
+          "type": "object",
+          "properties": {
+            "climb": {
+              "type": "array",
+              "items": {
+                "type": "array",
+                "items": {
+                  "type": "number"
+                }
+              }
+            },
+            "descent": {
+              "type": "array",
+              "items": {
+                "type": "array",
+                "items": {
+                  "type": "number"
+                }
+              }
+            }
+          },
+          "required": ["climb", "descent"]
+        },
+        "nosewheel": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          }
+        },
+        "platform": {
+          "type": "string"
+        },
+        "version": {
+          "type": "string"
+        },
+        "maxLimits": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          }
+        },
+        "type": {
+          "type": "string"
+        },
+        "typeIndex": {
+          "type": "string"
+        }
+      }
+    },
+    "Definition": {
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "#/definitions/Base"
+        }
+      ],
+      "properties": {
+        "mass": {
+          "type": "number",
+          "description": "Total mass in kg.",
+          "minimum": 0
+        },
+        "tensorFactor": {
+          "description": "Tweak the rotation inertia",
+          "type": "number"
+        },
+        "dragFactor": {
+          "description": "A global drag coefficient",
+          "type": "number"
+        },
+        "com": {
+          "description": "To move the center of mass of the aircraft",
+          "type": "array",
+          "items": {
+            "type": "number"
+          },
+          "minItems": 3,
+          "maxItems": 3
+        },
+        "COM": {
+          "description": "To move the center of mass of the aircraft",
+          "type": "array",
+          "items": {
+            "type": "number"
+          },
+          "minItems": 3,
+          "maxItems": 3
+        },
+        "gearTravelTime": {
+          "description": "In seconds",
+          "type": "number"
+        },
+        "flapsTravelTime": {
+          "description": "Seconds per degrees.",
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "flapsSteps": {
+          "description": "Number of positions for the flaps",
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "flapsPositions": {
+          "description": "Positions in degrees for each flap step",
+          "type": "array",
+          "items": {
+            "type": "number"
+          }
+        },
+        "airbrakesTravelTime": {
+          "description": "In seconds.",
+          "type": "number"
+        },
+        "reverse": {
+          "description": "Are thrust reversers available.",
+          "type": "boolean"
+        },
+        "zeroThrustAltitude": {
+          "description": "The altitude in feet at which the engine does not produce any thrust (linear from sea level).",
+          "type": "number"
+        },
+        "minRPM": {
+          "description": "Minimum RPM of the engine",
+          "type": "number"
+        },
+        "maxRPM": {
+          "description": "Maximum RPM of the engine",
+          "type": "number"
+        },
+        "driveRatio": {
+          "description": "Affect the spinning of propellers",
+          "type": "number"
+        },
+        "engineInertia": {
+          "description": "Ratio to affect the time it takes for the engine to reach a certain RPM value.",
+          "type": "number"
+        },
+        "startupTime": {
+          "description": "In seconds - to match the startup sound.",
+          "type": "number"
+        },
+        "startAltitude": {
+          "description": "Compensate for landing gear height at initialization (when on ground)",
+          "type": "number"
+        },
+        "startTilt": {
+          "description": "Initial tilt angle (when on ground).",
+          "type": "number"
+        },
+        "minimumSpeed": {
+          "description": "Initial speed when in the air, in knots.",
+          "type": "number"
+        },
+        "motionSensitivity": {
+          "description": "Ratio of head (camera) motion due to acceleration.",
+          "type": "number"
+        },
+        "autopilot": {
+          "description": "When set to true, enable the default autopilot.\nWhen set to an object, enable an autopilot with custom PID controls. All configuration is optional.\nLeave empty to disbale the autopilot (same as false).",
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "string",
+              "enum": ["true", "false"]
+            },
+            {
+              "type": "object",
+              "properties": {
+                "pitchAnglePID": {
+                  "description": "Controller for aircraft pitch angle based on altitude target",
+                  "type": "array",
+                  "items": {
+                    "type": "number"
+                  },
+                  "minItems": 3,
+                  "maxItems": 3
+                },
+                "elevatorPitchPID": {
+                  "description": "Controller for elevator deflection based on pitchAnglePID output.",
+                  "type": "array",
+                  "items": {
+                    "type": "number"
+                  },
+                  "minItems": 3,
+                  "maxItems": 3
+                },
+                "bankAnglePID": {
+                  "description": "Controller for bank angle based on heading target.",
+                  "type": "array",
+                  "items": {
+                    "type": "number"
+                  },
+                  "minItems": 3,
+                  "maxItems": 3
+                },
+                "aileronsRollPID": {
+                  "description": "Controller for ailerons deflection based on bankAnglePID output.",
+                  "type": "array",
+                  "items": {
+                    "type": "number"
+                  },
+                  "minItems": 3,
+                  "maxItems": 3
+                },
+                "throttlePID": {
+                  "description": "Controller for throttle based on speed target.",
+                  "type": "array",
+                  "items": {
+                    "type": "number"
+                  },
+                  "minItems": 3,
+                  "maxItems": 3
+                },
+                "effectivenessRatioMaximum": {
+                  "description": "Maximum speed related deflection divider",
+                  "default": 1.5,
+                  "type": "number"
+                },
+                "baseClimbrate": {
+                  "description": "Climb rate before speed related multiplier.",
+                  "type": "number",
+                  "default": 500
+                },
+                "baseDescentrate": {
+                  "description": "Descent rate before speed related multiplier",
+                  "type": "number",
+                  "default": -500
+                },
+                "maxPitchAngle": {
+                  "type": "number",
+                  "default": 20
+                },
+                "minPitchAngle": {
+                  "type": "number",
+                  "default": -20
+                },
+                "maxBankAngle": {
+                  "type": "number",
+                  "default": 50
+                },
+                "yawBankAngleRatio": {
+                  "type": "number"
+                }
+              }
+            }
+          ]
+        },
+        "parts": {
+          "description": "Part defined for the aircraft can be associated to a 3D model a node in the model or simply have a functional role (airfoil, engine, etc.).\nApplicable properties vary with part's type (frame, airfoil, engine, wheel).",
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "anyOf": [
+              // TODO this
+            ]
+          }
+        },
+        "contactProperties": {
+          "description": "Contact properties must be specified for part types that declares collisionPoints.",
+          "type": "object",
+          "properties": {
+            "wheel": {
+              "allOf": [
+                {
+                  "$ref": "" //TODO BaseContactProperty
+                }
+              ],
+              "type": "object",
+              "properties": {
+                "rollingFriction": {
+                  "type": "number"
+                },
+                "lockSpeed": {
+                  "description": "arbitrary minimum speed at which the wheel lock (static rest)",
+                  "type": "number"
+                }
+              },
+              "required": ["rollingFriction"]
+            }
+          },
+          "additionalProperties": {
+            "$ref": "" //TODO
+          }
+        },
+        "instruments": {
+          "type": "object",
+          "properties": {
+            "airspeed": {
+              "anyOf": [
+                {
+                  "$ref": "" //TODO Instrument
+                },
+                {
+                  "type": "string",
+                  "const": ""
+                },
+                {
+                  "type": "string",
+                  "minLength": 1
+                }
+              ]
+            },
+            "airspeedJet": {
+              "anyOf": [
+                {
+                  "$ref": "" //TODO Instrument
+                },
+                {
+                  "type": "string",
+                  "const": ""
+                },
+                {
+                  "type": "string",
+                  "minLength": 1
+                }
+              ]
+            },
+            "airspeedSupersonic": {
+              "anyOf": [
+                {
+                  "$ref": "" //TODO Instrument
+                },
+                {
+                  "type": "string",
+                  "const": ""
+                },
+                {
+                  "type": "string",
+                  "minLength": 1
+                }
+              ]
+            },
+            "altitude": {
+              "anyOf": [
+                {
+                  "$ref": "" //TODO Instrument
+                },
+                {
+                  "type": "string",
+                  "const": ""
+                },
+                {
+                  "type": "string",
+                  "minLength": 1
+                }
+              ]
+            },
+            "attitude": {
+              "anyOf": [
+                {
+                  "$ref": "" //TODO Instrument
+                },
+                {
+                  "type": "string",
+                  "const": ""
+                },
+                {
+                  "type": "string",
+                  "minLength": 1
+                }
+              ]
+            },
+            "attitudeJet": {
+              "anyOf": [
+                {
+                  "$ref": "" //TODO Instrument
+                },
+                {
+                  "type": "string",
+                  "const": ""
+                },
+                {
+                  "type": "string",
+                  "minLength": 1
+                }
+              ]
+            },
+            "vario": {
+              "anyOf": [
+                {
+                  "$ref": "" //TODO Instrument
+                },
+                {
+                  "type": "string",
+                  "const": ""
+                },
+                {
+                  "type": "string",
+                  "minLength": 1
+                }
+              ]
+            },
+            "varioJet": {
+              "anyOf": [
+                {
+                  "$ref": "" //TODO Instrument
+                },
+                {
+                  "type": "string",
+                  "const": ""
+                },
+                {
+                  "type": "string",
+                  "minLength": 1
+                }
+              ]
+            },
+            "compass": {
+              "anyOf": [
+                {
+                  "$ref": "" //TODO Instrument
+                },
+                {
+                  "type": "string",
+                  "const": ""
+                },
+                {
+                  "type": "string",
+                  "minLength": 1
+                }
+              ]
+            },
+            "rpm": {
+              "anyOf": [
+                {
+                  "$ref": "" //TODO Instrument
+                },
+                {
+                  "type": "string",
+                  "const": ""
+                },
+                {
+                  "type": "string",
+                  "minLength": 1
+                }
+              ]
+            },
+            "rpmJet": {
+              "anyOf": [
+                {
+                  "$ref": "" //TODO Instrument
+                },
+                {
+                  "type": "string",
+                  "const": ""
+                },
+                {
+                  "type": "string",
+                  "minLength": 1
+                }
+              ]
+            },
+            "spoilers": {
+              "anyOf": [
+                {
+                  "$ref": "" //TODO Instrument
+                },
+                {
+                  "type": "string",
+                  "const": ""
+                },
+                {
+                  "type": "string",
+                  "minLength": 1
+                }
+              ]
+            },
+            "brakes": {
+              "anyOf": [
+                {
+                  "$ref": "" //TODO Instrument
+                },
+                {
+                  "type": "string",
+                  "const": ""
+                },
+                {
+                  "type": "string",
+                  "minLength": 1
+                }
+              ]
+            },
+            "gear": {
+              "anyOf": [
+                {
+                  "$ref": "" //TODO Instrument
+                },
+                {
+                  "type": "string",
+                  "const": ""
+                },
+                {
+                  "type": "string",
+                  "minLength": 1
+                }
+              ]
+            },
+            "flaps": {
+              "anyOf": [
+                {
+                  "$ref": "" //TODO Instrument
+                },
+                {
+                  "type": "string",
+                  "const": ""
+                },
+                {
+                  "type": "string",
+                  "minLength": 1
+                }
+              ]
+            }
+          },
+          "additionalProperties": {
+            "$ref": "" //TODO Instrument
+          }
+        },
+        "soundSet": {
+          "description": "For legacy reasons.",
+          "type": "string",
+          "const": "player"
+        },
+        "sounds": {
+          "description": "\"startup\" and \"shutdown\" sound ids are hardcoded.",
+          "type": "array",
+          "items": {
+            "$ref": "" //TODO Sound
+          }
+        },
+        "cameras": {
+          "type": "object",
+          "properties": {
+            "follow": {},
+            "cockpit": {}
+          },
+          "additionalProperties": {}
+        },
+        "cockpitShadowMapMaxDistance": {
+          "type": "number"
+        },
+        "zeroRPMAltitude": {
+          "type": "number"
+        },
+        "shutdownTime": {
+          "type": "number"
+        },
+        "cockpitModel": {
+          "type": "boolean"
+        },
+        "shadowBox": {
+          "type": "array",
+          "minItems": 2,
+          "maxItems": 2,
+          "items": {
+            "type": "number"
+          }
+        },
+        "optionalAnimatedPartTravelTime": {
+          "type": "number"
+        },
+        "cockpitScaleFix": {
+          "type": "number"
+        },
+        "shadowFile": {
+          "type": "string"
+        },
+        "shadowURL": {
+          "type": "string"
+        },
+        "dragCoefficient": {
+          "type": "number"
+        },
+        "brakeDamping": {
+          "type": "number"
+        },
+        "scale": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "mass",
+        "minRPM",
+        "maxRPM",
+        "driveRatio",
+        "engineInertia",
+        "startAltitude",
+        "minimumSpeed",
+        "parts",
+        "contactProperties",
+        "instruments",
+        "sounds",
+        "cameras",
+        "shadowBox"
+      ]
+    }
+  },
+  "items": {
+    "type": "object",
+    "allOf": [
+      {
+        "$ref": "#/definitions/Definition"
+      },
+      {
+        "$ref": "#/definitions/PluginsDefinitions"
+      }
+    ]
+  }
+}
