@@ -14,6 +14,1001 @@
         }
       }
     },
+    "Filters": {
+      "description": "Animation filters",
+      "type": "object",
+      "properties": {
+        "ratio": {
+          "description": "A multiplier for the value.",
+          "type": "number"
+        },
+        "threshold": {
+          "description": "Value is converted to boolean when smaller than threshold",
+          "type": "number"
+        },
+        "between": {
+          "description": "Value is converted to boolean when between values",
+          "type": "array",
+          "items": {
+            "type": "number"
+          },
+          "minItems": 2,
+          "maxItems": 2
+        },
+        "delay": {
+          "description": "Add or subtract and clamp value between (0 - 1)",
+          "type": "number"
+        },
+        "eq": {
+          "description": "Equal to value (==)",
+          "oneOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "string"
+            }
+          ]
+        },
+        "notEq": {
+          "description": "Not equal to value (!=)",
+          "oneOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "string"
+            }
+          ]
+        },
+        "noteq": {
+          "description": "Not equal to value (!=)",
+          "oneOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "string"
+            }
+          ]
+        },
+        "gt": {
+          "description": "Greater than value (>)",
+          "type": "number"
+        },
+        "lt": {
+          "description": "Less than value (<)",
+          "type": "number"
+        },
+        "min": {
+          "description": "Returns the value if it is larger than min. If not, returns min.",
+          "type": "number"
+        },
+        "max": {
+          "description": "Returns the value if it is smaller than max. If not, returns max.",
+          "type": "number"
+        },
+        "when": {
+          "description": "Returns true if the value is in the array; otherwise, false.",
+          "items": {
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "number"
+              }
+            ]
+          }
+        },
+        "whenNot": {
+          "description": "Returns true if the value is not in the array; otherwise, false."
+        },
+        "offset": {
+          "description": "Add offset after applying \"ratio\"",
+          "type": "number"
+        },
+        "power": {
+          "description": "Raise value to provided power",
+          "type": "number"
+        },
+        "valueRamp": {
+          "description": "Specify a ramp of values to replace the original animation value.\nNew values are looked-up in the array depending on original value varying from 0 to 1.",
+          "type": "array",
+          "items": {
+            "type": "number"
+          }
+        },
+        "ramp": {
+          "description": "Array of 2 or 4 stop values to generate an increasing--level--decreasing ramp from 0 to 1 (eventually back to 0) - mostly used for sound.",
+          "type": "array",
+          "oneOf": [
+            {
+              "minItems": 2,
+              "maxItems": 2
+            },
+            {
+              "minItems": 4,
+              "maxItems": 4
+            }
+          ]
+        },
+        "ratioRamp": {
+          "description": "Specify a ramp of ratios by which to multiply the value.\nRatios are looked-up in the array depending on value varying from 0 to 1.",
+          "type": "array",
+          "items": {
+            "type": "number"
+          }
+        },
+        "fmin": {
+          "description": "Returns the value if it is larger than min. If not, returns min.",
+          "type": "number"
+        },
+        "fmax": {
+          "description": "Returns the value if it is smaller than max. If not, returns max.",
+          "type": "number"
+        },
+        "negthreshold": {
+          "description": "Value is converted to boolean when greater than threshold",
+          "type": "number"
+        },
+        "preoffset": {
+          "description": "Add offset before applying \"ratio\"",
+          "type": "number"
+        },
+        "set": {
+          "type": "number"
+        },
+        "abs": {
+          "description": "When set to `true`, use the absolute value of the value.",
+          "oneOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 1
+            }
+          ]
+        }
+      }
+    },
+    "AnimationBase": {
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "#/definitions/Base"
+        },
+        {
+          "$ref": "#/definitions/Filters"
+        }
+      ],
+      "properties": {
+        "frame": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        }
+      },
+      "oneOf": [
+        {
+          "type": "object",
+          "properties": {
+            "value": {
+              "description": "enginesOn: Boolean: 1 if engine is on, 0 if not.\nprop: Prop rotation [0, 360].\nthrust: In Newton.rpm, throttle: [0, 1]\npitch: Control input [0, 1]\nroll: Control input [0, 1]\nyaw: Control input [0, 1]\nbrakes: Boolean: 1 if brakes are on, 0 if not.\ngearPosition: Current gear position [0, 1]\ngearTarget: Reaching gear position [0, 1]\nflapsValue: Current flaps position as [0, 1]\nflapsPosition: Current flaps position in steps [0, flapsSteps]\nflapsTarget: Reaching flaps position in steps [0, flapsSteps]\nairbrakesPosition: Current airbrakes position as [0, 1]\nairbrakesTarget: Reaching airbrakes position as [0, 1]\ngroundContact: Boolean: 1 if aircraft is in contact with ground, 0 if not.\nrollingSpeed: Aircraft speed in m/s when rolling on ground.\nmaxAngularVRatio: Rolling wheel angular speed.\nkias: Indicated airspeed in knots.\ntas: True airspeed in knots.\nmach: Airspeed as Mach number.\naltitude: In feet.\ntenFeet: Altitude in tens of feet.\nhundredFeet: Altitude in hundreds of feet.\nthousandFeet: Altitude in thousands of feet.\nclimbrate: Climb rate in feet per minute.\nheading: The aircraft's heading in degrees [-180, 180].\nheading360: The aircraft's heading in degrees [0, 360].\natilt: The aircraft's tilt in degrees.\naroll: The aircraft's roll in degrees.\nrelativeWind: In degrees, from aircraft forward.\nwindSpeed: Wind speed in meters per second.\nview: camera mode name [\"follow\", \"cockpit\", \"cockpitless\", \"chase\", \"free\"].\nstrobe: Boolean, set to 1 every 1400ms, for 100ms duration.\nstrobe2: Boolean set to 1 every 1700ms, for 100ms duration.\nrandom: Returns a random value [0, 1).",
+              "oneOf": [
+                {
+                  "type": "string",
+                  "enum": [
+                    "",
+                    "enginesOn",
+                    "prop",
+                    "thrust",
+                    "rpm",
+                    "throttle",
+                    "pitch",
+                    "roll",
+                    "yaw",
+                    "brakes",
+                    "gearPosition",
+                    "gearTarget",
+                    "flapsValue",
+                    "flapsPosition",
+                    "flapsTarget",
+                    "airbrakesPosition",
+                    "airbrakesTarget",
+                    "groundContact",
+                    "rollingSpeed",
+                    "maxAngularVRatio",
+                    "kias",
+                    "tas",
+                    "mach",
+                    "altitude",
+                    "tenFeet",
+                    "hundredFeet",
+                    "thousandFeet",
+                    "climbrate",
+                    "heading",
+                    "heading360",
+                    "atilt",
+                    "aroll",
+                    "relativeWind",
+                    "windSpeed",
+                    "view",
+                    "random",
+                    "parkingBrake",
+                    "stalls",
+                    "aoa",
+                    "altThousands",
+                    "climbrateABS",
+                    "climbrateLog",
+                    "night",
+                    "optionalAnimatedPartPosition",
+                    "cameraMode",
+                    "hours",
+                    "minutes",
+                    "invGearPosition",
+                    "altTensShift",
+                    "altTens",
+                    "altTenThousands",
+                    "machUnits",
+                    "machTens",
+                    "machTenth",
+                    "machHundredth",
+                    "arrestingHookTension",
+                    "accX",
+                    "accY",
+                    "accZ",
+                    "trim",
+                    "rawPitch",
+                    "rawpitch",
+                    "rawYaw",
+                    "envelopeTemp",
+                    "function()",
+                    "ktas",
+                    "gearTraget",
+                    "turnrate"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "pattern": "^strobe[23]?$"
+                },
+                {
+                  "type": "string",
+                  "pattern": "^.*(Rotation|Suspension)$"
+                }
+              ]
+            }
+          },
+          "required": ["value"]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "function": {
+              "description": "A function to run. Must return a value that will be used as the animation value.",
+              "type": "string",
+              "pattern": "^{(.|\n)*return\\ ?(.|\n)+}$"
+            }
+          },
+          "required": ["function"]
+        }
+      ]
+    },
+    "Animation": {
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "#/definitions/AnimationBase"
+        }
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "rotate",
+            "scale",
+            "translate",
+            "show",
+            "hide",
+            "sound",
+            "property",
+            "justhide",
+            "justshow",
+            "translateX",
+            "translateY",
+            "scaleX",
+            "scaleY",
+            "moveX",
+            "moveY",
+            "throttle",
+            "pitch",
+            "strobe"
+          ]
+        },
+        "axis": {
+          "description": "\"X\", \"Y\", \"Z\" for rotation, vector for translation",
+          "oneOf": [
+            {
+              "type": "string",
+              "enum": ["X", "Y", "Z"]
+            },
+            {
+              "type": "array",
+              "items": {
+                "type": "number"
+              },
+              "minItems": 3,
+              "maxItems": 3
+            }
+          ]
+        }
+      },
+      "required": ["type"]
+    },
+    "PartBase": {
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "#/definitions/Base"
+        }
+      ],
+      "properties": {
+        "name": {
+          "description": "Part's name/id.",
+          "type": "string"
+        },
+        "parent": {
+          "description": "Parent's name.",
+          "type": "string"
+        },
+        "model": {
+          "description": "Name of the DAE model declared in KML.",
+          "type": "string"
+        },
+        "node": {
+          "description": "Name of the node in the root model.\n! A \"root\" part must be declared to load the main GLTF file.",
+          "type": "string"
+        },
+        "position": {
+          "description": "Relative to the parent (or root).",
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "array",
+              "items": {
+                "type": "number"
+              },
+              "minItems": 3,
+              "maxItems": 3
+            }
+          ]
+        },
+        "rotaition": {
+          "description": "Relative to the parent (or root).",
+          "type": "array",
+          "items": {
+            "type": "number"
+          },
+          "minItems": 3,
+          "maxItems": 3
+        },
+        "rotation": {
+          "description": "Relative to the parent (or root).",
+          "type": "array",
+          "items": {
+            "type": "number"
+          },
+          "minItems": 3,
+          "maxItems": 3
+        },
+        "scale": {
+          "description": "Relative to the parent (or root).",
+          "type": "array",
+          "items": {
+            "type": "number"
+          },
+          "minItems": 3,
+          "maxItems": 3
+        },
+        "forceDirection": {
+          "description": "The direction in which the force (lift, thrust) will be applied.",
+          "type": "string",
+          "enum": ["X", "Y", "Z"]
+        },
+        "points": {
+          "type": "object",
+          "properties": {
+            "forceSourcePoint": {
+              "type": "array",
+              "items": {
+                "description": "The source of force vector relative to the part origin",
+                "type": "number",
+                "minItems": 3,
+                "maxItems": 3
+              }
+            }
+          },
+          "required": ["forceSourcePoint"],
+          "additionalProperties": {
+            "type": "array",
+            "items": {
+              "type": "number",
+              "minItems": 3,
+              "maxItems": 3
+            }
+          }
+        },
+        "collisionPoints": {
+          "description": "Specify where, on the model, collisions with the ground should occur - best used on the \"body\" part of the aircraft (type=frame).",
+          "type": "array",
+          "items": {
+            "type": "array",
+            "items": {
+              "type": "number",
+              "minItems": 3,
+              "maxItems": 3
+            }
+          }
+        },
+        "animations": {
+          "description": "Array of animations to be applied.",
+          "oneOf": [
+            {
+              "type": "string",
+              "const": ""
+            },
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Animation"
+              }
+            }
+          ]
+        },
+        "light": {
+          "type": "string",
+          "enum": ["white", "red", "green", ""]
+        },
+        "textures": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "index": {
+                "type": "number"
+              },
+              "filename": {
+                "type": "string"
+              }
+            },
+            "required": ["index", "filename"]
+          }
+        },
+        "buoyancy": {
+          "type": "number"
+        },
+        "noCastShadows": {
+          "type": "boolean"
+        },
+        "noReceiveShadows": {
+          "type": "boolean"
+        },
+        "propwash": {
+          "type": "number"
+        },
+        "include": {
+          "type": "string"
+        },
+        "indices": {
+          "type": "number"
+        },
+        "liftFactor": {
+          "type": "number"
+        },
+        "dragFactor": {
+          "type": "number"
+        },
+        "initialTemperature": {
+          "type": "number"
+        },
+        "volume": {
+          "type": "number"
+        },
+        "heatingSpeed": {
+          "type": "number"
+        },
+        "coolingSpeed": {
+          "type": "number"
+        },
+        "controller": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string",
+              "const": "pitch"
+            },
+            "recenter": {
+              "type": "boolean"
+            },
+            "sensitivity": {
+              "type": "number"
+            },
+            "ratio": {
+              "type": "number"
+            }
+          },
+          "required": ["name", "ratio"]
+        },
+        "area": {
+          "type": "number"
+        },
+        "doNotScalePosition": {
+          "type": "boolean"
+        }
+      },
+      "required": ["name"]
+    },
+    "Part": {
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "#/definitions/PartBase"
+        }
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "not": {
+            "enum": ["airfoil", "engine", "wheel", "pad", "hook"]
+          }
+        }
+      }
+    },
+    "AirfoilPart": {
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "#/definitions/PartBase"
+        }
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "const": "airfoil"
+        },
+        "stalls": {
+          "description": "Specify if an airfoil is subject to stall.",
+          "type": "boolean"
+        },
+        "stallIncidence": {
+          "description": "Angle of Attack (AoA) in deg. at which stall occurs.",
+          "type": "number"
+        },
+        "zeroLiftIncidence": {
+          "description": "Angle of Attack (AoA) at which, lift equals 0 - lift decreases linearly from stallIncidence",
+          "type": "number"
+        },
+        "span": {
+          "type": "number"
+        },
+        "chord": {
+          "type": "number"
+        },
+        "efficiencyFactor": {
+          "type": "number"
+        },
+        "aspectRatio": {
+          "type": "number"
+        }
+      },
+      "anyOf": [
+        {
+          "type": "object",
+          "properties": {
+            "liftFactor": {
+              "description": "An arbitrary lift coefficient for airfoils (not used if \"area\" is specified).",
+              "type": "number"
+            },
+            "dragFactor": {
+              "description": "An arbitrary drag coefficient for airfoils (not used if \"area\" is specified).",
+              "type": "number"
+            }
+          },
+          "required": ["liftFactor", "dragFactor"]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "area": {
+              "description": "The airfoil surface area - lift and drag will be computed from this.",
+              "type": "number"
+            }
+          },
+          "required": ["area"]
+        }
+      ],
+      "required": ["type"]
+    },
+    "EnginePart": {
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "#/definitions/PartBase"
+        }
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "const": "engine"
+        },
+        "thrust": {
+          "description": "In Newton.",
+          "type": "number"
+        },
+        "afterBurnerThrust": {
+          "description": "In Newton.",
+          "type": "number"
+        },
+        "reverseThrust": {
+          "description": "In Newton.",
+          "type": "number"
+        },
+        "contrail": {
+          "description": "Does the engine generate contrail",
+          "type": "boolean"
+        }
+      },
+      "required": ["type", "thrust"]
+    },
+    "WheelPart": {
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "#/definitions/PartBase"
+        }
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": ["wheel", "pad"]
+        },
+        "suspension": {
+          "type": "object",
+          "properties": {
+            "motion": {
+              "type": "string",
+              "enum": ["rotation", "translate"]
+            },
+            "axis": {
+              "type": "string",
+              "enum": ["X", "Y", "Z"]
+            },
+            "ratio": {
+              "type": "number"
+            },
+            "stiffness": {
+              "type": "number"
+            },
+            "damping": {
+              "type": "number"
+            },
+            "restLength": {
+              "type": "number"
+            },
+            "hardPoint": {
+              "type": "number"
+            }
+          },
+          "required": ["stiffness", "damping"]
+        },
+        "contactType": {
+          "type": "string"
+        }
+      },
+      "required": ["type", "suspension"]
+    },
+    "HookPart": {
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "#/definitions/PartBase"
+        }
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "const": "hook"
+        },
+        "hook": {
+          "type": "object",
+          "properties": {
+            "strength": {
+              "type": "number"
+            }
+          },
+          "required": ["strength"]
+        }
+      },
+      "required": ["type", "hook"]
+    },
+    "BaseContactProperty": {
+      "type": "object",
+      "properties": {
+        "frictionCoef": {
+          "description": "Static friction coefficient - when not slipping.",
+          "type": "number"
+        },
+        "dynamicFriction": {
+          "description": "Dynamic friction coefficient - during slip.",
+          "type": "number"
+        },
+        "damping": {
+          "description": "A damping factor to try and hide jerkiness of collisions in some cases.",
+          "type": "number"
+        }
+      },
+      "required": ["frictionCoef", "dynamicFriction", "damping"]
+    },
+    "Instrument": {
+      "allOf": [{ "$ref": "#/definitions/Base" }],
+      "type": "object",
+      "properties": {
+        "animations": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Animation"
+          }
+        },
+        "cockpit": {
+          "type": "object",
+          "properties": {
+            "position": {
+              "description": "In cockpit position relative to origin",
+              "type": "array",
+              "items": {
+                "type": "number"
+              },
+              "minItems": 3,
+              "maxItems": 3
+            },
+            "scale": {
+              "type": "number"
+            }
+          },
+          "required": ["position", "scale"]
+        },
+        "overlay": {
+          "type": "object",
+          "properties": {
+            "url": {
+              "type": "string"
+            },
+            "size": {
+              "type": "object",
+              "properties": {
+                "x": {
+                  "oneOf": [
+                    {
+                      "type": "number"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "y": {
+                  "oneOf": [
+                    {
+                      "type": "number"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                }
+              },
+              "required": ["x", "y"]
+            },
+            "anchor": {
+              "type": "object",
+              "properties": {
+                "x": {
+                  "type": "number"
+                },
+                "y": {
+                  "type": "number"
+                }
+              },
+              "required": ["x", "y"]
+            },
+            "position": {
+              "type": "object",
+              "properties": {
+                "x": {
+                  "type": "number"
+                },
+                "y": {
+                  "type": "number"
+                }
+              },
+              "required": ["x", "y"]
+            },
+            "offset": {
+              "type": "object",
+              "properties": {
+                "x": {
+                  "type": "number"
+                },
+                "y": {
+                  "type": "number"
+                }
+              },
+              "required": ["x", "y"]
+            },
+            "iconFrame": {
+              "type": "object",
+              "properties": {
+                "x": {
+                  "type": "number"
+                },
+                "y": {
+                  "type": "number"
+                }
+              },
+              "required": ["x", "y"]
+            },
+            "drawOrder": {
+              "type": "number"
+            },
+            "rescale": {
+              "type": "boolean"
+            },
+            "rescalePosition": {
+              "type": "boolean"
+            },
+            "overlays": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Instrument/properties/overlay"
+              }
+            },
+            "animations": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Animation"
+              }
+            },
+            "name": {
+              "type": "string"
+            }
+          },
+          "required": ["url", "size", "anchor", "position"]
+        },
+        "center": {
+          "type": "boolean"
+        },
+        "stackX": {
+          "type": "boolean"
+        }
+      }
+    },
+    "Sound": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/Base"
+        }
+      ],
+      "type": "object",
+      "properties": {
+        "id": {
+          "description": "Sound id.",
+          "type": "string"
+        },
+        "file": {
+          "description": "URL to the mp3 file.",
+          "type": "string"
+        },
+        "effects": {
+          "description": "Sound effects",
+          "type": "object",
+          "properties": {
+            "volume": {
+              "type": "object",
+              "allOf": [
+                {
+                  "$ref": "#/definitions/AnimationBase"
+                }
+              ],
+              "properties": {
+                "duration": {
+                  "type": "number"
+                }
+              }
+            },
+            "pitch": {
+              "type": "object",
+              "allOf": [
+                {
+                  "$ref": "#/definitions/AnimationBase"
+                }
+              ],
+              "properties": {
+                "duration": {
+                  "type": "number"
+                }
+              }
+            },
+            "start": {
+              "type": "object",
+              "allOf": [
+                {
+                  "$ref": "#/definitions/AnimationBase"
+                }
+              ],
+              "properties": {
+                "duration": {
+                  "type": "number"
+                }
+              }
+            },
+            "stop": {
+              "type": "object",
+              "allOf": [
+                {
+                  "$ref": "#/definitions/AnimationBase"
+                }
+              ],
+              "properties": {
+                "duration": {
+                  "type": "number"
+                }
+              }
+            },
+            "play": {
+              "type": "object",
+              "allOf": [
+                {
+                  "$ref": "#/definitions/AnimationBase"
+                }
+              ],
+              "properties": {
+                "duration": {
+                  "type": "number"
+                }
+              }
+            }
+          }
+        },
+        "fadeDuration": {
+          "description": "duration of fade-in/fade-out in ms",
+          "type": "number"
+        },
+        "cut": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          },
+          "minItems": 2,
+          "maxItems": 2
+        },
+        "lowLatency": {
+          "type": "boolean"
+        },
+        "loop": {
+          "type": "boolean"
+        },
+        "retard": {
+          "type": "number"
+        }
+      },
+      "required": ["id", "file"]
+    },
     "PluginsDefinitions": {
       "type": "object",
       "properties": {
@@ -112,7 +1107,7 @@
         },
         "flapsTravelTime": {
           "description": "Seconds per degrees.",
-          "anyOf": [
+          "oneOf": [
             {
               "type": "number"
             },
@@ -123,7 +1118,7 @@
         },
         "flapsSteps": {
           "description": "Number of positions for the flaps",
-          "anyOf": [
+          "oneOf": [
             {
               "type": "number"
             },
@@ -189,7 +1184,7 @@
         },
         "autopilot": {
           "description": "When set to true, enable the default autopilot.\nWhen set to an object, enable an autopilot with custom PID controls. All configuration is optional.\nLeave empty to disbale the autopilot (same as false).",
-          "anyOf": [
+          "oneOf": [
             {
               "type": "boolean"
             },
@@ -284,8 +1279,22 @@
           "type": "array",
           "minItems": 1,
           "items": {
-            "anyOf": [
-              // TODO this
+            "oneOf": [
+              {
+                "$ref": "#/definitions/Part"
+              },
+              {
+                "$ref": "#/definitions/AirfoilPart"
+              },
+              {
+                "$ref": "#/definitions/EnginePart"
+              },
+              {
+                "$ref": "#/definitions/WheelPart"
+              },
+              {
+                "$ref": "#/definitions/HookPart"
+              }
             ]
           }
         },
@@ -296,7 +1305,7 @@
             "wheel": {
               "allOf": [
                 {
-                  "$ref": "" //TODO BaseContactProperty
+                  "$ref": "#/definitions/BaseContactProperty"
                 }
               ],
               "type": "object",
@@ -313,16 +1322,16 @@
             }
           },
           "additionalProperties": {
-            "$ref": "" //TODO
+            "$ref": "#/definitions/BaseContactProperty"
           }
         },
         "instruments": {
           "type": "object",
           "properties": {
             "airspeed": {
-              "anyOf": [
+              "oneOf": [
                 {
-                  "$ref": "" //TODO Instrument
+                  "$ref": "#/definitions/Instrument"
                 },
                 {
                   "type": "string",
@@ -335,9 +1344,9 @@
               ]
             },
             "airspeedJet": {
-              "anyOf": [
+              "oneOf": [
                 {
-                  "$ref": "" //TODO Instrument
+                  "$ref": "#/definitions/Instrument"
                 },
                 {
                   "type": "string",
@@ -350,9 +1359,9 @@
               ]
             },
             "airspeedSupersonic": {
-              "anyOf": [
+              "oneOf": [
                 {
-                  "$ref": "" //TODO Instrument
+                  "$ref": "#/definitions/Instrument"
                 },
                 {
                   "type": "string",
@@ -365,9 +1374,9 @@
               ]
             },
             "altitude": {
-              "anyOf": [
+              "oneOf": [
                 {
-                  "$ref": "" //TODO Instrument
+                  "$ref": "#/definitions/Instrument"
                 },
                 {
                   "type": "string",
@@ -380,9 +1389,9 @@
               ]
             },
             "attitude": {
-              "anyOf": [
+              "oneOf": [
                 {
-                  "$ref": "" //TODO Instrument
+                  "$ref": "#/definitions/Instrument"
                 },
                 {
                   "type": "string",
@@ -395,9 +1404,9 @@
               ]
             },
             "attitudeJet": {
-              "anyOf": [
+              "oneOf": [
                 {
-                  "$ref": "" //TODO Instrument
+                  "$ref": "#/definitions/Instrument"
                 },
                 {
                   "type": "string",
@@ -410,9 +1419,9 @@
               ]
             },
             "vario": {
-              "anyOf": [
+              "oneOf": [
                 {
-                  "$ref": "" //TODO Instrument
+                  "$ref": "#/definitions/Instrument"
                 },
                 {
                   "type": "string",
@@ -425,9 +1434,9 @@
               ]
             },
             "varioJet": {
-              "anyOf": [
+              "oneOf": [
                 {
-                  "$ref": "" //TODO Instrument
+                  "$ref": "#/definitions/Instrument"
                 },
                 {
                   "type": "string",
@@ -440,9 +1449,9 @@
               ]
             },
             "compass": {
-              "anyOf": [
+              "oneOf": [
                 {
-                  "$ref": "" //TODO Instrument
+                  "$ref": "#/definitions/Instrument"
                 },
                 {
                   "type": "string",
@@ -455,9 +1464,9 @@
               ]
             },
             "rpm": {
-              "anyOf": [
+              "oneOf": [
                 {
-                  "$ref": "" //TODO Instrument
+                  "$ref": "#/definitions/Instrument"
                 },
                 {
                   "type": "string",
@@ -470,9 +1479,9 @@
               ]
             },
             "rpmJet": {
-              "anyOf": [
+              "oneOf": [
                 {
-                  "$ref": "" //TODO Instrument
+                  "$ref": "#/definitions/Instrument"
                 },
                 {
                   "type": "string",
@@ -485,9 +1494,9 @@
               ]
             },
             "spoilers": {
-              "anyOf": [
+              "oneOf": [
                 {
-                  "$ref": "" //TODO Instrument
+                  "$ref": "#/definitions/Instrument"
                 },
                 {
                   "type": "string",
@@ -500,9 +1509,9 @@
               ]
             },
             "brakes": {
-              "anyOf": [
+              "oneOf": [
                 {
-                  "$ref": "" //TODO Instrument
+                  "$ref": "#/definitions/Instrument"
                 },
                 {
                   "type": "string",
@@ -515,9 +1524,9 @@
               ]
             },
             "gear": {
-              "anyOf": [
+              "oneOf": [
                 {
-                  "$ref": "" //TODO Instrument
+                  "$ref": "#/definitions/Instrument"
                 },
                 {
                   "type": "string",
@@ -530,9 +1539,9 @@
               ]
             },
             "flaps": {
-              "anyOf": [
+              "oneOf": [
                 {
-                  "$ref": "" //TODO Instrument
+                  "$ref": "#/definitions/Instrument"
                 },
                 {
                   "type": "string",
@@ -546,7 +1555,7 @@
             }
           },
           "additionalProperties": {
-            "$ref": "" //TODO Instrument
+            "$ref": "#/definitions/Instrument"
           }
         },
         "soundSet": {
@@ -558,7 +1567,7 @@
           "description": "\"startup\" and \"shutdown\" sound ids are hardcoded.",
           "type": "array",
           "items": {
-            "$ref": "" //TODO Sound
+            "$ref": "#/definitions/Sound"
           }
         },
         "cameras": {
