@@ -1,6 +1,6 @@
 /**
  * Global variables.
- * @module glboals
+ * @module globals
  * @category Global
  */
 import * as geofsNamespace from "./geofs";
