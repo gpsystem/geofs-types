@@ -32,7 +32,7 @@
   "dependencies": {
     "@types/jquery": "3.5.14",
     "@types/leaflet": "1.7.10",
-    "cesium": "1.94.2"
+    "cesium": "1.101.0"
   },
   "devDependencies": {
     "@types/node": "~17.0.40",
